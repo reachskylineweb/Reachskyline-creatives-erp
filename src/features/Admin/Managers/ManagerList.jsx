@@ -301,18 +301,15 @@ const ManagerList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this manager profile?'))) return;
+    if (!(await window.confirm('Are you sure you want to permanently delete this manager profile from the database?'))) return;
     try {
-      await api.post('/users/change-status', {
-        profileId: id,
-        userType: 'manager',
-        status: 'inactive'
-      });
+      await api.delete(`/users/managers/${id}`);
       setData(prev => prev.filter(item => item.id !== id));
       setTotal(prev => Math.max(0, prev - 1));
       fetchManagers();
     } catch (err) {
       console.error('Delete failed:', err.message);
+      alert(err.response?.data?.message || 'Failed to delete manager profile.');
     }
   };
 

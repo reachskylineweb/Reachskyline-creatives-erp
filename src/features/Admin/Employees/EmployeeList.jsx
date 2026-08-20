@@ -347,18 +347,15 @@ const EmployeeList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this employee?'))) return;
+    if (!(await window.confirm('Are you sure you want to permanently delete this employee from the database?'))) return;
     try {
-      await api.post('/users/change-status', {
-        profileId: id,
-        userType: 'employee',
-        status: 'inactive'
-      });
+      await api.delete(`/users/employees/${id}`);
       setData(prev => prev.filter(item => item.id !== id));
       setTotal(prev => Math.max(0, prev - 1));
       fetchEmployees();
     } catch (err) {
       console.error('Delete failed:', err.message);
+      alert(err.response?.data?.message || 'Failed to delete employee profile.');
     }
   };
 

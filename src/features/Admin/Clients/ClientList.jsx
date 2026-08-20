@@ -207,13 +207,14 @@ const ClientList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this client profile?'))) return;
+    if (!(await window.confirm('Are you sure you want to permanently delete this client profile from the database?'))) return;
     try {
-      await api.patch(`/clients/${id}/status`, { status: 'inactive' });
+      await api.delete(`/clients/${id}`);
       fetchClients();
       setSelectedIds(prev => prev.filter(item => item !== id));
     } catch (err) {
       console.error('Delete failed:', err.message);
+      alert(err.response?.data?.message || 'Failed to delete client profile.');
     }
   };
 
