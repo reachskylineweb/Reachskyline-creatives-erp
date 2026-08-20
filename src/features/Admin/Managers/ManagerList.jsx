@@ -16,7 +16,7 @@ const ManagerList = () => {
   const [sortColumn, setSortColumn] = useState('full_name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('active');
   const [deptFilter, setDeptFilter] = useState('');
 
   // Dropdowns lists
@@ -301,13 +301,15 @@ const ManagerList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this manager profile? This deactivates their authorization profile.'))) return;
+    if (!(await window.confirm('Are you sure you want to delete this manager profile?'))) return;
     try {
       await api.post('/users/change-status', {
         profileId: id,
         userType: 'manager',
         status: 'inactive'
       });
+      setData(prev => prev.filter(item => item.id !== id));
+      setTotal(prev => Math.max(0, prev - 1));
       fetchManagers();
     } catch (err) {
       console.error('Delete failed:', err.message);

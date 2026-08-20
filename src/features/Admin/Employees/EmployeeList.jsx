@@ -16,7 +16,7 @@ const EmployeeList = () => {
   const [sortColumn, setSortColumn] = useState('full_name');
   const [sortOrder, setSortOrder] = useState('asc');
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('active');
   const [deptFilter, setDeptFilter] = useState('');
 
   // Tabs & Efficiency states
@@ -347,13 +347,15 @@ const EmployeeList = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this employee? This deactivates their portal access.'))) return;
+    if (!(await window.confirm('Are you sure you want to delete this employee?'))) return;
     try {
       await api.post('/users/change-status', {
         profileId: id,
         userType: 'employee',
         status: 'inactive'
       });
+      setData(prev => prev.filter(item => item.id !== id));
+      setTotal(prev => Math.max(0, prev - 1));
       fetchEmployees();
     } catch (err) {
       console.error('Delete failed:', err.message);
