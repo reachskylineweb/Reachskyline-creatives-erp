@@ -183,7 +183,11 @@ const ClientList = () => {
       let res;
       if (currentClient) {
         // Edit Mode
-        res = await api.put(`/clients/${currentClient.id}`, formData);
+        try {
+          res = await api.post(`/clients/${currentClient.id}/update`, formData);
+        } catch (_) {
+          res = await api.put(`/clients/${currentClient.id}`, formData);
+        }
       } else {
         // Create Mode
         res = await api.post('/clients', formData);

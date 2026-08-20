@@ -301,7 +301,11 @@ const EmployeeList = () => {
     try {
       let res;
       if (currentEmployee) {
-        res = await api.put(`/users/employees/${currentEmployee.id}`, formData);
+        try {
+          res = await api.post(`/users/employees/${currentEmployee.id}/update`, formData);
+        } catch (_) {
+          res = await api.put(`/users/employees/${currentEmployee.id}`, formData);
+        }
       } else {
         res = await api.post('/users/employees', formData);
       }

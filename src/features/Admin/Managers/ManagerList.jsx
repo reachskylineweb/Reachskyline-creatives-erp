@@ -255,7 +255,11 @@ const ManagerList = () => {
     try {
       let res;
       if (currentManager) {
-        res = await api.put(`/users/managers/${currentManager.id}`, formData);
+        try {
+          res = await api.post(`/users/managers/${currentManager.id}/update`, formData);
+        } catch (_) {
+          res = await api.put(`/users/managers/${currentManager.id}`, formData);
+        }
       } else {
         res = await api.post('/users/managers', formData);
       }
