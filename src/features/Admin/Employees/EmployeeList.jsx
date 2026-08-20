@@ -349,7 +349,11 @@ const EmployeeList = () => {
   const handleDelete = async (id) => {
     if (!(await window.confirm('Are you sure you want to permanently delete this employee from the database?'))) return;
     try {
-      await api.delete(`/users/employees/${id}`);
+      try {
+        await api.post(`/users/employees/${id}/delete`);
+      } catch (_) {
+        await api.delete(`/users/employees/${id}`);
+      }
       setData(prev => prev.filter(item => item.id !== id));
       setTotal(prev => Math.max(0, prev - 1));
       fetchEmployees();
