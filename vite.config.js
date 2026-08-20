@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   // Load environment variables from the current directory, loading all variables
   const env = loadEnv(mode, process.cwd(), '');
-  const backendUrl = env.VITE_API_URL || 'http://127.0.0.1:5050';
+  const backendUrl = env.VITE_API_URL || 'https://api.reachskyline.com';
 
   return {
     plugins: [react()],
