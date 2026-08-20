@@ -59,11 +59,55 @@ const AdminDashboard = () => {
   if (error) {
     return (
       <div className="page-container" style={{ padding: '30px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '20px', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-md)' }}>
-          <AlertCircle size={24} />
-          <div>
-            <h4 style={{ fontWeight: 700, margin: 0 }}>Connection Failure</h4>
-            <p style={{ fontSize: '14px', margin: '4px 0 0 0' }}>{error}</p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '24px', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <AlertCircle size={28} />
+            <div>
+              <h4 style={{ fontWeight: 700, margin: 0, fontSize: '16px' }}>Backend Database & API Connection Error</h4>
+              <p style={{ fontSize: '14px', margin: '4px 0 0 0', opacity: 0.9 }}>{error}</p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+            <button
+              onClick={() => fetchDashboardData()}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                backgroundColor: 'var(--danger)',
+                color: '#fff',
+                border: 'none',
+                borderRadius: '6px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              <RefreshCw size={16} /> Retry Connection
+            </button>
+            <button
+              onClick={() => {
+                localStorage.removeItem('erp_token');
+                localStorage.removeItem('erp_user');
+                window.location.href = '/login';
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                padding: '8px 16px',
+                backgroundColor: 'transparent',
+                color: 'var(--danger)',
+                border: '1px solid var(--danger)',
+                borderRadius: '6px',
+                fontWeight: 600,
+                cursor: 'pointer',
+                fontSize: '13px'
+              }}
+            >
+              Re-login to Renew Session
+            </button>
           </div>
         </div>
       </div>

@@ -349,7 +349,11 @@ const EmployeeList = () => {
   const handleDelete = async (id) => {
     if (!(await window.confirm('Are you sure you want to delete this employee? This deactivates their portal access.'))) return;
     try {
-      await api.delete(`/users/employees/${id}`);
+      await api.post('/users/change-status', {
+        profileId: id,
+        userType: 'employee',
+        status: 'inactive'
+      });
       fetchEmployees();
     } catch (err) {
       console.error('Delete failed:', err.message);

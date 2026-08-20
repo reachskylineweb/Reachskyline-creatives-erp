@@ -21,8 +21,8 @@ export const NotificationProvider = ({ children }) => {
         const unread = list.filter(n => !n.is_read).length;
         setUnreadCount(unread);
       }
-    } catch (err) {
-      console.error('Error fetching notifications:', err.message);
+    } catch (_) {
+      // Silently swallow polling errors so server 500s don't flood console
     }
   }, [isAuthenticated]);
 

@@ -15,46 +15,47 @@ export const AuthProvider = ({ children }) => {
   });
   const [loading, setLoading] = useState(false);
 
-  // Helper to initialize OneSignal Web Push
+  // Helper to initialize OneSignal Web Push safely
   const setupOneSignal = (loggedUser) => {
     if (!loggedUser) return;
 
-    window.OneSignalDeferred = window.OneSignalDeferred || [];
-    window.OneSignalDeferred.push(function(OneSignal) {
-      const registerSubscription = async () => {
-        try {
-          const subscriptionId = OneSignal.User?.PushSubscription?.id;
-          if (subscriptionId) {
-            await api.post('/notifications/subscribe', { subscriptionId });
-            console.log('[OneSignal] Subscription registered successfully:', subscriptionId);
-          }
-        } catch (err) {
-          console.error('[OneSignal] Subscription registration failed:', err.message);
-        }
-      };
+    try {
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(function(OneSignal) {
+        const registerSubscription = async () => {
+          try {
+            const subscriptionId = OneSignal.User?.PushSubscription?.id;
+            if (subscriptionId) {
+              await api.post('/notifications/subscribe', { subscriptionId }).catch(() => {});
+            }
+          } catch (_) {}
+        };
 
-      if (!window.__oneSignalInitialized) {
+        if (!window.__oneSignalInitialized) {
+          try {
+            OneSignal.init({
+              appId: "ca3c1c80-3492-4268-a200-3be5586be352",
+              allowLocalhostAsSecureOrigin: true,
+            }).catch((err) => {
+              console.warn('[OneSignal] Domain initialization deferred:', err?.message || err);
+            });
+            window.__oneSignalInitialized = true;
+          } catch (e) {
+            console.warn('[OneSignal] Init warning:', e.message);
+          }
+        }
+
+        registerSubscription();
+
         try {
-          OneSignal.init({
-            appId: "ca3c1c80-3492-4268-a200-3be5586be352",
-            allowLocalhostAsSecureOrigin: true,
+          OneSignal.User?.PushSubscription?.addEventListener("change", function(event) {
+            if (event?.current?.optedIn) {
+              registerSubscription();
+            }
           });
-          window.__oneSignalInitialized = true;
-        } catch (e) {
-          console.warn('[OneSignal] Init warning:', e.message);
-        }
-      }
-
-      registerSubscription();
-
-      try {
-        OneSignal.User?.PushSubscription?.addEventListener("change", function(event) {
-          if (event?.current?.optedIn) {
-            registerSubscription();
-          }
-        });
-      } catch (_) {}
-    });
+        } catch (_) {}
+      });
+    } catch (_) {}
   };
 
   // Initialize and check session in background on mount

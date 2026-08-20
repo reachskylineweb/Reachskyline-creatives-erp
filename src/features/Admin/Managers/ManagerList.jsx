@@ -303,7 +303,11 @@ const ManagerList = () => {
   const handleDelete = async (id) => {
     if (!(await window.confirm('Are you sure you want to delete this manager profile? This deactivates their authorization profile.'))) return;
     try {
-      await api.delete(`/users/managers/${id}`);
+      await api.post('/users/change-status', {
+        profileId: id,
+        userType: 'manager',
+        status: 'inactive'
+      });
       fetchManagers();
     } catch (err) {
       console.error('Delete failed:', err.message);
