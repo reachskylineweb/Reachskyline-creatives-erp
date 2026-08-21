@@ -710,15 +710,13 @@ const ManagerDailyTodo = () => {
         return;
       }
     } else if (isWriter) {
-      const hasStarted = !!job.writer_started_at || 
-                         !!job.content_link || 
-                         ['in_progress', 'submitted', 'completed', 'posted'].includes((job.status || '').toLowerCase());
+      const hasStarted = ['completed', 'posted'].includes((job.status || '').toLowerCase());
       if (hasStarted) {
-        alert("Work has already started. You cannot reassign this task to another content writer.");
+        alert("Work has already completed. You cannot reassign this task to another content writer.");
         return;
       }
     } else {
-      const isDesignerAssigned = job.assigned_employee_id && Number(job.employee_sub_dept_id) !== 3;
+      const isDesignerAssigned = job.assigned_employee_id && Number(job.assigned_employee_id) !== Number(job.content_writer_id);
       if (isDesignerAssigned) {
         const hasStarted = !!job.google_drive_link || 
                            ['sent_to_client', 'client_approved', 'posted', 'completed'].includes((job.status || '').toLowerCase());
@@ -2613,7 +2611,7 @@ const ManagerDailyTodo = () => {
                             </div>
                           ) : (
                             <button
-                              onClick={() => startAssigningJob(jw, 1)}
+                              onClick={() => startAssigningJob(jw, 3)}
                               className="btn btn-primary"
                               style={{ width: '100%', padding: '8px', fontSize: '13px', fontWeight: 700 }}
                             >
