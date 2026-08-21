@@ -1833,9 +1833,9 @@ const EmployeeAssignedWork = () => {
                               </span>
                             ) : (
                               <button
-                                className="btn btn-primary btn-sm"
                                 onClick={() => handleWriterSubmitLink(item)}
                                 disabled={submittingId === key || !hasLink}
+                                className="btn btn-primary btn-sm"
                                 style={{ padding: '6px 12px', fontWeight: 700 }}
                               >
                                 {submittingId === key ? 'Submitting...' : 'Submit Work'}
@@ -2265,14 +2265,13 @@ const EmployeeAssignedWork = () => {
                               </a>
                             </div>
                           ) : (
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                <input
                                  type="url"
-                                 placeholder={!item.started_at ? "Click Start to begin working..." : "Paste Google Drive / Design Link here..."}
+                                 placeholder="Paste Google Drive / Design Link here..."
                                  className="form-control"
                                  value={linkValue}
                                  onChange={(e) => handleDesignerLinkChange(key, e.target.value)}
-                                 disabled={!item.started_at}
                                  style={{ fontSize: '12px', padding: '6px 10px', margin: 0, flex: 1 }}
                                />
                                {hasLink && (
@@ -2293,23 +2292,6 @@ const EmployeeAssignedWork = () => {
  
                          {/* 8. Status Column */}
                          <td style={{ textAlign: 'center' }}>
-                           {item.started_at && !isCompleted && !isSubmitted && (
-                             <div style={{ marginBottom: '6px' }}>
-                               <span className="badge" style={{ 
-                                 backgroundColor: '#eff6ff', 
-                                 color: '#1d4ed8', 
-                                 border: '1px solid #bfdbfe', 
-                                 display: 'inline-flex', 
-                                 alignItems: 'center', 
-                                 gap: '4px', 
-                                 fontSize: '10px', 
-                                 textTransform: 'uppercase', 
-                                 fontWeight: 700
-                                }}>
-                                 ⏱️ Timing...
-                               </span>
-                             </div>
-                           )}
                            <span style={{ 
                              fontSize: '11px', 
                              fontWeight: 800, 
@@ -2335,15 +2317,6 @@ const EmployeeAssignedWork = () => {
                              <span style={{ fontSize: '12px', color: 'var(--success)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                <CheckCircle size={14} /> Sent
                              </span>
-                           ) : !item.started_at ? (
-                             <button
-                               onClick={() => handleStartDesignerWork(item)}
-                               disabled={submittingId === key}
-                               className="btn btn-secondary btn-sm"
-                               style={{ padding: '6px 12px', fontWeight: 700, color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                             >
-                               {submittingId === key ? 'Starting...' : 'Start'}
-                             </button>
                            ) : (
                              <button
                                onClick={() => handleSubmitDesignerWork(item)}
@@ -2351,7 +2324,7 @@ const EmployeeAssignedWork = () => {
                                className="btn btn-primary btn-sm"
                                style={{ padding: '6px 12px', fontWeight: 700 }}
                              >
-                               {submittingId === key ? 'Sending...' : 'Submit'}
+                               {submittingId === key ? 'Sending...' : 'Submit Work'}
                              </button>
                            )}
                          </td>
