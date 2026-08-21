@@ -72,19 +72,23 @@ const LoginCredentials = () => {
       key: 'role', 
       label: 'User Role',
       width: '120px',
-      render: (role) => (
-        <span style={{ 
-          fontSize: '11px', 
-          fontWeight: 800, 
-          textTransform: 'uppercase', 
-          padding: '4px 8px', 
-          backgroundColor: role === 'client' ? '#eff6ff' : role === 'manager' ? '#faf5ff' : '#f0fdf4',
-          color: role === 'client' ? '#1d4ed8' : role === 'manager' ? '#6b21a8' : '#166534',
-          borderRadius: '4px' 
-        }}>
-          {role}
-        </span>
-      )
+      render: (role, row) => {
+        const r = (role || row.user_type || 'client').toLowerCase();
+        const label = r === 'client' ? 'CLIENT' : r === 'manager' ? 'MANAGER' : 'EMPLOYEE';
+        return (
+          <span style={{ 
+            fontSize: '11px', 
+            fontWeight: 800, 
+            textTransform: 'uppercase', 
+            padding: '4px 8px', 
+            backgroundColor: r === 'client' ? '#eff6ff' : r === 'manager' ? '#faf5ff' : '#f0fdf4',
+            color: r === 'client' ? '#1d4ed8' : r === 'manager' ? '#6b21a8' : '#166534',
+            borderRadius: '4px' 
+          }}>
+            {label}
+          </span>
+        );
+      }
     },
     { 
       key: 'username', 
@@ -96,6 +100,7 @@ const LoginCredentials = () => {
       label: 'Password (Raw)',
       width: '280px',
       render: (pwd, row) => {
+        const rawPwd = pwd || row.password || row.raw_password || '';
         const isVisible = !!visiblePasswords[row.id];
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -111,7 +116,7 @@ const LoginCredentials = () => {
               minWidth: '140px',
               textAlign: 'center'
             }}>
-              {isVisible ? (pwd || 'No Password') : '••••••••'}
+              {isVisible ? (rawPwd || 'No Password') : '••••••••'}
             </span>
             <button 
               className="btn btn-secondary" 
@@ -121,10 +126,10 @@ const LoginCredentials = () => {
             >
               {isVisible ? <EyeOff size={14} /> : <Eye size={14} />}
             </button>
-            {pwd && (
+            {rawPwd && (
               <button 
                 className="btn btn-secondary"
-                onClick={() => handleCopyToClipboard(pwd, row.id)}
+                onClick={() => handleCopyToClipboard(rawPwd, row.id)}
                 style={{ padding: '4px 8px', minWidth: '0' }}
                 title="Copy password"
               >
