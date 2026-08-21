@@ -648,9 +648,16 @@ const ManagerDailyTodo = () => {
     if (!employeeId) return;
     setActionInProgress(jobId);
     try {
-      const res = await api.put(`/deliverables/job-work/${jobId}/assign`, {
-        employeeId: Number(employeeId)
-      });
+      let res;
+      try {
+        res = await api.post(`/deliverables/job-work/${jobId}/assign`, {
+          employeeId: Number(employeeId)
+        });
+      } catch (_) {
+        res = await api.put(`/deliverables/job-work/${jobId}/assign`, {
+          employeeId: Number(employeeId)
+        });
+      }
       if (res.data.success) {
         alert('Job Work assigned successfully.');
         setAssigningJobId(null);
@@ -895,7 +902,12 @@ const ManagerDailyTodo = () => {
   const handleSaveAssignment = async (item) => {
     if (!selectedDesigner) return;
     try {
-      const res = await api.put(`/deliverables/${item.id}/assign`, { employeeId: Number(selectedDesigner) });
+      let res;
+      try {
+        res = await api.post(`/deliverables/${item.id}/assign`, { employeeId: Number(selectedDesigner) });
+      } catch (_) {
+        res = await api.put(`/deliverables/${item.id}/assign`, { employeeId: Number(selectedDesigner) });
+      }
       if (res.data.success) {
         const empObj = employees.find(e => e.id === Number(selectedDesigner)) || {};
         const empName = empObj.full_name || 'employee';
@@ -950,7 +962,11 @@ const ManagerDailyTodo = () => {
     setLoading(true);
     try {
       await Promise.all(assignmentsToSubmit.map(async (assign) => {
-        await api.put(`/deliverables/${assign.itemId}/assign`, { employeeId: assign.employeeId });
+        try {
+          await api.post(`/deliverables/${assign.itemId}/assign`, { employeeId: assign.employeeId });
+        } catch (_) {
+          await api.put(`/deliverables/${assign.itemId}/assign`, { employeeId: assign.employeeId });
+        }
       }));
 
       setTodayItems(prev => prev.map(d => {
