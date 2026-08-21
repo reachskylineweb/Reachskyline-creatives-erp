@@ -574,9 +574,6 @@ const EmployeeList = () => {
             <h2>Employees Directory</h2>
             <span className="page-subtitle">Manage direct employees, reporting hierarchies, departments, and portal access</span>
           </div>
-          <button className="btn btn-primary" onClick={handleOpenCreate}>
-            <Plus size={18} /> Register New Employee
-          </button>
         </div>
       ) : (
         <div className="page-header">
