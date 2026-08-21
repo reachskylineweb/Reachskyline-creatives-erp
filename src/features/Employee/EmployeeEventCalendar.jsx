@@ -136,7 +136,8 @@ const EmployeeEventCalendar = () => {
 
   // Open Add Modal
   const handleOpenAdd = (dateStr = '') => {
-    if (hasApprovedEvents && !isAdmin) {
+    if (!canModify) return;
+    if (hasApprovedEvents) {
       setAlreadyApprovedModalOpen(true);
       return;
     }
@@ -154,7 +155,8 @@ const EmployeeEventCalendar = () => {
   // Open Edit Modal
   const handleOpenEdit = (event, e) => {
     if (e) e.stopPropagation();
-    if ((hasApprovedEvents || event.status === 'sent_to_employee') && !isAdmin) {
+    if (!canModify) return;
+    if (hasApprovedEvents || event.status === 'sent_to_employee') {
       setAlreadyApprovedModalOpen(true);
       return;
     }
