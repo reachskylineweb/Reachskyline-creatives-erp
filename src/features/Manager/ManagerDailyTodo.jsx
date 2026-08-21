@@ -973,26 +973,10 @@ const ManagerDailyTodo = () => {
   };
 
   const startAssigning = (item) => {
-    const requiresContent = [1, 2, 4].includes(Number(item.sub_department_id)) || ['AT001', 'AT002', 'AT003', 'AT004', 'AT005', 'AT006', 'AT008'].includes(item.activity_type_code);
-    if (requiresContent && !item.content_link) {
-      alert("The content script must be uploaded by the Content Writer before assigning to a Graphic Designer or Video Editor.");
-      return;
-    }
-
-    const isDesignerAssigned = item.assigned_employee_id && Number(item.employee_sub_dept_id) !== 1;
-    if (isDesignerAssigned) {
-      const hasDesignerStarted = !!item.designer_output || 
-                                 ['sent_to_client', 'client_approved', 'posted', 'completed'].includes((item.status || '').toLowerCase());
-      if (hasDesignerStarted) {
-        alert("Designer output has already been submitted or completed. You cannot reassign this task.");
-        return;
-      }
-    }
-
     setAssigningItemId(item.id);
     const actCode = (item.activity_type_code || '').toUpperCase();
     const isVideo = ['AT004', 'AT005', 'REELS', 'YT', 'YTS'].some(code => actCode.includes(code) || (item.deliverable || '').toLowerCase().includes('video') || (item.deliverable || '').toLowerCase().includes('reel'));
-    const reqSubDept = isVideo ? 3 : 2;
+    const reqSubDept = isVideo ? 2 : 1;
     let filtered = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 3);
     
     if (item.assigned_employee_id) {
