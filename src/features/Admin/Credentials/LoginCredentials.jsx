@@ -70,27 +70,45 @@ const LoginCredentials = () => {
     setResetModal(prev => ({ ...prev, loading: true, error: '' }));
     const user = resetModal.user;
     const userType = (user.role || user.user_type || 'client').toLowerCase();
-    const payload = {
-      profileId: user.id,
-      userId: user.user_id || user.id,
-      userType: userType === 'client' ? 'client' : userType === 'manager' ? 'manager' : 'employee',
-      newPassword: resetModal.newPassword,
-      password: resetModal.newPassword
-    };
+    const newPwd = resetModal.newPassword;
 
     try {
       let res;
-      try {
-        res = await api.post('/users/reset-password', payload);
-      } catch (e1) {
-        if (userType === 'client') {
-          res = await api.post(`/clients/${user.id}/update`, { password: resetModal.newPassword });
-        } else {
-          throw e1;
+      if (userType === 'client') {
+        try {
+          const clientRes = await api.get(`/clients/${user.id}`);
+          const clientData = clientRes.data?.data || clientRes.data || {};
+          const fullPayload = {
+            company_name: clientData.company_name || user.company_name || user.full_name || user.username,
+            client_name: clientData.client_name || user.client_name || user.full_name || user.username,
+            email: clientData.email || user.email || `${user.username}@client.com`,
+            phone: clientData.phone || user.phone || '0000000000',
+            industry: clientData.industry || user.industry || 'General',
+            start_date: clientData.start_date || user.start_date || new Date().toISOString().split('T')[0],
+            username: clientData.username || user.username,
+            password: newPwd
+          };
+          res = await api.post(`/clients/${user.id}/update`, fullPayload);
+        } catch (_) {
+          res = await api.post('/users/reset-password', {
+            profileId: user.id,
+            userId: user.user_id || user.id,
+            userType: 'client',
+            newPassword: newPwd,
+            password: newPwd
+          });
         }
+      } else {
+        res = await api.post('/users/reset-password', {
+          profileId: user.id,
+          userId: user.user_id || user.id,
+          userType: userType === 'manager' ? 'manager' : 'employee',
+          newPassword: newPwd,
+          password: newPwd
+        });
       }
 
-      if (res?.data?.success) {
+      if (res?.data?.success || res?.status === 200) {
         alert(`Password for ${user.username || user.full_name} updated successfully!`);
         setResetModal({ isOpen: false, user: null, newPassword: '', loading: false, error: '' });
         fetchCredentials();
