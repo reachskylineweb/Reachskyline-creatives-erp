@@ -679,35 +679,6 @@ const ManagerDailyTodo = () => {
   };
 
   const startAssigningJob = (job, forceRole = null) => {
-    const isSMM = managerProfile.department_code === 'SMM-RS';
-    const isWriter = forceRole === 3;
-    
-    if (isSMM) {
-      const hasStarted = !!job.started_at || 
-                         ['in_progress', 'submitted', 'sent_to_client', 'client_approved', 'client_rework', 'completed', 'posted'].includes((job.status || '').toLowerCase()) ||
-                         !!job.google_drive_link;
-      if (hasStarted) {
-        alert("Work has already started. You cannot reassign this task.");
-        return;
-      }
-    } else if (isWriter) {
-      const hasStarted = ['completed', 'posted'].includes((job.status || '').toLowerCase());
-      if (hasStarted) {
-        alert("Work has already completed. You cannot reassign this task to another content writer.");
-        return;
-      }
-    } else {
-      const isDesignerAssigned = job.assigned_employee_id && Number(job.assigned_employee_id) !== Number(job.content_writer_id);
-      if (isDesignerAssigned) {
-        const hasStarted = !!job.google_drive_link || 
-                           ['sent_to_client', 'client_approved', 'posted', 'completed'].includes((job.status || '').toLowerCase());
-        if (hasStarted) {
-          alert("Designer output has already been submitted or completed. You cannot reassign this task.");
-          return;
-        }
-      }
-    }
-
     setAssigningJobId(job.id);
     const reqSubDept = forceRole || (managerProfile.department_code === 'SMM-RS' ? 3 : job.sub_department_id);
     
