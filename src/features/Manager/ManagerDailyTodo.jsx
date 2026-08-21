@@ -1036,16 +1036,16 @@ const ManagerDailyTodo = () => {
     const actCode = (item.activity_type_code || '').toUpperCase();
     const isVideo = ['AT004', 'AT005', 'REELS', 'YT', 'YTS'].some(code => actCode.includes(code) || (item.deliverable || '').toLowerCase().includes('video') || (item.deliverable || '').toLowerCase().includes('reel'));
     const reqSubDept = isVideo ? 3 : 2;
-    let filtered = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 1);
+    let filtered = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 3);
     
     if (item.assigned_employee_id) {
       const currEmp = employees.find(e => e.id === item.assigned_employee_id);
-      if (currEmp && Number(currEmp.sub_department_id) !== 1 && !filtered.some(e => e.id === currEmp.id)) {
+      if (currEmp && Number(currEmp.sub_department_id) !== 3 && !filtered.some(e => e.id === currEmp.id)) {
         filtered = [...filtered, currEmp];
       }
     }
     
-    const isAssignedValid = filtered.some(emp => Number(emp.id) === Number(item.assigned_employee_id) && Number(emp.sub_department_id) !== 1);
+    const isAssignedValid = filtered.some(emp => Number(emp.id) === Number(item.assigned_employee_id) && Number(emp.sub_department_id) !== 3);
     if (isAssignedValid) {
       setSelectedDesigner(item.assigned_employee_id);
     } else if (filtered.length > 0) {
@@ -2021,10 +2021,10 @@ const ManagerDailyTodo = () => {
                             const actCode = (item.activity_type_code || '').toUpperCase();
                             const isVideo = ['AT004', 'AT005', 'REELS', 'YT', 'YTS'].some(code => actCode.includes(code) || (item.deliverable || '').toLowerCase().includes('video') || (item.deliverable || '').toLowerCase().includes('reel'));
                             const reqSubDept = isVideo ? 3 : 2;
-                            let filteredEmployees = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 1);
+                            let filteredEmployees = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 3);
                             if (item.assigned_employee_id) {
                               const currEmp = employees.find(e => e.id === item.assigned_employee_id);
-                              if (currEmp && Number(currEmp.sub_department_id) !== 1 && !filteredEmployees.some(e => e.id === currEmp.id)) {
+                              if (currEmp && Number(currEmp.sub_department_id) !== 3 && !filteredEmployees.some(e => e.id === currEmp.id)) {
                                 filteredEmployees = [...filteredEmployees, currEmp];
                               }
                             }
@@ -2582,7 +2582,7 @@ const ManagerDailyTodo = () => {
                                 }}
                               >
                                 <option value="">Select Writer</option>
-                                {employees.filter(e => Number(e.sub_department_id) === 1 || e.sub_department_code === 'CW-RS' || (e.sub_department_name || '').toLowerCase().includes('content')).map(emp => (
+                                {employees.filter(e => Number(e.sub_department_id) === 3 || e.sub_department_code === 'CW-RS' || (e.sub_department_name || '').toLowerCase().includes('content') || (e.sub_department_name || '').toLowerCase().includes('writer')).map(emp => (
                                   <option key={emp.id} value={emp.id}>{emp.full_name}</option>
                                 ))}
                               </select>
@@ -2643,7 +2643,7 @@ const ManagerDailyTodo = () => {
                                 }}
                               >
                                 <option value="">Select Designer / Video Editor</option>
-                                {employees.filter(e => [2, 3, 4].includes(Number(e.sub_department_id)) || ['GD-RS', 'VE-RS', 'CRD-RS'].includes(e.sub_department_code) || Number(e.sub_department_id) !== 1).map(emp => (
+                                {employees.filter(e => [1, 2, 4].includes(Number(e.sub_department_id)) || ['GD-RS', 'VE-RS', 'CRD-RS'].includes(e.sub_department_code) || (Number(e.sub_department_id) !== 3 && !e.sub_department_code?.includes('CW-RS'))).map(emp => (
                                   <option key={emp.id} value={emp.id}>{emp.full_name} ({emp.sub_department_name || 'Design/Video'})</option>
                                 ))}
                               </select>
