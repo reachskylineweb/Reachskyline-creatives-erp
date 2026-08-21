@@ -320,7 +320,12 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
 
     setLoading(true);
     try {
-      const res = await api.delete(`/calendar/month/${selectedMonth}`);
+      let res;
+      try {
+        res = await api.post(`/calendar/month/${selectedMonth}/delete`);
+      } catch (_) {
+        res = await api.delete(`/calendar/month/${selectedMonth}`);
+      }
       if (res.data.success) {
         setCalendarItems([]);
       }
@@ -480,7 +485,12 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
     }
     if (!(await window.confirm('Delete this scheduled item?'))) return;
     try {
-      const res = await api.delete(`/calendar/${id}`);
+      let res;
+      try {
+        res = await api.post(`/calendar/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/calendar/${id}`);
+      }
       if (res.data.success) {
         setIsEditModalOpen(false);
         fetchCalendar();

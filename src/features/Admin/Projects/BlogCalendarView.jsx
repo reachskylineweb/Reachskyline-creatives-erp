@@ -227,7 +227,12 @@ const BlogCalendarView = () => {
     }
     if (!(await window.confirm(`Are you sure you want to delete this SEO item: "${currentItem.title}"?`))) return;
     try {
-      const res = await api.delete(`/blog-calendar/${currentItem.id}`);
+      let res;
+      try {
+        res = await api.post(`/blog-calendar/${currentItem.id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/blog-calendar/${currentItem.id}`);
+      }
       if (res.data.success) {
         setIsEditModalOpen(false);
         setMessage({ type: 'success', text: 'SEO calendar item deleted.' });
@@ -241,7 +246,12 @@ const BlogCalendarView = () => {
   const handleClearMonth = async () => {
     if (!(await window.confirm(`WARNING: This will delete ALL draft SEO calendar items for the month of ${selectedMonth}. Are you sure?`))) return;
     try {
-      const res = await api.delete(`/blog-calendar/month/${selectedMonth}`);
+      let res;
+      try {
+        res = await api.post(`/blog-calendar/month/${selectedMonth}/delete`);
+      } catch (_) {
+        res = await api.delete(`/blog-calendar/month/${selectedMonth}`);
+      }
       if (res.data.success) {
         setMessage({ type: 'success', text: `Cleared draft SEO calendar items for ${selectedMonth}.` });
         fetchCalendar();
