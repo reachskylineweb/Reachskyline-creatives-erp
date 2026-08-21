@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, Key, ShieldCheck, Eye, EyeOff, Clipboard, Check, AlertCircle } from 'lucide-react';
+import { Search, ShieldCheck, Eye, EyeOff, Clipboard, Check, AlertCircle } from 'lucide-react';
 import api from '../../../utils/api';
 import Table from '../../../components/Table';
 
@@ -13,15 +13,6 @@ const LoginCredentials = () => {
   const [visiblePasswords, setVisiblePasswords] = useState({});
   // State to track copied cell indicators
   const [copiedId, setCopiedId] = useState(null);
-
-  // Reset Password Modal State
-  const [resetModal, setResetModal] = useState({
-    isOpen: false,
-    user: null,
-    newPassword: '',
-    loading: false,
-    error: ''
-  });
 
   const fetchCredentials = useCallback(async () => {
     setLoading(true);
@@ -49,73 +40,6 @@ const LoginCredentials = () => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 1500);
-  };
-
-  const handleOpenResetModal = (user) => {
-    setResetModal({
-      isOpen: true,
-      user,
-      newPassword: '',
-      loading: false,
-      error: ''
-    });
-  };
-
-  const handleResetSubmit = async (e) => {
-    e.preventDefault();
-    if (!resetModal.newPassword || resetModal.newPassword.length < 4) {
-      setResetModal(prev => ({ ...prev, error: 'Password must be at least 4 characters.' }));
-      return;
-    }
-    setResetModal(prev => ({ ...prev, loading: true, error: '' }));
-    const user = resetModal.user;
-    const userType = (user.role || user.user_type || 'client').toLowerCase();
-    const newPwd = resetModal.newPassword;
-
-    try {
-      let res;
-      if (userType === 'client') {
-        try {
-          const clientRes = await api.get(`/clients/${user.id}`);
-          const clientData = clientRes.data?.data || clientRes.data || {};
-          const fullPayload = {
-            company_name: clientData.company_name || user.company_name || user.full_name || user.username,
-            client_name: clientData.client_name || user.client_name || user.full_name || user.username,
-            email: clientData.email || user.email || `${user.username}@client.com`,
-            phone: clientData.phone || user.phone || '0000000000',
-            industry: clientData.industry || user.industry || 'General',
-            start_date: clientData.start_date || user.start_date || new Date().toISOString().split('T')[0],
-            username: clientData.username || user.username,
-            password: newPwd
-          };
-          res = await api.post(`/clients/${user.id}/update`, fullPayload);
-        } catch (_) {
-          res = await api.post('/users/reset-password', {
-            profileId: user.id,
-            userId: user.user_id || user.id,
-            userType: 'client',
-            newPassword: newPwd,
-            password: newPwd
-          });
-        }
-      } else {
-        res = await api.post('/users/reset-password', {
-          profileId: user.id,
-          userId: user.user_id || user.id,
-          userType: userType === 'manager' ? 'manager' : 'employee',
-          newPassword: newPwd,
-          password: newPwd
-        });
-      }
-
-      if (res?.data?.success || res?.status === 200) {
-        alert(`Password for ${user.username || user.full_name} updated successfully!`);
-        setResetModal({ isOpen: false, user: null, newPassword: '', loading: false, error: '' });
-        fetchCredentials();
-      }
-    } catch (err) {
-      setResetModal(prev => ({ ...prev, loading: false, error: err.response?.data?.message || 'Failed to reset password.' }));
-    }
   };
 
   const filteredCredentials = credentials.filter(cred => {
@@ -213,14 +137,6 @@ const LoginCredentials = () => {
                 {copiedId === row.id ? <Check size={14} className="text-success" /> : <Clipboard size={14} />}
               </button>
             )}
-            <button 
-              className="btn btn-primary"
-              onClick={() => handleOpenResetModal(row)}
-              style={{ padding: '4px 8px', minWidth: '0', fontSize: '11px' }}
-              title="Set / Reset Password"
-            >
-              <Key size={13} style={{ marginRight: '4px' }} /> Set Password
-            </button>
           </div>
         );
       }
@@ -302,83 +218,6 @@ const LoginCredentials = () => {
         )}
       </div>
 
-      {/* Reset Password Modal */}
-      {resetModal.isOpen && resetModal.user && (
-        <div style={{
-          position: 'fixed',
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundColor: 'rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          zIndex: 9999
-        }}>
-          <div style={{
-            backgroundColor: '#fff',
-            borderRadius: '8px',
-            padding: '24px',
-            width: '400px',
-            maxWidth: '90%',
-            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
-          }}>
-            <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 700 }}>
-              Set / Change Password
-            </h3>
-            <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: 'var(--text-muted)' }}>
-              Set a new login password for <strong>{resetModal.user.username || resetModal.user.full_name}</strong> ({resetModal.user.role?.toUpperCase()}).
-            </p>
-
-            {resetModal.error && (
-              <div style={{
-                padding: '10px 12px',
-                backgroundColor: '#fef2f2',
-                border: '1px solid #fca5a5',
-                color: '#dc2626',
-                borderRadius: '6px',
-                fontSize: '13px',
-                marginBottom: '16px'
-              }}>
-                {resetModal.error}
-              </div>
-            )}
-
-            <form onSubmit={handleResetSubmit}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px' }}>
-                  New Password
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="Enter new password (e.g. gem123)"
-                  value={resetModal.newPassword}
-                  onChange={(e) => setResetModal(prev => ({ ...prev, newPassword: e.target.value }))}
-                  required
-                  autoFocus
-                />
-              </div>
-
-              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
-                <button
-                  type="button"
-                  className="btn btn-light"
-                  onClick={() => setResetModal({ isOpen: false, user: null, newPassword: '', loading: false, error: '' })}
-                  disabled={resetModal.loading}
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="btn btn-primary"
-                  disabled={resetModal.loading}
-                >
-                  {resetModal.loading ? 'Saving...' : 'Save Password'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
