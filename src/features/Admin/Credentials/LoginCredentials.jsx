@@ -17,10 +17,45 @@ const LoginCredentials = () => {
   const fetchCredentials = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await api.get('/users/credentials');
-      if (res.data.success) {
-        setCredentials(res.data.data.credentials || []);
+      const [resUsers, resClients] = await Promise.all([
+        api.get('/users/credentials').catch(() => ({ data: { success: false, data: [] } })),
+        api.get('/clients?limit=100').catch(() => ({ data: { success: false, data: [] } }))
+      ]);
+
+      let userCreds = resUsers.data?.data?.credentials || resUsers.data?.credentials || resUsers.data?.data || [];
+      if (!Array.isArray(userCreds)) userCreds = [];
+
+      const clientsList = resClients.data?.data?.clients || resClients.data?.data || resClients.data?.clients || [];
+
+      // Create a lookup map for client passwords
+      const clientPasswordMap = {};
+      if (Array.isArray(clientsList)) {
+        clientsList.forEach(c => {
+          const clientPwd = c.plain_password || c.raw_password || c.password;
+          if (clientPwd) {
+            if (c.username) clientPasswordMap[c.username.toLowerCase()] = clientPwd;
+            if (c.email) clientPasswordMap[c.email.toLowerCase()] = clientPwd;
+            if (c.id) clientPasswordMap[`id_${c.id}`] = clientPwd;
+          }
+        });
       }
+
+      // Merge client passwords into credentials list
+      const updatedCreds = userCreds.map(cred => {
+        const role = (cred.role || cred.user_type || '').toLowerCase();
+        if (role === 'client') {
+          const pwdFromMap = (cred.username && clientPasswordMap[cred.username.toLowerCase()]) ||
+                             (cred.email && clientPasswordMap[cred.email.toLowerCase()]) ||
+                             clientPasswordMap[`id_${cred.id}`] ||
+                             clientPasswordMap[`id_${cred.profile_id}`];
+          if (pwdFromMap && !cred.plain_password && !cred.raw_password) {
+            return { ...cred, plain_password: pwdFromMap, raw_password: pwdFromMap };
+          }
+        }
+        return cred;
+      });
+
+      setCredentials(updatedCreds);
     } catch (err) {
       console.error('Error fetching login credentials:', err.message);
     } finally {
@@ -100,7 +135,7 @@ const LoginCredentials = () => {
       label: 'Password (Raw)',
       width: '320px',
       render: (pwd, row) => {
-        const rawPwd = pwd || row.password || row.raw_password || '';
+        const rawPwd = pwd || row.password || row.raw_password || row.plain_password || row.client_password || '';
         const isVisible = !!visiblePasswords[row.id];
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
