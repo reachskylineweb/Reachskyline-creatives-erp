@@ -156,7 +156,7 @@ const LoginCredentials = () => {
             System Login Credentials
           </h1>
           <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
-            View and manage portal login accounts for Managers, Employees, HR, and Clients.
+            View and manage portal login accounts for Managers, Employees, and Clients.
           </p>
         </div>
       </div>
@@ -184,7 +184,6 @@ const LoginCredentials = () => {
           <option value="">All Roles</option>
           <option value="manager">Managers</option>
           <option value="employee">Employees</option>
-          <option value="hr">HR Staff</option>
           <option value="client">Clients</option>
         </select>
       </div>
