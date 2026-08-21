@@ -128,7 +128,11 @@ const DepartmentList = () => {
       };
 
       if (currentDept) {
-        res = await api.put(`/departments/${currentDept.id}`, payload);
+        try {
+          res = await api.post(`/departments/${currentDept.id}/update`, payload);
+        } catch (_) {
+          res = await api.put(`/departments/${currentDept.id}`, payload);
+        }
       } else {
         res = await api.post('/departments', payload);
       }
@@ -146,7 +150,12 @@ const DepartmentList = () => {
   const handleDelete = async (id) => {
     if (!(await window.confirm('Delete department? Note: This may impact employees and projects assigned to it.'))) return;
     try {
-      await api.delete(`/departments/${id}`);
+      let res;
+      try {
+        res = await api.post(`/departments/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/departments/${id}`);
+      }
       fetchDepartments();
       setSelectedIds(prev => prev.filter(item => item !== id));
     } catch (err) {
