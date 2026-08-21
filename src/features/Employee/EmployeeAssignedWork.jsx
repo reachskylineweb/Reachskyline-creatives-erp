@@ -9,7 +9,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useLocation } from 'react-router-dom';
 
 const ensureExternalLink = (url) => {
-  if (!url) return '';
+  if (!url || typeof url !== 'string' || !url.trim()) return '#';
   const trimmed = url.trim();
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
     return trimmed;
@@ -1777,9 +1777,16 @@ const EmployeeAssignedWork = () => {
                             {isCompleted || isSubmitted ? (
                               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                                 <a 
-                                  href={ensureExternalLink(item.isJobWork ? item.google_drive_link : item.work_link)} 
+                                  href={ensureExternalLink(item.work_link || item.content_link || item.google_drive_link || item.drive_link)} 
                                   target="_blank" 
-                                  rel="noreferrer" 
+                                  rel="noopener noreferrer" 
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const link = ensureExternalLink(item.work_link || item.content_link || item.google_drive_link || item.drive_link);
+                                    if (link && link !== '#') {
+                                      window.open(link, '_blank');
+                                    }
+                                  }}
                                   style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontWeight: 700, fontSize: '12px' }}
                                 >
                                   Open Submitted Work Link <ExternalLink size={12} />
@@ -2258,14 +2265,21 @@ const EmployeeAssignedWork = () => {
                         <td>
                           {isCompleted || isSubmitted ? (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <a 
-                                href={ensureExternalLink(item.isJobWork ? item.google_drive_link : item.designer_output || item.google_drive_link)} 
-                                target="_blank" 
-                                rel="noreferrer" 
-                                style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontWeight: 700, fontSize: '12px' }}
-                              >
-                                Open Submitted Design <ExternalLink size={12} />
-                              </a>
+                               <a 
+                                 href={ensureExternalLink(item.google_drive_link || item.designer_output || item.work_link || item.content_link)} 
+                                 target="_blank" 
+                                 rel="noopener noreferrer" 
+                                 onClick={(e) => {
+                                   e.stopPropagation();
+                                   const link = ensureExternalLink(item.google_drive_link || item.designer_output || item.work_link || item.content_link);
+                                   if (link && link !== '#') {
+                                     window.open(link, '_blank');
+                                   }
+                                 }}
+                                 style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: 'var(--primary)', fontWeight: 700, fontSize: '12px' }}
+                               >
+                                 Open Submitted Design <ExternalLink size={12} />
+                               </a>
                             </div>
                           ) : (
                             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
