@@ -628,10 +628,13 @@ const ManagerDailyTodo = () => {
   const handleSaveJobAssignment = async (jobId, employeeId) => {
     if (!employeeId) return;
     setActionInProgress(jobId);
+    const empNum = Number(employeeId);
     const payload = {
-      employeeId: Number(employeeId),
-      assigned_employee_id: Number(employeeId),
-      employee_id: Number(employeeId),
+      employeeId: empNum,
+      assigned_employee_id: empNum,
+      employee_id: empNum,
+      isJobWork: true,
+      is_job_work: true,
       feedbackText: null,
       voiceBase64: null
     };
@@ -639,11 +642,15 @@ const ManagerDailyTodo = () => {
       let res;
       try {
         res = await api.post(`/deliverables/job-work/${jobId}/assign`, payload);
-      } catch (err1) {
+      } catch (e1) {
         try {
-          res = await api.put(`/deliverables/job-work/${jobId}/assign`, payload);
-        } catch (_) {
-          throw err1;
+          res = await api.post(`/deliverables/${jobId}/assign`, payload);
+        } catch (e2) {
+          try {
+            res = await api.put(`/deliverables/${jobId}/assign`, payload);
+          } catch (_) {
+            throw e1;
+          }
         }
       }
       if (res?.data?.success) {
