@@ -130,14 +130,14 @@ export const AuthProvider = ({ children }) => {
     try {
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function(OneSignal) {
-        const subscriptionId = OneSignal.User?.PushSubscription?.id;
-        if (subscriptionId) {
-          await api.post('/notifications/unsubscribe', { subscriptionId });
-        }
+        try {
+          const subscriptionId = OneSignal.User?.PushSubscription?.id;
+          if (subscriptionId) {
+            await api.post('/notifications/unsubscribe', { subscriptionId }).catch(() => {});
+          }
+        } catch (_) {}
       });
-    } catch (e) {
-      console.error('[OneSignal] Unsubscribe failed on logout:', e.message);
-    }
+    } catch (_) {}
 
     localStorage.removeItem('erp_token');
     localStorage.removeItem('erp_user');
