@@ -822,7 +822,7 @@ const EmployeeEventCalendar = () => {
           onClose={() => setIsModalOpen(false)}
           title={modalType === 'add' ? 'Add Event Day' : 'Edit Event Day'}
         >
-          <form onSubmit={handleFormSubmit} style={{ padding: '16px' }}>
+          <form onSubmit={handleSaveEvent} style={{ padding: '16px' }}>
             {formError && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: 'var(--danger)', borderRadius: '4px', marginBottom: '16px', fontSize: '13px' }}>
                 <AlertCircle size={16} />
