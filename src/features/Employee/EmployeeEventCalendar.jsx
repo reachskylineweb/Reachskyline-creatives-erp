@@ -64,7 +64,7 @@ const EmployeeEventCalendar = () => {
 
   const [events, setEvents] = useState([]);
   const hasApprovedEvents = Array.isArray(events) && events.some(e => e.status === 'sent_to_employee');
-  const canModify = (isManager || isContentWriter || isAdmin) && !isLocked && !(isManager && hasApprovedEvents);
+  const canModify = (isManager || isContentWriter) && !isAdmin && !isLocked && !(isManager && hasApprovedEvents);
   const [loading, setLoading] = useState(false);
   
   // Modal states
@@ -579,8 +579,8 @@ const EmployeeEventCalendar = () => {
         </div>
 
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          {/* Add Event (Admin/SuperAdmin) */}
-          {isAdmin && (
+          {/* Add Event (Content Writer / Manager only) */}
+          {canModify && (
             <button 
               className="btn btn-primary" 
               onClick={() => handleOpenAdd()}
