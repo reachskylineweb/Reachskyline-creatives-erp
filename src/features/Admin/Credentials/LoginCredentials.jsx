@@ -19,7 +19,7 @@ const LoginCredentials = () => {
     try {
       const [resUsers, resClients] = await Promise.all([
         api.get('/users/credentials').catch(() => ({ data: { success: false, data: [] } })),
-        api.get('/clients?limit=100').catch(() => ({ data: { success: false, data: [] } }))
+        api.get('/clients?limit=500').catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       let userCreds = resUsers.data?.data?.credentials || resUsers.data?.credentials || resUsers.data?.data || [];
