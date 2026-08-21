@@ -647,18 +647,25 @@ const ManagerDailyTodo = () => {
   const handleSaveJobAssignment = async (jobId, employeeId) => {
     if (!employeeId) return;
     setActionInProgress(jobId);
+    const payload = {
+      employeeId: Number(employeeId),
+      assigned_employee_id: Number(employeeId),
+      employee_id: Number(employeeId),
+      feedbackText: null,
+      voiceBase64: null
+    };
     try {
       let res;
       try {
-        res = await api.post(`/deliverables/job-work/${jobId}/assign`, {
-          employeeId: Number(employeeId)
-        });
-      } catch (_) {
-        res = await api.put(`/deliverables/job-work/${jobId}/assign`, {
-          employeeId: Number(employeeId)
-        });
+        res = await api.post(`/deliverables/job-work/${jobId}/assign`, payload);
+      } catch (err1) {
+        try {
+          res = await api.put(`/deliverables/job-work/${jobId}/assign`, payload);
+        } catch (_) {
+          throw err1;
+        }
       }
-      if (res.data.success) {
+      if (res?.data?.success) {
         alert('Job Work assigned successfully.');
         setAssigningJobId(null);
         setSelectedJobEmployee('');
