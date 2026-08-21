@@ -201,15 +201,6 @@ const WritersAssignment = () => {
 
   // Click on Designer / Writer Cell
   const handleWriterCellClick = (item) => {
-    if (item.assigned_employee_id) {
-      const hasStarted = item.started_at !== null || 
-                         item.work_link !== null || 
-                         item.submission_status !== 'pending';
-      if (hasStarted) {
-        alert("Work has already started. You cannot reassign this task to another content writer.");
-        return;
-      }
-    }
     setSingleItem(item);
     setSelectedWriterId(item.assigned_employee_id || '');
     setFormError('');
