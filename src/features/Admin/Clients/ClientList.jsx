@@ -188,38 +188,9 @@ const ClientList = () => {
         } catch (_) {
           res = await api.put(`/clients/${currentClient.id}`, formData);
         }
-
-        // Sync password to users table if provided
-        if (formData.password?.trim()) {
-          try {
-            await api.post('/users/reset-password', {
-              profileId: currentClient.id,
-              userType: 'client',
-              newPassword: formData.password.trim(),
-              password: formData.password.trim()
-            });
-          } catch (pwdErr) {
-            console.error('Password reset sync error:', pwdErr.message);
-          }
-        }
       } else {
         // Create Mode
         res = await api.post('/clients', formData);
-
-        // Sync password for newly created client
-        if (res.data?.success && formData.password?.trim()) {
-          const newClientId = res.data?.data?.id || res.data?.id;
-          if (newClientId) {
-            try {
-              await api.post('/users/reset-password', {
-                profileId: newClientId,
-                userType: 'client',
-                newPassword: formData.password.trim(),
-                password: formData.password.trim()
-              });
-            } catch (_) {}
-          }
-        }
       }
 
       if (res.data.success) {
