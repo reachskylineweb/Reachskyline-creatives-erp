@@ -213,7 +213,12 @@ const ClientList = () => {
   const handleDelete = async (id) => {
     if (!(await window.confirm('Are you sure you want to permanently delete this client profile from the database?'))) return;
     try {
-      await api.delete(`/clients/${id}`);
+      let res;
+      try {
+        res = await api.post(`/clients/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/clients/${id}`);
+      }
       fetchClients();
       setSelectedIds(prev => prev.filter(item => item !== id));
     } catch (err) {
