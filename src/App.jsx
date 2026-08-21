@@ -8,57 +8,76 @@ import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import ErrorBoundary from './components/ErrorBoundary';
 
+const safeLazy = (importFn) => lazy(() => 
+  importFn().catch(error => {
+    const isChunkError = error && (
+      error.name === 'ChunkLoadError' ||
+      error.message?.includes('Failed to fetch dynamically imported module') ||
+      error.message?.includes('Importing a module script failed') ||
+      error.message?.includes('dynamically imported module')
+    );
+    if (isChunkError) {
+      const hasReloaded = sessionStorage.getItem('chunk_reload_attempted');
+      if (!hasReloaded) {
+        sessionStorage.setItem('chunk_reload_attempted', 'true');
+        window.location.reload();
+      }
+    }
+    throw error;
+  })
+);
+
 // Lazy Loaded Pages
-const Login = lazy(() => import('./features/Admin/Login/Login'));
-const AdminDashboard = lazy(() => import('./features/Admin/Dashboard/AdminDashboard'));
-const ClientList = lazy(() => import('./features/Admin/Clients/ClientList'));
-const DepartmentList = lazy(() => import('./features/Admin/Departments/DepartmentList'));
-const ManagerList = lazy(() => import('./features/Admin/Managers/ManagerList'));
-const EmployeeList = lazy(() => import('./features/Admin/Employees/EmployeeList'));
-const ProjectList = lazy(() => import('./features/Admin/Projects/ProjectList'));
-const DeliverableList = lazy(() => import('./features/Admin/Deliverables/DeliverableList'));
-const ReportDashboard = lazy(() => import('./features/Admin/Reports/ReportDashboard'));
-const SuperadminReports = lazy(() => import('./features/Admin/Reports/SuperadminReports'));
-const ActivityTypeList = lazy(() => import('./features/Admin/ActivityTypes/ActivityTypeList'));
-const LoginCredentials = lazy(() => import('./features/Admin/Credentials/LoginCredentials'));
-const WorkUpdates = lazy(() => import('./features/Admin/WorkUpdates/WorkUpdates'));
-const ClientPortal = lazy(() => import('./features/Client/ClientPortal'));
+const Login = safeLazy(() => import('./features/Admin/Login/Login'));
+const AdminDashboard = safeLazy(() => import('./features/Admin/Dashboard/AdminDashboard'));
+const ClientList = safeLazy(() => import('./features/Admin/Clients/ClientList'));
+const DepartmentList = safeLazy(() => import('./features/Admin/Departments/DepartmentList'));
+const ManagerList = safeLazy(() => import('./features/Admin/Managers/ManagerList'));
+const EmployeeList = safeLazy(() => import('./features/Admin/Employees/EmployeeList'));
+const ProjectList = safeLazy(() => import('./features/Admin/Projects/ProjectList'));
+const DeliverableList = safeLazy(() => import('./features/Admin/Deliverables/DeliverableList'));
+const ReportDashboard = safeLazy(() => import('./features/Admin/Reports/ReportDashboard'));
+const SuperadminReports = safeLazy(() => import('./features/Admin/Reports/SuperadminReports'));
+const ActivityTypeList = safeLazy(() => import('./features/Admin/ActivityTypes/ActivityTypeList'));
+const LoginCredentials = safeLazy(() => import('./features/Admin/Credentials/LoginCredentials'));
+const WorkUpdates = safeLazy(() => import('./features/Admin/WorkUpdates/WorkUpdates'));
+const ClientPortal = safeLazy(() => import('./features/Client/ClientPortal'));
 
 // Manager features
-const ManagerDashboard = lazy(() => import('./features/Manager/ManagerDashboard'));
-const ManagerCalendar = lazy(() => import('./features/Manager/ManagerCalendar'));
-const ManagerDailyTodo = lazy(() => import('./features/Manager/ManagerDailyTodo'));
-const DesignerWorkload = lazy(() => import('./features/Manager/DesignerWorkload'));
-const CompletedWorks = lazy(() => import('./features/Manager/CompletedWorks'));
-const ManagerSubmissionsReview = lazy(() => import('./features/Manager/ManagerSubmissionsReview'));
-const ManagerClientRework = lazy(() => import('./features/Manager/ManagerClientRework'));
-const ManagerJobWorks = lazy(() => import('./features/Manager/ManagerJobWorks'));
-const ManagerSubDepartmentList = lazy(() => import('./features/Manager/ManagerSubDepartmentList'));
-const ManagerEmployeeList = lazy(() => import('./features/Manager/ManagerEmployeeList'));
-const ManagerEfficiency = lazy(() => import('./features/Manager/ManagerEfficiency'));
-const SMMTodayPosting = lazy(() => import('./features/Manager/SMMTodayPosting'));
-const SMMMonthlyPosting = lazy(() => import('./features/Manager/SMMMonthlyPosting'));
-const SMMPosted = lazy(() => import('./features/Manager/SMMPosted'));
-const WritersAssignment = lazy(() => import('./features/Manager/WritersAssignment'));
+const ManagerDashboard = safeLazy(() => import('./features/Manager/ManagerDashboard'));
+const ManagerCalendar = safeLazy(() => import('./features/Manager/ManagerCalendar'));
+const ManagerDailyTodo = safeLazy(() => import('./features/Manager/ManagerDailyTodo'));
+const DesignerWorkload = safeLazy(() => import('./features/Manager/DesignerWorkload'));
+const CompletedWorks = safeLazy(() => import('./features/Manager/CompletedWorks'));
+const ManagerSubmissionsReview = safeLazy(() => import('./features/Manager/ManagerSubmissionsReview'));
+const ManagerClientRework = safeLazy(() => import('./features/Manager/ManagerClientRework'));
+const ManagerJobWorks = safeLazy(() => import('./features/Manager/ManagerJobWorks'));
+const ManagerSubDepartmentList = safeLazy(() => import('./features/Manager/ManagerSubDepartmentList'));
+const ManagerEmployeeList = safeLazy(() => import('./features/Manager/ManagerEmployeeList'));
+const ManagerEfficiency = safeLazy(() => import('./features/Manager/ManagerEfficiency'));
+const SMMTodayPosting = safeLazy(() => import('./features/Manager/SMMTodayPosting'));
+const SMMMonthlyPosting = safeLazy(() => import('./features/Manager/SMMMonthlyPosting'));
+const SMMPosted = safeLazy(() => import('./features/Manager/SMMPosted'));
+const WritersAssignment = safeLazy(() => import('./features/Manager/WritersAssignment'));
 
 // Employee features
-const EmployeeDashboard = lazy(() => import('./features/Employee/EmployeeDashboard'));
-const EmployeeCalendar = lazy(() => import('./features/Employee/EmployeeCalendar'));
-const EmployeeEventCalendar = lazy(() => import('./features/Employee/EmployeeEventCalendar'));
-const EmployeeAssignedWork = lazy(() => import('./features/Employee/EmployeeAssignedWork'));
-const EmployeeReassignedWork = lazy(() => import('./features/Employee/EmployeeReassignedWork'));
-const EmployeeApprovedWork = lazy(() => import('./features/Employee/EmployeeApprovedWork'));
-const EmployeeTodayDeliverables = lazy(() => import('./features/Employee/EmployeeTodayDeliverables'));
-const EmployeeRework = lazy(() => import('./features/Employee/EmployeeRework'));
-const EmployeeOverallWork = lazy(() => import('./features/Employee/EmployeeOverallWork'));
+const EmployeeDashboard = safeLazy(() => import('./features/Employee/EmployeeDashboard'));
+const EmployeeCalendar = safeLazy(() => import('./features/Employee/EmployeeCalendar'));
+const EmployeeEventCalendar = safeLazy(() => import('./features/Employee/EmployeeEventCalendar'));
+const EmployeeAssignedWork = safeLazy(() => import('./features/Employee/EmployeeAssignedWork'));
+const EmployeeReassignedWork = safeLazy(() => import('./features/Employee/EmployeeReassignedWork'));
+const EmployeeApprovedWork = safeLazy(() => import('./features/Employee/EmployeeApprovedWork'));
+const EmployeeTodayDeliverables = safeLazy(() => import('./features/Employee/EmployeeTodayDeliverables'));
+const EmployeeRework = safeLazy(() => import('./features/Employee/EmployeeRework'));
+const EmployeeOverallWork = safeLazy(() => import('./features/Employee/EmployeeOverallWork'));
 
 // SuperAdmin features
-const SuperAdminDashboard = lazy(() => import('./features/SuperAdmin/SuperAdminDashboard'));
-const SuperAdminClients = lazy(() => import('./features/SuperAdmin/SuperAdminClients'));
-const SuperAdminEfficiency = lazy(() => import('./features/SuperAdmin/SuperAdminEfficiency'));
-const SuperAdminBranches = lazy(() => import('./features/SuperAdmin/SuperAdminBranches'));
-const SuperAdminBranchDetail = lazy(() => import('./features/SuperAdmin/SuperAdminBranchDetail'));
-const SuperAdminProfile = lazy(() => import('./features/SuperAdmin/SuperAdminProfile'));
+const SuperAdminDashboard = safeLazy(() => import('./features/SuperAdmin/SuperAdminDashboard'));
+const SuperAdminClients = safeLazy(() => import('./features/SuperAdmin/SuperAdminClients'));
+const SuperAdminEfficiency = safeLazy(() => import('./features/SuperAdmin/SuperAdminEfficiency'));
+const SuperAdminBranches = safeLazy(() => import('./features/SuperAdmin/SuperAdminBranches'));
+const SuperAdminBranchDetail = safeLazy(() => import('./features/SuperAdmin/SuperAdminBranchDetail'));
+const SuperAdminProfile = safeLazy(() => import('./features/SuperAdmin/SuperAdminProfile'));
 
 const PageLoader = () => (
   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '60vh', color: 'var(--text-muted)' }}>
