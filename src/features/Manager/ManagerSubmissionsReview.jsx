@@ -342,8 +342,8 @@ const ManagerSubmissionsReview = () => {
       }
       if (empsRes.data.success) {
         const list = empsRes.data.data || [];
-        // Filter to only content writers (sub_department_id = 1)
-        const writers = list.filter(emp => Number(emp.sub_department_id) === 1);
+        // Filter to only content writers (sub_department_id = 3)
+        const writers = list.filter(emp => Number(emp.sub_department_id) === 3 || emp.sub_department_code === 'CW-RS' || (emp.sub_department_name || '').toLowerCase().includes('content'));
         setContentWriters(writers);
       }
     } catch (err) {

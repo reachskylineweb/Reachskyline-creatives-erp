@@ -166,7 +166,7 @@ const ManagerEfficiency = ({ isTab }) => {
   const workloadData = efficiencyData.map(emp => {
     const empId = Number(emp.id);
 
-    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
+    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 3 || (emp.sub_department_name || '').toLowerCase().includes('content');
     // Deliverables filter: only include assigned/dispatched deliverables (status != 'pending')
     const empDeliverables = deliverables.filter(d => Number(d.assigned_employee_id) === empId && (isWriter || d.status !== 'pending'));
     // Job Works filter

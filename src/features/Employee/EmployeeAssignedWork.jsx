@@ -71,9 +71,12 @@ const EVENT_TYPES = {
 const EmployeeAssignedWork = () => {
   const { user } = useAuth();
   const location = useLocation();
-  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 1 || 
+  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 3 || 
+                          Number(user?.sub_department_id) === 3 ||
                           user?.employeeProfile?.sub_department_code === 'CW-RS' ||
+                          user?.sub_department_code === 'CW-RS' ||
                           (user?.employeeProfile?.sub_department_name || '').toLowerCase().includes('content') ||
+                          (user?.sub_department_name || '').toLowerCase().includes('content') ||
                           (user?.employeeProfile?.full_name || '').toLowerCase().includes('writer') ||
                           (user?.username || '').toLowerCase().includes('writer');
   const isSEO = false; // user?.employeeProfile?.department_code === 'SEO-RS';
