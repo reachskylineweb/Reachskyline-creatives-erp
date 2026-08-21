@@ -171,29 +171,31 @@ const EmployeeEventCalendar = () => {
   };
 
   // Delete Event
-  const handleDeleteEvent = async (id, e) => {
-    if (e) e.stopPropagation();
-    if (hasApprovedEvents && !isAdmin) {
-      setAlreadyApprovedModalOpen(true);
-      return;
-    }
+  const handleDeleteEvent = async (id) => {
     if (!(await window.confirm('Are you sure you want to delete this event day?'))) return;
     try {
-      const res = await api.delete(`/event-days/${id}`);
+      let res;
+      try {
+        res = await api.post(`/event-days/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/event-days/${id}`);
+      }
       if (res.data.success) {
         fetchEvents();
       }
     } catch (err) {
-      console.error('Failed to delete event:', err.message);
-      alert('Failed to delete event.');
+      console.error('Error deleting event day:', err.message);
+      alert(err.response?.data?.message || 'Failed to delete event day.');
     }
   };
 
-  // Submit Add/Edit Form
-  const handleFormSubmit = async (e) => {
+  // Create / Update Event
+  const handleSaveEvent = async (e) => {
     e.preventDefault();
+    setFormError('');
+
     if (!formData.title.trim()) {
-      setFormError('Title is required.');
+      setFormError('Event Title is required.');
       return;
     }
     if (!formData.date) {
@@ -222,7 +224,12 @@ const EmployeeEventCalendar = () => {
           description: formData.description,
           event_type: formData.event_type
         };
-        const res = await api.put(`/event-days/${selectedEvent.id}`, payload);
+        let res;
+        try {
+          res = await api.post(`/event-days/${selectedEvent.id}/update`, payload);
+        } catch (_) {
+          res = await api.put(`/event-days/${selectedEvent.id}`, payload);
+        }
         if (res.data.success) {
           setIsModalOpen(false);
           fetchEvents();
