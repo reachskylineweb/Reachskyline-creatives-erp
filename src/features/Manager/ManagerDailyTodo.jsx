@@ -180,7 +180,7 @@ const ManagerDailyTodo = () => {
   // Today's Job Works (based on selectedDate, including all active/incomplete ones so they are manageable)
   const todayJobWorks = jobWorks.filter(jw => {
     const status = (jw.status || '').toLowerCase();
-    const isCompleted = ['completed', 'posted', 'approved', 'client_approved'].includes(status);
+    const isCompleted = ['completed', 'posted', 'client_approved'].includes(status);
     return !isCompleted;
   });
 
@@ -1518,7 +1518,7 @@ const ManagerDailyTodo = () => {
     const hasContent = !!item.content_link;
     const itemDate = item.due_date ? item.due_date.split(/[T ]/)[0] : '';
     const isToday = itemDate === selectedDate;
-    const isCompleted = ['completed', 'posted', 'client_approved', 'approved'].includes(status);
+    const isCompleted = ['completed', 'posted', 'client_approved'].includes(status);
     const isDesignerAssigned = Boolean(item.assigned_employee_id) && Number(item.assigned_employee_id) !== Number(item.content_writer_id);
 
     if (deliverablesFilter === 'approved') {
@@ -1547,7 +1547,7 @@ const ManagerDailyTodo = () => {
     }
 
     if (deliverablesFilter === 'assign_designer_pending') {
-      return hasContent && !isDesignerAssigned && !isCompleted;
+      return (hasContent || status === 'approved') && !isDesignerAssigned && !isCompleted;
     }
 
     if (deliverablesFilter === 'rework') {
@@ -1572,9 +1572,12 @@ const ManagerDailyTodo = () => {
 
     const itemDate = jw.deadline ? jw.deadline.split(/[T ]/)[0] : '';
     const status = (jw.status || '').toLowerCase();
-    const isCompleted = ['completed', 'posted', 'client_approved', 'approved', 'sent_to_client'].includes(status);
     const hasContent = !!jw.content_link;
     const hasDesign = !!jw.google_drive_link;
+    const isDesignerAssigned = Boolean(jw.assigned_employee_id) && Number(jw.assigned_employee_id) !== Number(jw.content_writer_id);
+    
+    // A job work is only completed when design/output is approved or posted
+    const isCompleted = ['completed', 'posted', 'client_approved'].includes(status) || (status === 'approved' && hasDesign);
 
     if (jobWorksTabFilter === 'approved') {
       return isCompleted;
@@ -1598,11 +1601,11 @@ const ManagerDailyTodo = () => {
     }
 
     if (jobWorksTabFilter === 'content_approval_pending') {
-      return hasContent && !hasDesign && (status === 'submitted' || status === 'assigned_employee' || status === 'pending' || status === 'sent_to_client');
+      return hasContent && !hasDesign && status === 'submitted';
     }
 
     if (jobWorksTabFilter === 'assign_designer_pending') {
-      return !jw.assigned_employee_id;
+      return (!isDesignerAssigned || (hasContent && !hasDesign)) && !isCompleted;
     }
 
     if (jobWorksTabFilter === 'rework') {
