@@ -26,42 +26,23 @@ const getTodayOffsetDateStr = (offsetDays = 0) => {
 const getFilteredEmployees = (reqSubDeptId, employeesList) => {
   if (!reqSubDeptId) return employeesList;
   const reqId = Number(reqSubDeptId);
-  const filtered = employeesList.filter(emp => {
+  let filtered = employeesList.filter(emp => {
     const empSubDeptId = Number(emp.sub_department_id);
     const code = (emp.sub_department_code || '').toUpperCase();
     const name = (emp.sub_department_name || '').toLowerCase();
 
-    if (reqId === 2 || reqId === 3) {
-      // Graphic Design (2), Video Editing (3), Creative Designer (4) or any non-writer in Creatives Dept
-      return (
-        empSubDeptId === 2 || empSubDeptId === 3 || empSubDeptId === 4 ||
-        code === 'GD-RS' || code === 'VE-RS' || code === 'CRD-RS' ||
-        name.includes('graphic') || name.includes('video') || name.includes('designer') ||
-        (empSubDeptId !== 1 && Number(emp.department_id) === 1)
-      );
+    if (reqId === 3) {
+      // Content Writing (CW-RS / Sub-dept 3)
+      return empSubDeptId === 3 || code === 'CW-RS' || name.includes('content') || name.includes('writer');
     }
-    if (reqId === 1) {
-      // Content Writing (CW-RS)
-      return empSubDeptId === 1 || code === 'CW-RS' || name.includes('content') || name.includes('writer');
-    }
-    if (empSubDeptId === reqId) return true;
-    return empSubDeptId !== 1;
+    // Designers & Video Editors (GD-RS, VE-RS, CRD-RS / Sub-depts 1, 2, 4)
+    return (
+      [1, 2, 4].includes(empSubDeptId) ||
+      ['GD-RS', 'VE-RS', 'CRD-RS'].includes(code) ||
+      name.includes('graphic') || name.includes('video') || name.includes('designer') ||
+      (empSubDeptId !== 3 && Number(emp.department_id) === 1)
+    );
   });
-
-  // Sort so Video Editors (3) and Creative Designers (4) appear first for Video/Reel tasks
-  if (reqId === 3) {
-    filtered.sort((a, b) => {
-      const rank = (emp) => {
-        const sid = Number(emp.sub_department_id);
-        const c = (emp.sub_department_code || '').toUpperCase();
-        if (sid === 3 || c === 'VE-RS') return 1; // Video Editor first
-        if (sid === 4 || c === 'CRD-RS') return 2; // Creative Designer second
-        if (sid === 2 || c === 'GD-RS') return 3; // Graphic Designer third
-        return 4;
-      };
-      return rank(a) - rank(b);
-    });
-  }
 
   return filtered;
 };
@@ -2672,7 +2653,7 @@ const ManagerDailyTodo = () => {
                             </div>
                           ) : (
                             <button
-                              onClick={() => startAssigningJob(jw)}
+                              onClick={() => startAssigningJob(jw, 1)}
                               className="btn btn-primary"
                               style={{ width: '100%', padding: '8px', fontSize: '13px', fontWeight: 700 }}
                             >
