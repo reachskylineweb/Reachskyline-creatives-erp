@@ -553,15 +553,13 @@ const EmployeeReassignedWork = () => {
                             placeholder={
                               item.status === 'submitted'
                                 ? "Link submitted..."
-                                : !isTaskStarted(item)
-                                ? "Click Start to begin working..."
                                 : "Paste Google Drive / Work Link here..."
                             }
                             className="form-control"
                             value={item.status === 'submitted' ? (item.isContentWork ? item.work_link : item.google_drive_link) : (driveLinks[item.id] || '')}
                             onChange={(e) => handleLinkChange(item.id, e.target.value)}
-                            disabled={item.status === 'submitted' || !isTaskStarted(item)}
-                            style={{ fontSize: '12px', padding: '6px 10px', margin: 0, backgroundColor: (item.status === 'submitted' || !isTaskStarted(item)) ? 'var(--bg-light)' : '#fff' }}
+                            disabled={item.status === 'submitted'}
+                            style={{ fontSize: '12px', padding: '6px 10px', margin: 0, backgroundColor: item.status === 'submitted' ? 'var(--bg-light)' : '#fff' }}
                           />
                         </td>
 
@@ -571,25 +569,15 @@ const EmployeeReassignedWork = () => {
                             <span className="badge" style={{ padding: '6px 10px', fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', backgroundColor: 'rgba(249, 115, 22, 0.15)', color: '#f97316', border: 'none', display: 'inline-flex', width: '100%', justifyContent: 'center' }}>
                               Sent for Approval
                             </span>
-                          ) : !isTaskStarted(item) ? (
-                            <button
-                              onClick={() => handleStartRework(item)}
-                              disabled={submittingId === item.id}
-                              className="btn btn-primary btn-sm"
-                              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700, width: '100%', justifyContent: 'center', backgroundColor: '#eab308', borderColor: '#eab308', color: '#fff' }}
-                            >
-                              <Play size={12} fill="#fff" />
-                              {submittingId === item.id ? 'Starting...' : 'Start'}
-                            </button>
                           ) : (
                             <button
                               onClick={() => handleSubmitRework(item)}
-                              disabled={submittingId === item.id}
+                              disabled={submittingId === item.id || !driveLinks[item.id]}
                               className="btn btn-warning btn-sm"
                               style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 700, width: '100%', justifyContent: 'center' }}
                             >
                               <Send size={12} />
-                              {submittingId === item.id ? 'Sending...' : 'Submit Rework'}
+                              {submittingId === item.id ? 'Submitting...' : 'Submit Rework'}
                             </button>
                           )}
                         </td>

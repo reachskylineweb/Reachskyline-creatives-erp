@@ -1786,11 +1786,10 @@ const EmployeeAssignedWork = () => {
                               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                                 <input
                                   type="url"
-                                  placeholder={!(item.isJobWork ? item.writer_started_at : item.started_at) ? "Click Start to begin working..." : "Paste script or work document link here..."}
+                                  placeholder="Paste script or work document link here..."
                                   className="form-control"
                                   value={links[key] || ''}
                                   onChange={(e) => handleLinkChange(key, e.target.value)}
-                                  disabled={!(item.isJobWork ? item.writer_started_at : item.started_at)}
                                   style={{ fontSize: '12px', padding: '6px 10px', margin: 0, flex: 1 }}
                                 />
                                 {hasLink && (
@@ -1809,23 +1808,6 @@ const EmployeeAssignedWork = () => {
                             )}
                           </td>
                           <td style={{ textAlign: 'center' }}>
-                            {(item.isJobWork ? item.writer_started_at : item.started_at) && !isCompleted && !isSubmitted && (
-                              <div style={{ marginBottom: '6px' }}>
-                                <span className="badge" style={{ 
-                                  backgroundColor: '#eff6ff', 
-                                  color: '#1d4ed8', 
-                                  border: '1px solid #bfdbfe', 
-                                  display: 'inline-flex', 
-                                  alignItems: 'center', 
-                                  gap: '4px', 
-                                  fontSize: '10px', 
-                                  textTransform: 'uppercase', 
-                                  fontWeight: 700
-                                }}>
-                                  ⏱️ Timing...
-                                </span>
-                              </div>
-                            )}
                             <span style={{ 
                               fontSize: '11px', 
                               fontWeight: 800, 
@@ -1849,15 +1831,6 @@ const EmployeeAssignedWork = () => {
                               <span style={{ fontSize: '12px', color: 'var(--success)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                                 <CheckCircle size={14} /> Sent
                               </span>
-                            ) : !(item.isJobWork ? item.writer_started_at : item.started_at) ? (
-                              <button
-                                className="btn btn-secondary btn-sm"
-                                onClick={() => handleStartItem(item)}
-                                disabled={submittingId === key}
-                                style={{ padding: '6px 12px', fontWeight: 700, color: 'var(--primary)', borderColor: 'var(--primary)' }}
-                              >
-                                {submittingId === key ? 'Starting...' : 'Start'}
-                              </button>
                             ) : (
                               <button
                                 className="btn btn-primary btn-sm"
@@ -1865,7 +1838,7 @@ const EmployeeAssignedWork = () => {
                                 disabled={submittingId === key || !hasLink}
                                 style={{ padding: '6px 12px', fontWeight: 700 }}
                               >
-                                {submittingId === key ? 'Submitting...' : 'Submit'}
+                                {submittingId === key ? 'Submitting...' : 'Submit Work'}
                               </button>
                             )}
                           </td>
