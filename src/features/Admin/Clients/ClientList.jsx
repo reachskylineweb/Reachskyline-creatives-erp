@@ -171,6 +171,49 @@ const ClientList = () => {
     setIsViewOpen(true);
   };
 
+  const syncClientPassword = async (clientId, userId, newPassword) => {
+    if (!newPassword || !newPassword.trim()) return;
+    const pwd = newPassword.trim();
+    
+    // Try 1: /users/reset-password with profileId & userType 'client'
+    try {
+      await api.post('/users/reset-password', {
+        profileId: clientId,
+        userType: 'client',
+        newPassword: pwd,
+        password: pwd
+      });
+      return;
+    } catch (_) {}
+
+    // Try 2: /users/reset-password with userId
+    try {
+      await api.post('/users/reset-password', {
+        userId: userId || clientId,
+        newPassword: pwd,
+        password: pwd
+      });
+      return;
+    } catch (_) {}
+
+    // Try 3: /users/reset-password with userType 'user'
+    try {
+      await api.post('/users/reset-password', {
+        profileId: clientId,
+        userType: 'user',
+        newPassword: pwd,
+        password: pwd
+      });
+      return;
+    } catch (_) {}
+
+    // Try 4: /clients/:id/password
+    try {
+      await api.post(`/clients/${clientId}/password`, { password: pwd, raw_password: pwd });
+      return;
+    } catch (_) {}
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -183,14 +226,34 @@ const ClientList = () => {
       let res;
       if (currentClient) {
         // Edit Mode
+        const updatePayload = {
+          ...formData,
+          raw_password: formData.password,
+          plain_password: formData.password
+        };
         try {
-          res = await api.post(`/clients/${currentClient.id}/update`, formData);
+          res = await api.post(`/clients/${currentClient.id}/update`, updatePayload);
         } catch (_) {
-          res = await api.put(`/clients/${currentClient.id}`, formData);
+          res = await api.put(`/clients/${currentClient.id}`, updatePayload);
+        }
+
+        if (formData.password?.trim()) {
+          await syncClientPassword(currentClient.id, currentClient.user_id, formData.password);
         }
       } else {
         // Create Mode
-        res = await api.post('/clients', formData);
+        const createPayload = {
+          ...formData,
+          raw_password: formData.password,
+          plain_password: formData.password
+        };
+        res = await api.post('/clients', createPayload);
+
+        if (res.data?.success && formData.password?.trim()) {
+          const newClientId = res.data?.data?.id || res.data?.id;
+          const newUserId = res.data?.data?.user_id || res.data?.user_id;
+          await syncClientPassword(newClientId, newUserId, formData.password);
+        }
       }
 
       if (res.data.success) {

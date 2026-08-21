@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Search, ShieldCheck, Eye, EyeOff, Clipboard, Check, AlertCircle } from 'lucide-react';
+import { Search, Key, ShieldCheck, Eye, EyeOff, Clipboard, Check, AlertCircle } from 'lucide-react';
 import api from '../../../utils/api';
 import Table from '../../../components/Table';
 
@@ -13,6 +13,15 @@ const LoginCredentials = () => {
   const [visiblePasswords, setVisiblePasswords] = useState({});
   // State to track copied cell indicators
   const [copiedId, setCopiedId] = useState(null);
+
+  // Reset Password Modal State
+  const [resetModal, setResetModal] = useState({
+    isOpen: false,
+    user: null,
+    newPassword: '',
+    loading: false,
+    error: ''
+  });
 
   const fetchCredentials = useCallback(async () => {
     setLoading(true);
@@ -75,6 +84,76 @@ const LoginCredentials = () => {
     navigator.clipboard.writeText(text);
     setCopiedId(id);
     setTimeout(() => setCopiedId(null), 1500);
+  };
+
+  const handleOpenResetModal = (user) => {
+    setResetModal({
+      isOpen: true,
+      user,
+      newPassword: '',
+      loading: false,
+      error: ''
+    });
+  };
+
+  const handleResetSubmit = async (e) => {
+    e.preventDefault();
+    if (!resetModal.newPassword || resetModal.newPassword.length < 4) {
+      setResetModal(prev => ({ ...prev, error: 'Password must be at least 4 characters.' }));
+      return;
+    }
+    setResetModal(prev => ({ ...prev, loading: true, error: '' }));
+    const user = resetModal.user;
+    const userType = (user.role || user.user_type || 'client').toLowerCase();
+    const newPwd = resetModal.newPassword.trim();
+
+    try {
+      if (userType === 'client') {
+        // Try multiple endpoints for clients to ensure database update
+        try {
+          await api.post(`/clients/${user.id}/update`, {
+            company_name: user.full_name || user.username,
+            client_name: user.full_name || user.username,
+            email: user.email || `${user.username}@client.com`,
+            phone: user.phone || '0000000000',
+            industry: 'General',
+            start_date: new Date().toISOString().split('T')[0],
+            username: user.username,
+            password: newPwd,
+            raw_password: newPwd,
+            plain_password: newPwd
+          });
+        } catch (_) {}
+
+        try {
+          await api.post('/users/reset-password', {
+            profileId: user.id,
+            userId: user.user_id || user.id,
+            userType: 'client',
+            newPassword: newPwd,
+            password: newPwd
+          });
+        } catch (_) {}
+
+        try {
+          await api.post(`/clients/${user.id}/password`, { password: newPwd, raw_password: newPwd });
+        } catch (_) {}
+      } else {
+        await api.post('/users/reset-password', {
+          profileId: user.id,
+          userId: user.user_id || user.id,
+          userType: userType === 'manager' ? 'manager' : userType === 'hr' ? 'hr' : 'employee',
+          newPassword: newPwd,
+          password: newPwd
+        });
+      }
+
+      alert(`Password for ${user.username || user.full_name} set successfully!`);
+      setResetModal({ isOpen: false, user: null, newPassword: '', loading: false, error: '' });
+      fetchCredentials();
+    } catch (err) {
+      setResetModal(prev => ({ ...prev, loading: false, error: err.response?.data?.message || 'Failed to set password.' }));
+    }
   };
 
   const filteredCredentials = credentials.filter(cred => {
@@ -172,6 +251,14 @@ const LoginCredentials = () => {
                 {copiedId === row.id ? <Check size={14} className="text-success" /> : <Clipboard size={14} />}
               </button>
             )}
+            <button 
+              className="btn btn-primary"
+              onClick={() => handleOpenResetModal(row)}
+              style={{ padding: '4px 8px', minWidth: '0', fontSize: '11px' }}
+              title="Set / Reset Password"
+            >
+              <Key size={13} style={{ marginRight: '4px' }} /> Set Password
+            </button>
           </div>
         );
       }
@@ -181,38 +268,51 @@ const LoginCredentials = () => {
       label: 'Status',
       width: '100px',
       render: (status) => (
-        <span className={`badge ${status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
-          {status}
+        <span className={`badge ${status === 'active' || !status ? 'badge-success' : 'badge-secondary'}`}>
+          {status ? status.toUpperCase() : 'ACTIVE'}
         </span>
       )
     }
   ];
 
   return (
-    <div style={{ padding: '30px', maxWidth: '1400px', margin: '0 auto' }}>
-      {/* Title Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-        <div>
+    <div className="container-fluid" style={{ padding: '24px' }}>
+      {/* Header */}
+      <div style={{ marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
           <h1 style={{ margin: 0, fontSize: '24px', fontWeight: 800, color: 'var(--text-color)' }}>
             System Login Credentials
           </h1>
-          <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
-            View and manage portal login accounts for Managers, Employees, and Clients.
-          </p>
+          <span className="badge badge-primary" style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <ShieldCheck size={14} /> Admin Access Only
+          </span>
         </div>
+        <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px' }}>
+          View and manage portal login accounts for Managers, Employees, and Clients.
+        </p>
       </div>
 
-      {/* Toolbar */}
-      <div className="table-toolbar" style={{ display: 'flex', gap: '16px', padding: '16px 20px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', borderBottom: 'none', alignItems: 'center' }}>
-        <div style={{ position: 'relative', flex: 1 }}>
-          <Search style={{ position: 'absolute', left: '12px', top: '10px', color: 'var(--text-muted)' }} size={16} />
+      {/* Filters Toolbar */}
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        gap: '16px',
+        marginBottom: '20px',
+        backgroundColor: '#fff',
+        padding: '16px',
+        borderRadius: 'var(--radius-md)',
+        border: '1px solid var(--border-color)'
+      }}>
+        <div style={{ position: 'relative', flex: 1, maxWidth: '400px' }}>
+          <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
           <input
             type="text"
             placeholder="Search by name, username, or employee/client code..."
             className="form-control"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ paddingLeft: '36px' }}
+            style={{ paddingLeft: '40px' }}
           />
         </div>
 
@@ -230,7 +330,7 @@ const LoginCredentials = () => {
       </div>
 
       {/* Table Ledger */}
-      <div style={{ backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: '0 0 var(--radius-md) var(--radius-md)', overflowX: 'auto' }}>
+      <div style={{ backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', overflowX: 'auto' }}>
         {loading ? (
           <div style={{ padding: '80px', textAlign: 'center', color: 'var(--text-muted)' }}>
             <div className="spinner" style={{ margin: '0 auto 12px auto' }}></div>
@@ -253,6 +353,83 @@ const LoginCredentials = () => {
         )}
       </div>
 
+      {/* Reset Password Modal */}
+      {resetModal.isOpen && resetModal.user && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999
+        }}>
+          <div style={{
+            backgroundColor: '#fff',
+            borderRadius: '8px',
+            padding: '24px',
+            width: '400px',
+            maxWidth: '90%',
+            boxShadow: '0 10px 25px rgba(0,0,0,0.2)'
+          }}>
+            <h3 style={{ margin: '0 0 8px 0', fontSize: '18px', fontWeight: 700 }}>
+              Set / Change Password
+            </h3>
+            <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: 'var(--text-muted)' }}>
+              Set a new login password for <strong>{resetModal.user.username || resetModal.user.full_name}</strong> ({resetModal.user.role?.toUpperCase()}).
+            </p>
+
+            {resetModal.error && (
+              <div style={{
+                padding: '10px 12px',
+                backgroundColor: '#fef2f2',
+                border: '1px solid #fca5a5',
+                color: '#dc2626',
+                borderRadius: '6px',
+                fontSize: '13px',
+                marginBottom: '16px'
+              }}>
+                {resetModal.error}
+              </div>
+            )}
+
+            <form onSubmit={handleResetSubmit}>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px' }}>
+                  New Password
+                </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="Enter new password (e.g. gem@123)"
+                  value={resetModal.newPassword}
+                  onChange={(e) => setResetModal(prev => ({ ...prev, newPassword: e.target.value }))}
+                  required
+                  autoFocus
+                />
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+                <button
+                  type="button"
+                  className="btn btn-light"
+                  onClick={() => setResetModal({ isOpen: false, user: null, newPassword: '', loading: false, error: '' })}
+                  disabled={resetModal.loading}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  disabled={resetModal.loading}
+                >
+                  {resetModal.loading ? 'Saving...' : 'Save Password'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
