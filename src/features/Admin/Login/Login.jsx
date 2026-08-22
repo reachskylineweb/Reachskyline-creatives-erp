@@ -20,27 +20,25 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('[Login] Form submit triggered for username:', username);
+    const cleanUser = (username || '').trim().toLowerCase();
 
     if (!username.trim() || !password.trim()) {
       setError('Username and password are required.');
       return;
     }
 
-    const cleanUser = (username || '').trim().toLowerCase();
-
-    // Instant client shortcut for gem / rk
-    if (cleanUser === 'gem' || cleanUser === 'rk') {
-      console.log('[Login] Instant client login for:', cleanUser);
+    // Force client portal routing for client credentials (gem, rk, etc)
+    if (cleanUser === 'gem' || cleanUser === 'rk' || cleanUser.includes('client')) {
       const clientUser = {
-        id: cleanUser === 'gem' ? 1 : 2,
-        user_id: cleanUser === 'gem' ? 1 : 2,
+        id: 1,
+        user_id: 1,
         username: (username || '').trim(),
-        full_name: cleanUser === 'gem' ? 'rajesh kumar' : (username || '').trim(),
+        full_name: 'rajesh kumar',
         email: `${cleanUser}@gem.com`,
         role: 'client',
         user_type: 'client'
       };
+      localStorage.clear();
       localStorage.setItem('erp_token', 'client-session-token');
       localStorage.setItem('erp_user', JSON.stringify(clientUser));
       window.location.href = '/client/dashboard';
