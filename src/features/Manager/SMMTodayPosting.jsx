@@ -85,7 +85,7 @@ const SMMTodayPosting = ({ isEmployee = false }) => {
       const params = {
         departmentFilter: 1, // Creatives
         smmTodayFilter: todayStr,
-        statusFilter: 'approved,assigned,assigned_employee,posted,completed', // Fetch approved, assigned, assigned_employee, posted, and completed items
+        statusFilter: 'approved,manager_approved,client_approved,sent_to_client,assigned,assigned_employee,posted,completed',
         limit: 100,
         page: 1
       };
