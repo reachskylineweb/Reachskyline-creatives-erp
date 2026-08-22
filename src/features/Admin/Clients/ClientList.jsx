@@ -224,14 +224,17 @@ const ClientList = () => {
       } catch (_) {}
     }
 
-    try {
-      await api.post('/users/reset-password', {
-        profileId: Number(clientId),
-        userType: 'client',
-        newPassword: pwd,
-        password: pwd
-      });
-    } catch (_) {}
+    if (clientId && pwd.length >= 6) {
+      try {
+        await api.post('/users/reset-password', {
+          profileId: Number(clientId),
+          userId: userId ? Number(userId) : Number(clientId),
+          userType: 'client',
+          newPassword: pwd,
+          password: pwd
+        });
+      } catch (_) {}
+    }
   };
 
   const handleFormSubmit = async (e) => {
