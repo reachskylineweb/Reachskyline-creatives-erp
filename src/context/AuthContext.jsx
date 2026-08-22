@@ -129,38 +129,9 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
     } catch (err) {
-      // Fallback for client logins if backend credentials table lacks password hash
-      const cleanUser = (username || '').trim().toLowerCase();
-      try {
-        const cacheRaw = localStorage.getItem('erp_client_passwords');
-        const cache = cacheRaw ? JSON.parse(cacheRaw) : {};
-        const cachedPwd = cache[cleanUser];
-
-        // If client credentials match cache or if user is a client account (e.g. gem)
-        if (cleanUser === 'gem' || cleanUser === 'rk' || cachedPwd || err.response?.status === 401 || err.response?.status === 400) {
-          // Check if this is a client login attempt (not admin/employee/manager)
-          if (!['admin', 'superadmin', 'dharsan', 'madace', 'kishore', 'praveen', 'nihassini', 'lokesh', 'vishalam', 'pradeep'].includes(cleanUser)) {
-            const clientUser = {
-              id: cleanUser === 'gem' ? 1 : 2,
-              user_id: cleanUser === 'gem' ? 1 : 2,
-              username: (username || '').trim(),
-              full_name: cleanUser === 'gem' ? 'rajesh kumar' : (username || '').trim(),
-              email: `${cleanUser}@gem.com`,
-              role: 'client',
-              user_type: 'client'
-            };
-            localStorage.setItem('erp_token', 'client-session-token');
-            localStorage.setItem('erp_user', JSON.stringify(clientUser));
-            setUser(clientUser);
-            setLoading(false);
-            return { success: true };
-          }
-        }
-      } catch (_) {}
-
       const errMsg = err.response && err.response.data && err.response.data.message
         ? err.response.data.message
-        : 'Invalid username or password.';
+        : 'Wrong credentials! Invalid username or password.';
       const errors = err.response && err.response.data && err.response.data.errors
         ? err.response.data.errors
         : [];

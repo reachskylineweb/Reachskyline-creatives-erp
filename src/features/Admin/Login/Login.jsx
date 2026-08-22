@@ -20,28 +20,11 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const cleanUser = (username || '').trim().toLowerCase();
 
     if (!username.trim() || !password.trim()) {
-      setError('Username and password are required.');
-      return;
-    }
-
-    // Force client portal routing for client credentials (gem, rk, etc)
-    if (cleanUser === 'gem' || cleanUser === 'rk' || cleanUser.includes('client')) {
-      const clientUser = {
-        id: 1,
-        user_id: 1,
-        username: (username || '').trim(),
-        full_name: 'rajesh kumar',
-        email: `${cleanUser}@gem.com`,
-        role: 'client',
-        user_type: 'client'
-      };
-      localStorage.clear();
-      localStorage.setItem('erp_token', 'client-session-token');
-      localStorage.setItem('erp_user', JSON.stringify(clientUser));
-      window.location.href = '/client/dashboard';
+      const msg = 'Wrong credentials! Username and password are required.';
+      setError(msg);
+      alert(msg);
       return;
     }
 
@@ -63,7 +46,7 @@ const Login = () => {
           user = storedUser ? JSON.parse(storedUser) : null;
         } catch (_) {}
 
-        if ((user && (user.role === 'client' || user.user_type === 'client')) || cleanUser === 'gem' || cleanUser === 'rk') {
+        if (user && (user.role === 'client' || user.user_type === 'client')) {
           window.location.href = '/client/dashboard';
           return;
         } else if (user && user.role === 'super_admin') {
@@ -76,15 +59,15 @@ const Login = () => {
           window.location.href = '/admin/dashboard';
         }
       } else {
-        setError(result?.message || 'Authentication failed. Please verify credentials.');
+        const errMsg = result?.message || 'Wrong credentials! Invalid email/username or password.';
+        setError(errMsg);
+        alert(errMsg);
       }
     } catch (err) {
       console.error('[Login] Error:', err);
-      if (cleanUser === 'gem' || cleanUser === 'rk') {
-        window.location.href = '/client/dashboard';
-        return;
-      }
-      setError('A connection error occurred. Please verify your backend server is active.');
+      const errMsg = err.response?.data?.message || 'Wrong credentials! Invalid email/username or password.';
+      setError(errMsg);
+      alert(errMsg);
     } finally {
       setLoading(false);
       setRetryStatus('');
