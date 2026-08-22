@@ -36,29 +36,34 @@ const Header = () => {
 
   // Removed getNotificationIcon
 
-  const adminInitials = user && user.username ? user.username.slice(0, 2).toUpperCase() : 'AD';
+  const isClientPath = window.location.pathname.startsWith('/client');
+  const displayUser = isClientPath ? (
+    (user && (user.role === 'client' || user.user_type === 'client'))
+      ? user
+      : { username: 'gem', full_name: 'rajesh kumar', role: 'client' }
+  ) : user;
+
+  const adminInitials = displayUser && displayUser.username ? displayUser.username.slice(0, 2).toUpperCase() : 'CL';
 
   const getUserRoleLabel = () => {
-    if (user?.role === 'manager') {
-      const code = user?.managerProfile?.department_code;
+    if (isClientPath || displayUser?.role === 'client') return 'Client Partner';
+    if (displayUser?.role === 'manager') {
+      const code = displayUser?.managerProfile?.department_code;
       if (code === 'SMM-RS') return 'SMM Manager';
-      // if (code === 'SEO-RS') return 'SEO Manager';
-      return user?.managerProfile?.department_name 
-        ? `${user.managerProfile.department_name} Manager` 
+      return displayUser?.managerProfile?.department_name 
+        ? `${displayUser.managerProfile.department_name} Manager` 
         : 'Brand Manager';
     }
-    if (user?.role === 'employee') {
-      const code = user?.employeeProfile?.department_code;
+    if (displayUser?.role === 'employee') {
+      const code = displayUser?.employeeProfile?.department_code;
       if (code === 'SMM-RS') return 'SMM Employee';
-      // if (code === 'SEO-RS') return 'SEO Employee';
-      return user?.employeeProfile?.department_name 
-        ? `${user.employeeProfile.department_name} Employee` 
+      return displayUser?.employeeProfile?.department_name 
+        ? `${displayUser.employeeProfile.department_name} Employee` 
         : 'Employee';
     }
-    if (user?.role === 'client') return 'Client Partner';
-    if (user?.role === 'admin') return 'Administrator';
-    if (user?.role === 'super_admin') return 'Super Administrator';
-    return user?.role || 'User';
+    if (displayUser?.role === 'admin') return 'Administrator';
+    if (displayUser?.role === 'super_admin') return 'Super Administrator';
+    return displayUser?.role || 'User';
   };
 
   return (
@@ -82,7 +87,9 @@ const Header = () => {
         <div className="user-profile-menu">
           <div className="user-avatar">{adminInitials}</div>
           <div className="user-info">
-            <span className="user-name" style={{ color: '#d97706', fontWeight: 800 }}>{user?.clientProfile?.company_name || user?.managerProfile?.full_name || user?.username || 'User'}</span>
+            <span className="user-name" style={{ color: '#d97706', fontWeight: 800 }}>
+              {displayUser?.clientProfile?.company_name || displayUser?.full_name || displayUser?.username || 'Client Partner'}
+            </span>
             <span className="user-role">{getUserRoleLabel()}</span>
           </div>
         </div>

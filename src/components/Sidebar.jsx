@@ -57,14 +57,16 @@ const Sidebar = () => {
     return items;
   };
 
-  const menuItems = user?.role === 'super_admin' ? [
-    { label: 'Dashboard', path: '/super-admin/dashboard', icon: <LayoutDashboard size={20} /> },
-    { label: 'Branches', path: '/super-admin/branches', icon: <Building2 size={20} /> },
-    { label: 'Clients', path: '/super-admin/clients', icon: <Users size={20} /> },
-    { label: 'Event Day Calendar', path: '/super-admin/event-calendar', icon: <CalendarClock size={20} /> },
-    { label: 'Employee Efficiency', path: '/super-admin/efficiency', icon: <BarChart3 size={20} /> },
-    { label: 'Profile', path: '/super-admin/profile', icon: <User size={20} /> }
-  ] : user?.role === 'manager' ? (
+  const isClientPath = window.location.pathname.startsWith('/client');
+  const isClientUser = user?.role === 'client' || user?.user_type === 'client' || isClientPath;
+
+  const menuItems = isClientUser ? [
+    { label: 'Client Dashboard', path: '/client/dashboard', icon: <LayoutDashboard size={20} /> },
+    { label: 'Collaboration & Approvals', path: '/client/approvals', icon: <CheckCircle2 size={20} /> },
+    { label: 'Approval for ReachSkyline', path: '/client/reachskyline-approvals', icon: <FileSpreadsheet size={20} /> },
+    { label: 'Monthly Performance Reports', path: '/client/reports', icon: <BarChart3 size={20} /> },
+    { label: 'ReachSkyline Contact', path: '/client/contact', icon: <Phone size={20} /> }
+  ] : user?.role === 'super_admin' ? [
     user?.managerProfile?.department_code === 'SMM-RS' ? [
       { label: 'Dashboard', path: '/manager/dashboard', icon: <LayoutDashboard size={20} /> },
       { label: 'Employees', path: '/manager/employees', icon: <Users size={20} /> },
