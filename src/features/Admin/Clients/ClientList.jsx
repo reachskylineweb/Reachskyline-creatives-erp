@@ -174,43 +174,39 @@ const ClientList = () => {
   const syncClientPassword = async (clientId, userId, newPassword) => {
     if (!newPassword || !newPassword.trim()) return;
     const pwd = newPassword.trim();
-    
-    // Try 1: /users/reset-password with profileId & userType 'client'
+
+    // 1. Update client record directly with password, raw_password, and plain_password
+    if (clientId) {
+      try {
+        await api.post(`/clients/${clientId}/update`, {
+          password: pwd,
+          raw_password: pwd,
+          plain_password: pwd
+        });
+      } catch (_) {
+        try {
+          await api.put(`/clients/${clientId}`, {
+            password: pwd,
+            raw_password: pwd,
+            plain_password: pwd
+          });
+        } catch (_) {}
+      }
+
+      try {
+        await api.post(`/clients/${clientId}/password`, { password: pwd, raw_password: pwd, plain_password: pwd });
+      } catch (_) {}
+    }
+
+    // 2. Sync to auth user table via reset-password
     try {
       await api.post('/users/reset-password', {
         profileId: clientId,
+        userId: userId || clientId,
         userType: 'client',
         newPassword: pwd,
         password: pwd
       });
-      return;
-    } catch (_) {}
-
-    // Try 2: /users/reset-password with userId
-    try {
-      await api.post('/users/reset-password', {
-        userId: userId || clientId,
-        newPassword: pwd,
-        password: pwd
-      });
-      return;
-    } catch (_) {}
-
-    // Try 3: /users/reset-password with userType 'user'
-    try {
-      await api.post('/users/reset-password', {
-        profileId: clientId,
-        userType: 'user',
-        newPassword: pwd,
-        password: pwd
-      });
-      return;
-    } catch (_) {}
-
-    // Try 4: /clients/:id/password
-    try {
-      await api.post(`/clients/${clientId}/password`, { password: pwd, raw_password: pwd });
-      return;
     } catch (_) {}
   };
 
@@ -229,7 +225,8 @@ const ClientList = () => {
         const updatePayload = {
           ...formData,
           raw_password: formData.password,
-          plain_password: formData.password
+          plain_password: formData.password,
+          password: formData.password
         };
         try {
           res = await api.post(`/clients/${currentClient.id}/update`, updatePayload);
@@ -245,13 +242,14 @@ const ClientList = () => {
         const createPayload = {
           ...formData,
           raw_password: formData.password,
-          plain_password: formData.password
+          plain_password: formData.password,
+          password: formData.password
         };
         res = await api.post('/clients', createPayload);
 
         if (res.data?.success && formData.password?.trim()) {
-          const newClientId = res.data?.data?.id || res.data?.id;
-          const newUserId = res.data?.data?.user_id || res.data?.user_id;
+          const newClientId = res.data?.data?.id || res.data?.data?.client?.id || res.data?.id;
+          const newUserId = res.data?.data?.user_id || res.data?.data?.user?.id || res.data?.user_id;
           await syncClientPassword(newClientId, newUserId, formData.password);
         }
       }

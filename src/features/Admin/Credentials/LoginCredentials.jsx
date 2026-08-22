@@ -40,29 +40,74 @@ const LoginCredentials = () => {
       const clientPasswordMap = {};
       if (Array.isArray(clientsList)) {
         clientsList.forEach(c => {
-          const clientPwd = c.plain_password || c.raw_password || c.password;
+          const clientPwd = c.plain_password || c.raw_password || c.password || c.client_password;
           if (clientPwd) {
-            if (c.username) clientPasswordMap[c.username.toLowerCase()] = clientPwd;
-            if (c.email) clientPasswordMap[c.email.toLowerCase()] = clientPwd;
+            if (c.username) clientPasswordMap[c.username.toLowerCase().trim()] = clientPwd;
+            if (c.email) clientPasswordMap[c.email.toLowerCase().trim()] = clientPwd;
             if (c.id) clientPasswordMap[`id_${c.id}`] = clientPwd;
+            if (c.user_id) clientPasswordMap[`user_${c.user_id}`] = clientPwd;
+            if (c.client_code) clientPasswordMap[`code_${c.client_code.toLowerCase().trim()}`] = clientPwd;
+            if (c.code) clientPasswordMap[`code_${c.code.toLowerCase().trim()}`] = clientPwd;
           }
         });
       }
 
       // Merge client passwords into credentials list
-      const updatedCreds = userCreds.map(cred => {
+      let updatedCreds = userCreds.map(cred => {
         const role = (cred.role || cred.user_type || '').toLowerCase();
         if (role === 'client') {
-          const pwdFromMap = (cred.username && clientPasswordMap[cred.username.toLowerCase()]) ||
-                             (cred.email && clientPasswordMap[cred.email.toLowerCase()]) ||
+          const pwdFromMap = (cred.username && clientPasswordMap[cred.username.toLowerCase().trim()]) ||
+                             (cred.email && clientPasswordMap[cred.email.toLowerCase().trim()]) ||
+                             (cred.code && clientPasswordMap[`code_${cred.code.toLowerCase().trim()}`]) ||
                              clientPasswordMap[`id_${cred.id}`] ||
-                             clientPasswordMap[`id_${cred.profile_id}`];
-          if (pwdFromMap && !cred.plain_password && !cred.raw_password) {
-            return { ...cred, plain_password: pwdFromMap, raw_password: pwdFromMap };
+                             clientPasswordMap[`user_${cred.id}`] ||
+                             clientPasswordMap[`user_${cred.user_id}`] ||
+                             clientPasswordMap[`id_${cred.profile_id}`] ||
+                             clientPasswordMap[`id_${cred.client_id}`];
+          if (pwdFromMap && (!cred.plain_password || cred.plain_password === 'No Password')) {
+            return { ...cred, plain_password: pwdFromMap, raw_password: pwdFromMap, password: pwdFromMap };
           }
         }
         return cred;
       });
+
+      // Append any clients from clientsList that are not present in userCreds
+      if (Array.isArray(clientsList)) {
+        clientsList.forEach(c => {
+          const cUser = c.username ? c.username.toLowerCase().trim() : '';
+          const cEmail = c.email ? c.email.toLowerCase().trim() : '';
+          const cId = c.id;
+          const cUserId = c.user_id;
+
+          const exists = updatedCreds.some(cred => {
+            const role = (cred.role || cred.user_type || '').toLowerCase();
+            if (role !== 'client') return false;
+            return (cUser && cred.username && cred.username.toLowerCase().trim() === cUser) ||
+                   (cEmail && cred.email && cred.email.toLowerCase().trim() === cEmail) ||
+                   (cId && (cred.id === cId || cred.profile_id === cId || cred.client_id === cId)) ||
+                   (cUserId && (cred.id === cUserId || cred.user_id === cUserId));
+          });
+
+          if (!exists) {
+            const pwd = c.plain_password || c.raw_password || c.password || c.client_password || '';
+            updatedCreds.push({
+              id: c.id,
+              user_id: c.user_id || c.id,
+              profile_id: c.id,
+              code: c.client_code || c.code || `C${String(c.id).padStart(4, '0')}`,
+              full_name: c.client_name || c.company_name || 'Client User',
+              email: c.email || '',
+              username: c.username || c.email || '',
+              role: 'client',
+              user_type: 'client',
+              plain_password: pwd,
+              raw_password: pwd,
+              password: pwd,
+              status: c.status || 'active'
+            });
+          }
+        });
+      }
 
       setCredentials(updatedCreds);
     } catch (err) {
