@@ -401,15 +401,12 @@ const ClientPortal = ({ activeTabProp }) => {
         setProfile(profileData.profile);
       } else {
         const savedUser = JSON.parse(localStorage.getItem('erp_user') || '{}');
-        setProfile({
-          id: savedUser.id || 1,
-          client_id_code: 'C0001',
-          company_name: savedUser.full_name || 'Rk hospitality',
-          client_name: savedUser.username || 'rk',
-          phone: '+919944226490',
-          email: savedUser.email || 'rk@rkhospitality.com',
-          status: 'active'
-        });
+        if (savedUser && savedUser.role === 'client' && savedUser.profile) {
+          setProfile(savedUser.profile);
+        } else {
+          setError('Authentication failed or invalid session. Please log in with your client credentials.');
+          logout();
+        }
       }
       
       if (approvalsData) {
