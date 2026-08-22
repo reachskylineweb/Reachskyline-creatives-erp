@@ -241,6 +241,10 @@ const Login = () => {
           <button
             type="submit"
             className="btn btn-primary"
+            onClick={(e) => {
+              e.preventDefault();
+              handleSubmit(e);
+            }}
             style={{ 
               width: '100%', 
               padding: '12px', 
