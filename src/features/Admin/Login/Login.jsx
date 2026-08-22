@@ -38,13 +38,19 @@ const Login = () => {
 
       if (result.success) {
         const storedUser = localStorage.getItem('erp_user');
-        const user = storedUser ? JSON.parse(storedUser) : null;
-        if (user && user.role === 'super_admin') {
+        let user = null;
+        try {
+          user = storedUser ? JSON.parse(storedUser) : null;
+        } catch (_) {}
+
+        const cleanUser = (username || '').trim().toLowerCase();
+        if ((user && (user.role === 'client' || user.user_type === 'client')) || cleanUser === 'gem' || cleanUser === 'rk') {
+          window.location.href = '/client/dashboard';
+          return;
+        } else if (user && user.role === 'super_admin') {
           navigate('/super-admin/dashboard');
         } else if (user && user.role === 'manager') {
           navigate('/manager/dashboard');
-        } else if (user && user.role === 'client') {
-          navigate('/client/portal');
         } else if (user && user.role === 'employee') {
           navigate('/employee/dashboard');
         } else {
