@@ -79,12 +79,17 @@ api.interceptors.response.use(
     );
 
     if (isSessionExpired) {
-      localStorage.removeItem('erp_token');
-      localStorage.removeItem('erp_user');
-      
-      // Auto redirect to login page (avoiding loops if already there)
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login?expired=true';
+      const savedUserRaw = localStorage.getItem('erp_user');
+      const isClientSession = savedUserRaw && (savedUserRaw.includes('"role":"client"') || savedUserRaw.includes('"user_type":"client"'));
+
+      if (!isClientSession) {
+        localStorage.removeItem('erp_token');
+        localStorage.removeItem('erp_user');
+        
+        // Auto redirect to login page (avoiding loops if already there)
+        if (!window.location.pathname.includes('/login')) {
+          window.location.href = '/login?expired=true';
+        }
       }
     }
 
