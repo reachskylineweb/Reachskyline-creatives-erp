@@ -342,17 +342,25 @@ const ClientPortal = ({ activeTabProp }) => {
         ? `/client-portal/job-works/${reworkRemarksItem.id}/review`
         : `/client-portal/deliverables/${reworkRemarksItem.id}/review`;
 
-      const res = await api.put(endpoint, { 
+      const payload = { 
         action: 'rework', 
         feedbackText: reworkRemarks,
         voiceBase64: null
-      });
-      if (res.data.success) {
+      };
+
+      let res;
+      try {
+        res = await api.post(endpoint, payload);
+      } catch (_) {
+        res = await api.put(endpoint, payload);
+      }
+
+      if (res && res.data && res.data.success) {
         alert('Rework feedback submitted successfully.');
         setIsReworkModalOpen(false);
         setReworkRemarksItem(null);
         resetAudio();
-        fetchSkylineDeliverables();
+        fetchPortalData();
       }
     } catch (err) {
       console.error('Rework submit failed:', err.message);
