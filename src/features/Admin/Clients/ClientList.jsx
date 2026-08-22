@@ -171,9 +171,29 @@ const ClientList = () => {
     setIsViewOpen(true);
   };
 
-  const syncClientPassword = async (clientId, userId, newPassword) => {
+  const saveClientPasswordCache = (clientInfo, pwd) => {
+    if (!pwd || !pwd.trim()) return;
+    const p = pwd.trim();
+    try {
+      const cache = JSON.parse(localStorage.getItem('erp_client_passwords') || '{}');
+      if (clientInfo) {
+        if (clientInfo.username) cache[clientInfo.username.toLowerCase().trim()] = p;
+        if (clientInfo.email) cache[clientInfo.email.toLowerCase().trim()] = p;
+        if (clientInfo.code) cache[`code_${clientInfo.code.toLowerCase().trim()}`] = p;
+        if (clientInfo.client_code) cache[`code_${clientInfo.client_code.toLowerCase().trim()}`] = p;
+        if (clientInfo.id) cache[`id_${clientInfo.id}`] = p;
+        if (clientInfo.user_id) cache[`user_${clientInfo.user_id}`] = p;
+        if (clientInfo.profile_id) cache[`id_${clientInfo.profile_id}`] = p;
+      }
+      localStorage.setItem('erp_client_passwords', JSON.stringify(cache));
+    } catch (_) {}
+  };
+
+  const syncClientPassword = async (clientId, userId, newPassword, extraInfo = {}) => {
     if (!newPassword || !newPassword.trim()) return;
     const pwd = newPassword.trim();
+
+    saveClientPasswordCache({ id: clientId, user_id: userId, ...extraInfo }, pwd);
 
     // 1. Update client record directly with password, raw_password, and plain_password
     if (clientId) {
@@ -192,20 +212,14 @@ const ClientList = () => {
           });
         } catch (_) {}
       }
-
-      try {
-        await api.post(`/clients/${clientId}/password`, { password: pwd, raw_password: pwd, plain_password: pwd });
-      } catch (_) {}
     }
 
     // 2. Sync to auth user table via reset-password
     try {
       await api.post('/users/reset-password', {
-        profileId: clientId,
-        userId: userId || clientId,
+        profileId: Number(clientId),
         userType: 'client',
-        newPassword: pwd,
-        password: pwd
+        newPassword: pwd
       });
     } catch (_) {}
   };
@@ -228,6 +242,14 @@ const ClientList = () => {
           plain_password: formData.password,
           password: formData.password
         };
+        saveClientPasswordCache({ 
+          id: currentClient.id, 
+          user_id: currentClient.user_id, 
+          username: formData.username, 
+          email: formData.email, 
+          code: currentClient.client_code 
+        }, formData.password);
+
         try {
           res = await api.post(`/clients/${currentClient.id}/update`, updatePayload);
         } catch (_) {
@@ -235,7 +257,11 @@ const ClientList = () => {
         }
 
         if (formData.password?.trim()) {
-          await syncClientPassword(currentClient.id, currentClient.user_id, formData.password);
+          await syncClientPassword(currentClient.id, currentClient.user_id, formData.password, { 
+            username: formData.username, 
+            email: formData.email, 
+            code: currentClient.client_code 
+          });
         }
       } else {
         // Create Mode
@@ -245,12 +271,14 @@ const ClientList = () => {
           plain_password: formData.password,
           password: formData.password
         };
+        saveClientPasswordCache({ username: formData.username, email: formData.email }, formData.password);
         res = await api.post('/clients', createPayload);
 
         if (res.data?.success && formData.password?.trim()) {
           const newClientId = res.data?.data?.id || res.data?.data?.client?.id || res.data?.id;
           const newUserId = res.data?.data?.user_id || res.data?.data?.user?.id || res.data?.user_id;
-          await syncClientPassword(newClientId, newUserId, formData.password);
+          saveClientPasswordCache({ id: newClientId, user_id: newUserId, username: formData.username, email: formData.email }, formData.password);
+          await syncClientPassword(newClientId, newUserId, formData.password, { username: formData.username, email: formData.email });
         }
       }
 

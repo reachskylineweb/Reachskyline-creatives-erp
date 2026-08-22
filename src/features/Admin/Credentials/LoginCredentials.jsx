@@ -3,6 +3,32 @@ import { Search, Key, ShieldCheck, Eye, EyeOff, Clipboard, Check, AlertCircle } 
 import api from '../../../utils/api';
 import Table from '../../../components/Table';
 
+const saveClientPasswordCache = (clientInfo, pwd) => {
+  if (!pwd || !pwd.trim()) return;
+  const p = pwd.trim();
+  try {
+    const cache = JSON.parse(localStorage.getItem('erp_client_passwords') || '{}');
+    if (clientInfo) {
+      if (clientInfo.username) cache[clientInfo.username.toLowerCase().trim()] = p;
+      if (clientInfo.email) cache[clientInfo.email.toLowerCase().trim()] = p;
+      if (clientInfo.code) cache[`code_${clientInfo.code.toLowerCase().trim()}`] = p;
+      if (clientInfo.client_code) cache[`code_${clientInfo.client_code.toLowerCase().trim()}`] = p;
+      if (clientInfo.id) cache[`id_${clientInfo.id}`] = p;
+      if (clientInfo.user_id) cache[`user_${clientInfo.user_id}`] = p;
+      if (clientInfo.profile_id) cache[`id_${clientInfo.profile_id}`] = p;
+    }
+    localStorage.setItem('erp_client_passwords', JSON.stringify(cache));
+  } catch (_) {}
+};
+
+const getClientPasswordCache = () => {
+  try {
+    return JSON.parse(localStorage.getItem('erp_client_passwords') || '{}');
+  } catch (_) {
+    return {};
+  }
+};
+
 const LoginCredentials = () => {
   const [credentials, setCredentials] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -35,9 +61,10 @@ const LoginCredentials = () => {
       if (!Array.isArray(userCreds)) userCreds = [];
 
       const clientsList = resClients.data?.data?.clients || resClients.data?.data || resClients.data?.clients || [];
+      const localCache = getClientPasswordCache();
 
       // Create a lookup map for client passwords
-      const clientPasswordMap = {};
+      const clientPasswordMap = { ...localCache };
       if (Array.isArray(clientsList)) {
         clientsList.forEach(c => {
           const clientPwd = c.plain_password || c.raw_password || c.password || c.client_password;
@@ -89,7 +116,9 @@ const LoginCredentials = () => {
           });
 
           if (!exists) {
-            const pwd = c.plain_password || c.raw_password || c.password || c.client_password || '';
+            const pwd = c.plain_password || c.raw_password || c.password || c.client_password ||
+                        (cUser && clientPasswordMap[cUser]) || (cEmail && clientPasswordMap[cEmail]) ||
+                        clientPasswordMap[`id_${cId}`] || clientPasswordMap[`user_${cUserId}`] || '';
             updatedCreds.push({
               id: c.id,
               user_id: c.user_id || c.id,
@@ -154,42 +183,46 @@ const LoginCredentials = () => {
 
     try {
       if (userType === 'client') {
-        // Try multiple endpoints for clients to ensure database update
+        const targetClientId = user.profile_id || user.client_id || user.id;
+        const targetUserId = user.user_id || user.id;
+
+        saveClientPasswordCache({ id: targetClientId, user_id: targetUserId, username: user.username, email: user.email, code: user.code }, newPwd);
+
+        const clientUpdatePayload = {
+          company_name: user.full_name || user.username,
+          client_name: user.full_name || user.username,
+          email: user.email || `${user.username}@client.com`,
+          phone: user.phone || '0000000000',
+          industry: 'General',
+          start_date: new Date().toISOString().split('T')[0],
+          username: user.username,
+          password: newPwd,
+          raw_password: newPwd,
+          plain_password: newPwd
+        };
+
         try {
-          await api.post(`/clients/${user.id}/update`, {
-            company_name: user.full_name || user.username,
-            client_name: user.full_name || user.username,
-            email: user.email || `${user.username}@client.com`,
-            phone: user.phone || '0000000000',
-            industry: 'General',
-            start_date: new Date().toISOString().split('T')[0],
-            username: user.username,
-            password: newPwd,
-            raw_password: newPwd,
-            plain_password: newPwd
-          });
+          await api.post(`/clients/${targetClientId}/update`, clientUpdatePayload);
         } catch (_) {}
+
+        if (user.id && user.id !== targetClientId) {
+          try {
+            await api.post(`/clients/${user.id}/update`, clientUpdatePayload);
+          } catch (_) {}
+        }
 
         try {
           await api.post('/users/reset-password', {
-            profileId: user.id,
-            userId: user.user_id || user.id,
+            profileId: Number(targetClientId),
             userType: 'client',
-            newPassword: newPwd,
-            password: newPwd
+            newPassword: newPwd
           });
-        } catch (_) {}
-
-        try {
-          await api.post(`/clients/${user.id}/password`, { password: newPwd, raw_password: newPwd });
         } catch (_) {}
       } else {
         await api.post('/users/reset-password', {
-          profileId: user.id,
-          userId: user.user_id || user.id,
+          profileId: Number(user.id),
           userType: userType === 'manager' ? 'manager' : userType === 'hr' ? 'hr' : 'employee',
-          newPassword: newPwd,
-          password: newPwd
+          newPassword: newPwd
         });
       }
 
@@ -259,7 +292,14 @@ const LoginCredentials = () => {
       label: 'Password (Raw)',
       width: '320px',
       render: (pwd, row) => {
-        const rawPwd = pwd || row.password || row.raw_password || row.plain_password || row.client_password || '';
+        const cached = getClientPasswordCache();
+        const cachedPwd = (row.username && cached[row.username.toLowerCase().trim()]) ||
+                          (row.email && cached[row.email.toLowerCase().trim()]) ||
+                          (row.code && cached[`code_${row.code.toLowerCase().trim()}`]) ||
+                          cached[`id_${row.id}`] ||
+                          cached[`user_${row.user_id}`] ||
+                          cached[`id_${row.profile_id}`] || '';
+        const rawPwd = pwd || row.password || row.raw_password || row.plain_password || row.client_password || cachedPwd || '';
         const isVisible = !!visiblePasswords[row.id];
         return (
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -296,14 +336,6 @@ const LoginCredentials = () => {
                 {copiedId === row.id ? <Check size={14} className="text-success" /> : <Clipboard size={14} />}
               </button>
             )}
-            <button 
-              className="btn btn-primary"
-              onClick={() => handleOpenResetModal(row)}
-              style={{ padding: '4px 8px', minWidth: '0', fontSize: '11px' }}
-              title="Set / Reset Password"
-            >
-              <Key size={13} style={{ marginRight: '4px' }} /> Set Password
-            </button>
           </div>
         );
       }
