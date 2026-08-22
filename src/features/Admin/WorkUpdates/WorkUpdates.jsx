@@ -373,7 +373,7 @@ const WorkUpdates = () => {
     if (employeeFilter) {
       const isDesignerAssigned = item.is_job_work === 0 
         ? item.status !== 'pending' 
-        : (['assigned_employee', 'submitted', 'completed', 'posted', 'approved'].includes(item.status) && !!item.content_link && item.employee_sub_dept_id && Number(item.employee_sub_dept_id) !== 3);
+        : (item.status !== 'pending' && !!item.assigned_employee_id && Number(item.assigned_employee_id) !== Number(item.content_writer_id));
 
       const matchesDesigner = Number(item.assigned_employee_id) === Number(employeeFilter) && isDesignerAssigned;
       const matchesWriter = Number(item.content_writer_id) === Number(employeeFilter);
@@ -1341,7 +1341,7 @@ const WorkUpdates = () => {
                       // Only show Designer if they have actually been assigned manually by the manager
                       const isDesignerAssigned = item.is_job_work === 0 
                         ? item.status !== 'pending' 
-                        : (['assigned_employee', 'submitted', 'completed', 'posted', 'approved'].includes(item.status) && !!item.assigned_employee_id && Number(item.assigned_employee_id) !== Number(item.content_writer_id));
+                        : (item.status !== 'pending' && !!item.assigned_employee_id && Number(item.assigned_employee_id) !== Number(item.content_writer_id));
 
                       return (
                         <tr 
