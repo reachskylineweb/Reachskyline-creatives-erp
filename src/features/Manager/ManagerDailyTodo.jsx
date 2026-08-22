@@ -2422,9 +2422,15 @@ const ManagerDailyTodo = () => {
                         {jw.deliverable || jw.activity_name || 'Job Work'}
                       </h3>
 
-                      <p style={{ fontSize: '12px', fontWeight: 700, color: stepColor, margin: '0 0 12px 0' }}>
-                        Current Stage: {currentStepText}
+                      <p style={{ fontSize: '12px', fontWeight: 700, color: stepColor, margin: '0 0 6px 0' }}>
+                        Current Stage: {currentStepText}{jw.employee_name ? ` (${jw.employee_name})` : ''}
                       </p>
+
+                      {jw.employee_name && (
+                        <p style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', margin: '0 0 12px 0' }}>
+                          Assigned Designer: <strong style={{ color: '#2563eb' }}>{jw.employee_name}</strong>
+                        </p>
+                      )}
 
                       <div style={{ fontSize: '12px', marginBottom: '12px', display: 'flex', gap: '4px', alignItems: 'center' }}>
                         <span style={{ color: 'var(--text-muted)' }}>Deadline:</span>
