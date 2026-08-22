@@ -86,12 +86,23 @@ const PageLoader = () => (
   </div>
 );
 
+// Helper to safely get cached user
+const getCachedUser = () => {
+  try {
+    const raw = localStorage.getItem('erp_user');
+    return raw ? JSON.parse(raw) : null;
+  } catch (_) {
+    return null;
+  }
+};
+
 // Protected Super Admin Route Guard
 const ProtectedSuperAdminRoute = () => {
   const { isAuthenticated, user, loading } = useAuth();
+  const activeUser = user || getCachedUser();
 
   if (loading) return <PageLoader />;
-  if (!isAuthenticated || user?.role !== 'super_admin') {
+  if (!activeUser || activeUser.role !== 'super_admin') {
     return <Navigate to="/login" replace />;
   }
 
@@ -111,10 +122,12 @@ const ProtectedSuperAdminRoute = () => {
 };
 
 const ProtectedAdminRoute = () => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+  const { isAuthenticated, user, isAdmin, loading } = useAuth();
+  const activeUser = user || getCachedUser();
+  const userIsAdmin = isAdmin || (activeUser && (activeUser.role === 'admin' || activeUser.role === 'super_admin'));
 
   if (loading) return <PageLoader />;
-  if (!isAuthenticated || !isAdmin) {
+  if (!activeUser || !userIsAdmin) {
     return <Navigate to="/login" replace />;
   }
 
@@ -136,9 +149,10 @@ const ProtectedAdminRoute = () => {
 // Protected Manager Route Guard
 const ProtectedManagerRoute = () => {
   const { isAuthenticated, user, loading } = useAuth();
+  const activeUser = user || getCachedUser();
 
   if (loading) return <PageLoader />;
-  if (!isAuthenticated || (user?.role !== 'manager' && user?.role !== 'admin' && user?.role !== 'super_admin')) {
+  if (!activeUser || (activeUser.role !== 'manager' && activeUser.role !== 'admin' && activeUser.role !== 'super_admin')) {
     return <Navigate to="/login" replace />;
   }
 
@@ -160,9 +174,11 @@ const ProtectedManagerRoute = () => {
 // Protected Client Route Guard
 const ProtectedClientRoute = () => {
   const { isAuthenticated, user, loading } = useAuth();
+  const activeUser = user || getCachedUser();
+  const isClient = activeUser && (activeUser.role === 'client' || activeUser.user_type === 'client');
 
   if (loading) return <PageLoader />;
-  if (!isAuthenticated || user?.role !== 'client') {
+  if (!isClient) {
     return <Navigate to="/login" replace />;
   }
 
@@ -184,9 +200,10 @@ const ProtectedClientRoute = () => {
 // Protected Employee Route Guard
 const ProtectedEmployeeRoute = () => {
   const { isAuthenticated, user, loading } = useAuth();
+  const activeUser = user || getCachedUser();
 
   if (loading) return <PageLoader />;
-  if (!isAuthenticated || user?.role !== 'employee') {
+  if (!activeUser || activeUser.role !== 'employee') {
     return <Navigate to="/login" replace />;
   }
 
