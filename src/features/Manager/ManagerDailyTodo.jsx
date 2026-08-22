@@ -2268,7 +2268,7 @@ const ManagerDailyTodo = () => {
                 } else if (!jw.assigned_employee_id && !hasContent && ['pending', 'assigned'].includes(status)) {
                   currentStepText = 'Awaiting Content Writer Assignment';
                   stepColor = '#d97706';
-                } else if (jw.assigned_employee_id && !hasContent && status === 'assigned_employee') {
+                } else if (jw.assigned_employee_id && !hasContent && ['assigned', 'assigned_employee'].includes(status)) {
                   currentStepText = 'Content Writing In Progress';
                   stepColor = '#3b82f6';
                 } else if (status === 'submitted' && !hasDesign) {
@@ -2277,7 +2277,7 @@ const ManagerDailyTodo = () => {
                 } else if (status === 'approved' && !jw.assigned_employee_id) {
                   currentStepText = 'Content Approved (Awaiting Designer)';
                   stepColor = '#10b981';
-                } else if (jw.assigned_employee_id && !hasDesign && status === 'assigned_employee') {
+                } else if (jw.assigned_employee_id && !hasDesign && ['assigned', 'assigned_employee'].includes(status)) {
                   currentStepText = 'Designing In Progress';
                   stepColor = '#06b6d4';
                 } else if (status === 'submitted' && hasDesign) {
@@ -2289,6 +2289,9 @@ const ManagerDailyTodo = () => {
                 } else if (['completed', 'posted'].includes(status)) {
                   currentStepText = 'Completed';
                   stepColor = '#10b981';
+                } else if (jw.assigned_employee_id) {
+                  currentStepText = hasContent ? 'Designing In Progress' : 'Content Writing In Progress';
+                  stepColor = hasContent ? '#06b6d4' : '#3b82f6';
                 }
 
                 const itemDate = jw.deadline ? jw.deadline.split(/[T ]/)[0] : '';
@@ -2339,7 +2342,7 @@ const ManagerDailyTodo = () => {
                       badgeText: '#ef4444'
                     };
                   } else if (jw.assigned_employee_id) {
-                    const isWriter = Number(jw.employee_sub_dept_id) === 1 || Number(jw.assigned_employee_id) === Number(jw.content_writer_id);
+                    const isWriter = (Number(jw.employee_sub_dept_id) === 1 || Number(jw.assigned_employee_id) === Number(jw.content_writer_id)) && !hasContent;
                     if (isWriter) {
                       displayStatusLabel = isOverdue ? 'PENDING' : 'CONTENT WRITER';
                       colors = isOverdue ? getStatusColors('pending') : {
