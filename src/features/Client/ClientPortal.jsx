@@ -166,10 +166,11 @@ const ClientPortal = ({ activeTabProp }) => {
       await Promise.all(selectedIds.map(async (key) => {
         const isJobWork = key.startsWith('job_');
         const id = Number(key.replace('job_', '').replace('deliv_', ''));
-        if (isJobWork) {
-          await api.put(`/client-portal/job-works/${id}/review`, { action: 'approve' });
-        } else {
-          await api.put(`/client-portal/deliverables/${id}/review`, { action: 'approve' });
+        const endpoint = isJobWork ? `/client-portal/job-works/${id}/review` : `/client-portal/deliverables/${id}/review`;
+        try {
+          await api.post(endpoint, { action: 'approve' });
+        } catch (_) {
+          await api.put(endpoint, { action: 'approve' });
         }
       }));
       alert('Selected deliverables approved successfully.');
@@ -241,10 +242,16 @@ const ClientPortal = ({ activeTabProp }) => {
         ? `/client-portal/job-works/${item.id}/review`
         : `/client-portal/deliverables/${item.id}/review`;
 
-      const res = await api.put(endpoint, { action: 'approve' });
-      if (res.data.success) {
+      let res;
+      try {
+        res = await api.post(endpoint, { action: 'approve' });
+      } catch (_) {
+        res = await api.put(endpoint, { action: 'approve' });
+      }
+
+      if (res && res.data && res.data.success) {
         alert('Item approved successfully.');
-        fetchSkylineDeliverables();
+        fetchPortalData();
       }
     } catch (err) {
       console.error('Approve failed:', err.message);
