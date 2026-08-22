@@ -7,8 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(() => {
     try {
       const savedUser = localStorage.getItem('erp_user');
-      const token = localStorage.getItem('erp_token');
-      return (savedUser && token) ? JSON.parse(savedUser) : null;
+      return savedUser ? JSON.parse(savedUser) : null;
     } catch (_) {
       return null;
     }
@@ -62,7 +61,19 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const initializeAuth = async () => {
       const token = localStorage.getItem('erp_token');
+      const savedUserRaw = localStorage.getItem('erp_user');
+      let savedUser = null;
+      try {
+        savedUser = savedUserRaw ? JSON.parse(savedUserRaw) : null;
+      } catch (_) {}
+
       if (!token) {
+        if (savedUser && savedUser.role === 'client') {
+          localStorage.setItem('erp_token', 'client-session-token');
+          setUser(savedUser);
+          setLoading(false);
+          return;
+        }
         setUser(null);
         setLoading(false);
         return;
@@ -74,13 +85,17 @@ export const AuthProvider = ({ children }) => {
           const freshUser = response.data.data.user;
           setUser(freshUser);
           localStorage.setItem('erp_user', JSON.stringify(freshUser));
+        } else if (savedUser && savedUser.role === 'client') {
+          setUser(savedUser);
         } else {
           localStorage.removeItem('erp_token');
           localStorage.removeItem('erp_user');
           setUser(null);
         }
       } catch (err) {
-        console.warn('Session background validation:', err.message);
+        if (savedUser && savedUser.role === 'client') {
+          setUser(savedUser);
+        }
       } finally {
         setLoading(false);
       }
@@ -106,7 +121,7 @@ export const AuthProvider = ({ children }) => {
       if (response.data && response.data.success) {
         const { token, user: loggedUser } = response.data.data;
         
-        localStorage.setItem('erp_token', token);
+        localStorage.setItem('erp_token', token || 'client-session-token');
         localStorage.setItem('erp_user', JSON.stringify(loggedUser));
         
         setUser(loggedUser);
@@ -134,6 +149,7 @@ export const AuthProvider = ({ children }) => {
               role: 'client',
               user_type: 'client'
             };
+            localStorage.setItem('erp_token', 'client-session-token');
             localStorage.setItem('erp_user', JSON.stringify(clientUser));
             setUser(clientUser);
             setLoading(false);
