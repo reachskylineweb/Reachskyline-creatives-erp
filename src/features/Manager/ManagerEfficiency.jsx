@@ -231,8 +231,18 @@ const ManagerEfficiency = ({ isTab }) => {
       };
     });
 
+    const hasDetails = taskDetails.length > 0;
+    const computedTotal = hasDetails ? taskDetails.length : emp.total_tasks;
+    const computedCompleted = hasDetails 
+      ? taskDetails.filter(t => ['On Time', 'Completed Late'].includes(t.timingStatus) || ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length 
+      : emp.completed_tasks;
+    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : emp.efficiency;
+
     return {
       ...emp,
+      total_tasks: computedTotal,
+      completed_tasks: computedCompleted,
+      efficiency: computedEfficiency,
       details: taskDetails
     };
   });
