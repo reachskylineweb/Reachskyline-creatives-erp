@@ -125,17 +125,20 @@ const ManagerList = () => {
     const errors = {};
     if (!formData.full_name.trim()) errors.full_name = 'Full name is required.';
     
-    // Username and password required on creation only
-    if (!currentManager) {
-      if (!formData.username.trim()) {
-        errors.username = 'Username is required.';
-      } else if (formData.username.trim().length < 3) {
-        errors.username = 'Username must be at least 3 characters.';
-      }
+    if (!formData.username.trim()) {
+      errors.username = 'Username is required.';
+    } else if (formData.username.trim().length < 3) {
+      errors.username = 'Username must be at least 3 characters.';
+    }
 
+    if (!currentManager) {
       if (!formData.password.trim()) {
         errors.password = 'Initial password is required.';
       } else if (formData.password.trim().length < 6) {
+        errors.password = 'Password must be at least 6 characters.';
+      }
+    } else {
+      if (formData.password && formData.password.trim().length > 0 && formData.password.trim().length < 6) {
         errors.password = 'Password must be at least 6 characters.';
       }
     }
@@ -525,28 +528,27 @@ const ManagerList = () => {
             required
           />
 
-          {!currentManager && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <FormInput
-                label="Username"
-                name="username"
-                value={formData.username}
-                onChange={handleInputChange}
-                error={formErrors.username}
-                placeholder="e.g. arun_mgr"
-                required
-              />
-              <FormInput
-                label="Initial Password"
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleInputChange}
-                error={formErrors.password}
-                required
-              />
-            </div>
-          )}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <FormInput
+              label="Username"
+              name="username"
+              value={formData.username}
+              onChange={handleInputChange}
+              error={formErrors.username}
+              placeholder="e.g. arun_mgr"
+              required
+            />
+            <FormInput
+              label={currentManager ? "New Password (Optional)" : "Initial Password"}
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              error={formErrors.password}
+              placeholder={currentManager ? "Leave blank to keep existing password" : "Min 6 characters required"}
+              required={!currentManager}
+            />
+          </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <FormInput

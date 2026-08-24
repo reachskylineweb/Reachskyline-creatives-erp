@@ -665,7 +665,12 @@ const EmployeeAssignedWork = () => {
           fetchDesignerData();
         }
       } else {
-        const res = await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+        let res;
+        try {
+          res = await api.post(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+        } catch (_) {
+          res = await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+        }
         if (res.data.success) {
           alert('Deliverable successfully submitted to manager.');
           fetchDesignerData();
@@ -730,7 +735,11 @@ const EmployeeAssignedWork = () => {
         if (item.isJobWork) {
           await api.post(`/deliverables/job-work/${item.id}/submit`, { googleDriveLink: link });
         } else {
-          await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+          try {
+            await api.post(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+          } catch (_) {
+            await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+          }
         }
       }
       alert('All filled deliverables and job works successfully submitted to the manager!');
