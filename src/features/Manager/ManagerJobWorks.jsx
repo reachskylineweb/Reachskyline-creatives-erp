@@ -191,11 +191,17 @@ const ManagerJobWorks = () => {
     setActionInProgress(assigningJobId);
     setFeedbackMessage({ type: '', text: '' });
     try {
-      const res = await api.put(`/deliverables/job-work/${assigningJobId}/assign`, {
+      let res;
+      const assignPayload = {
         employeeId: Number(selectedEmployee),
         feedbackText: feedbackText.trim() || null,
         voiceBase64: audioBase64 || null
-      });
+      };
+      try {
+        res = await api.post(`/deliverables/job-work/${assigningJobId}/assign`, assignPayload);
+      } catch (_) {
+        res = await api.put(`/deliverables/job-work/${assigningJobId}/assign`, assignPayload);
+      }
       if (res.data.success) {
         setFeedbackMessage({ type: 'success', text: 'Job Work successfully assigned to employee!' });
         closeAssignModal();

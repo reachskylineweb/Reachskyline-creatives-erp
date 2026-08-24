@@ -172,7 +172,14 @@ const SMMTodayPosting = ({ isEmployee = false }) => {
     const isJobWork = item?.is_job_work === 1;
     setActionInProgress(itemId);
     try {
-      const res = await api.put(`/deliverables/${itemId}/assign`, { employeeId: Number(empId), isJobWork });
+      let res;
+      const assignPayload = { employeeId: Number(empId), isJobWork };
+      const endpoint = isJobWork ? `/deliverables/job-work/${itemId}/assign` : `/deliverables/${itemId}/assign`;
+      try {
+        res = await api.post(endpoint, assignPayload);
+      } catch (_) {
+        res = await api.put(endpoint, assignPayload);
+      }
       if (res.data.success) {
         showModal({
           title: 'Success',
@@ -204,9 +211,16 @@ const SMMTodayPosting = ({ isEmployee = false }) => {
     }
     setActionInProgress('bulk');
     try {
-      await Promise.all(selectedIds.map(id => {
+      await Promise.all(selectedIds.map(async id => {
         const item = items.find(x => x.id === id);
-        return api.put(`/deliverables/${id}/assign`, { employeeId: Number(bulkEmployeeId), isJobWork: item?.is_job_work === 1 });
+        const isJobWork = item?.is_job_work === 1;
+        const assignPayload = { employeeId: Number(bulkEmployeeId), isJobWork };
+        const endpoint = isJobWork ? `/deliverables/job-work/${id}/assign` : `/deliverables/${id}/assign`;
+        try {
+          return await api.post(endpoint, assignPayload);
+        } catch (_) {
+          return await api.put(endpoint, assignPayload);
+        }
       }));
       showModal({
         title: 'Success',
