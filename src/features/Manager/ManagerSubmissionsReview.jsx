@@ -551,29 +551,37 @@ const ManagerSubmissionsReview = () => {
       if (Number(actualSubDeptId) !== Number(activeSubDeptId)) return false;
 
       const status = (item.status || '').toLowerCase();
+      const isPendingApprovalStatus = [
+        'submitted', 'script_submitted', 'manager_review_script', 'manager_review_design', 
+        'pending_review', 'in_review', 'waiting_for_approval', 'pending_approval', 'sent_to_approval'
+      ].includes(status);
 
       if (activeSubTab === 'today_work') {
-        // Date match: check item.updated_at
-        const itemDate = item.updated_at ? getLocalDateString(item.updated_at) : null;
-        if (itemDate !== selectedDate) return false;
+        // Date match: check item.updated_at, submitted_at, due_date, deadline, or created_at
+        const itemDate = getLocalDateString(item.updated_at || item.submitted_at || item.due_date || item.deadline || item.created_at);
+        if (itemDate && itemDate !== selectedDate) return false;
 
-        // Show items that are submitted/approved/reworked today
-        if (!['submitted', 'approved', 'client_approved', 'sent_to_client', 'reassigned'].includes(status)) return false;
+        // Show items that are submitted/pending approval/approved/reworked today
+        const isTodayWorkStatus = isPendingApprovalStatus || [
+          'approved', 'client_approved', 'sent_to_client', 'reassigned', 'rework', 'completed'
+        ].includes(status);
+
+        if (!isTodayWorkStatus) return false;
       } else if (activeSubTab === 'pending_approval') {
-        // Pending approval: status is 'submitted'
-        if (status !== 'submitted') return false;
+        // Pending approval: any submitted or review-pending status
+        if (!isPendingApprovalStatus) return false;
         
         if (selectedMonth) {
-          const itemMonth = item.due_date ? item.due_date.substring(0, 7) : null;
-          if (itemMonth !== selectedMonth) return false;
+          const itemMonth = item.due_date ? item.due_date.substring(0, 7) : (item.deadline ? item.deadline.substring(0, 7) : null);
+          if (itemMonth && itemMonth !== selectedMonth) return false;
         }
       } else if (activeSubTab === 'approved') {
-        // Approved: status is 'approved', 'client_approved', 'sent_to_client'
-        if (!['approved', 'client_approved', 'sent_to_client'].includes(status)) return false;
+        // Approved: status is 'approved', 'client_approved', 'sent_to_client', 'completed'
+        if (!['approved', 'client_approved', 'sent_to_client', 'completed'].includes(status)) return false;
 
         if (selectedMonth) {
-          const itemMonth = item.due_date ? item.due_date.substring(0, 7) : null;
-          if (itemMonth !== selectedMonth) return false;
+          const itemMonth = item.due_date ? item.due_date.substring(0, 7) : (item.deadline ? item.deadline.substring(0, 7) : null);
+          if (itemMonth && itemMonth !== selectedMonth) return false;
         }
       }
 
@@ -587,38 +595,44 @@ const ManagerSubmissionsReview = () => {
         if (!item.isJobWork) return false;
 
         // Check if creator/writer is Content Writer (sub department 1)
-        // Prioritize content_writer_id to ensure approved/unassigned tasks remain visible in Content Writer tab
         const actualSubDeptId = (item.content_writer_id ? 1 : null) || item.employee_sub_dept_id || item.sub_department_id;
         if (Number(actualSubDeptId) !== 1) return false;
 
         const status = (item.status || '').toLowerCase();
+        const isPendingApprovalStatus = [
+          'submitted', 'script_submitted', 'manager_review_script', 'manager_review_design', 
+          'pending_review', 'in_review', 'waiting_for_approval', 'pending_approval', 'sent_to_approval'
+        ].includes(status);
 
         if (activeSubTab === 'today_work') {
-          // Date match: check item.updated_at
-          const itemDate = item.updated_at ? getLocalDateString(item.updated_at) : null;
-          if (itemDate !== selectedDate) return false;
+          // Date match: check item.updated_at, submitted_at, due_date, deadline, or created_at
+          const itemDate = getLocalDateString(item.updated_at || item.submitted_at || item.due_date || item.deadline || item.created_at);
+          if (itemDate && itemDate !== selectedDate) return false;
 
-          // Show items that are submitted/approved/reworked today
-          if (!['submitted', 'approved', 'client_approved', 'sent_to_client', 'reassigned'].includes(status)) return false;
+          // Show items that are submitted/pending approval/approved/reworked today
+          const isTodayWorkStatus = isPendingApprovalStatus || [
+            'approved', 'client_approved', 'sent_to_client', 'reassigned', 'rework', 'completed'
+          ].includes(status);
+
+          if (!isTodayWorkStatus) return false;
         } else if (activeSubTab === 'pending_approval') {
-          // Pending approval: status is 'submitted'
-          if (status !== 'submitted') return false;
+          // Pending approval: any submitted or review-pending status
+          if (!isPendingApprovalStatus) return false;
 
           if (selectedMonth) {
-            const itemMonth = item.due_date ? item.due_date.substring(0, 7) : null;
-            if (itemMonth !== selectedMonth) return false;
+            const itemMonth = item.due_date ? item.due_date.substring(0, 7) : (item.deadline ? item.deadline.substring(0, 7) : null);
+            if (itemMonth && itemMonth !== selectedMonth) return false;
           }
         } else if (activeSubTab === 'approved') {
           // Approved: status is 'approved', 'client_approved', 'sent_to_client', 'completed', 'posted'
-          // OR if it's currently assigned to a designer/editor (meaning content script was approved)
           const isScriptApproved = ['approved', 'client_approved', 'sent_to_client', 'completed', 'posted'].includes(status) ||
             (item.assigned_employee_id !== null && Number(item.assigned_employee_id) !== Number(item.content_writer_id));
           
           if (!isScriptApproved) return false;
 
           if (selectedMonth) {
-            const itemMonth = item.due_date ? item.due_date.substring(0, 7) : null;
-            if (itemMonth !== selectedMonth) return false;
+            const itemMonth = item.due_date ? item.due_date.substring(0, 7) : (item.deadline ? item.deadline.substring(0, 7) : null);
+            if (itemMonth && itemMonth !== selectedMonth) return false;
           }
         }
 
@@ -630,22 +644,25 @@ const ManagerSubmissionsReview = () => {
       // Category match
       if (item.category !== contentSubTab) return false;
 
-      const subStatus = (item.submission_status || '').toLowerCase();
+      const subStatus = (item.submission_status || item.status || '').toLowerCase();
+      const isPendingApprovalStatus = [
+        'submitted', 'script_submitted', 'pending_review', 'in_review', 'waiting_for_approval', 'pending_approval', 'pending'
+      ].includes(subStatus);
 
       if (activeSubTab === 'today_work') {
-        // Date match: check item.updated_at
-        const itemDate = item.updated_at ? getLocalDateString(item.updated_at) : null;
-        if (itemDate !== selectedDate) return false;
+        // Date match: check item.updated_at, submitted_at, date, or created_at
+        const itemDate = getLocalDateString(item.updated_at || item.submitted_at || item.date || item.created_at);
+        if (itemDate && itemDate !== selectedDate) return false;
 
         // Content calendars/event days that are submitted/approved/pending today
-        if (!['submitted', 'approved', 'pending'].includes(subStatus)) return false;
+        if (!isPendingApprovalStatus && !['approved', 'reassigned', 'rework', 'completed'].includes(subStatus)) return false;
       } else if (activeSubTab === 'pending_approval') {
-        // Pending approval: status is 'submitted'
-        if (subStatus !== 'submitted') return false;
+        // Pending approval: status is submitted or pending review
+        if (!isPendingApprovalStatus) return false;
 
         if (selectedMonth) {
           const itemMonth = item.month || (item.date ? item.date.substring(0, 7) : null);
-          if (itemMonth !== selectedMonth) return false;
+          if (itemMonth && itemMonth !== selectedMonth) return false;
         }
       } else if (activeSubTab === 'approved') {
         // Approved: status is 'approved'
@@ -653,7 +670,7 @@ const ManagerSubmissionsReview = () => {
 
         if (selectedMonth) {
           const itemMonth = item.month || (item.date ? item.date.substring(0, 7) : null);
-          if (itemMonth !== selectedMonth) return false;
+          if (itemMonth && itemMonth !== selectedMonth) return false;
         }
       }
 
