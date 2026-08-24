@@ -334,11 +334,14 @@ const ManagerSubmissionsReview = () => {
     return submissions.filter(item => {
       // Sub-department match: check employee_sub_dept_id, fallback to sub_department_id
       const actualSubDeptId = item.employee_sub_dept_id || item.sub_department_id;
+      const isGraphicOrCreativesTab = Number(activeSubDeptId) === 2 || Number(activeSubDeptId) === 4;
+
       if (actualSubDeptId && Number(actualSubDeptId) !== Number(activeSubDeptId)) {
         // Allow matching if both are Graphic Design (2) or Creatives Designer (4)
-        const isGraphicOrCreativesTab = Number(activeSubDeptId) === 2 || Number(activeSubDeptId) === 4;
         const isGraphicOrCreativesItem = Number(actualSubDeptId) === 2 || Number(actualSubDeptId) === 4;
-        if (!(isGraphicOrCreativesTab && isGraphicOrCreativesItem)) {
+        const isGraphicActivity = item.isJobWork || (item.activity_type_code && ['AT001', 'AT003', 'AT004'].includes(item.activity_type_code.toUpperCase()));
+        
+        if (!(isGraphicOrCreativesTab && (isGraphicOrCreativesItem || isGraphicActivity))) {
           return false;
         }
       }
