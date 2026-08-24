@@ -377,16 +377,24 @@ const ManagerDailyTodo = () => {
       badgeBg: '#f8fafc',
       badgeText: '#64748b',
       border: '#e2e8f0',
-      bg: '#ffffff'
     };
   };
+
+  // Sort and filter employees for the workload summary (exclude Content Writers for design/video departments)
   const workloadEmployees = employees
     .filter(emp => {
       const subDeptId = Number(emp.sub_department_id);
       const subDeptCode = (emp.sub_department_code || '').toUpperCase();
       const subDeptName = (emp.sub_department_name || '').toLowerCase();
-      // Exclude Content Writers (sub_department_id = 1, CW-RS, or content in name)
-      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content');
+      const nameLower = (emp.full_name || '').toLowerCase();
+
+      // Exclude Content Writers (sub_department_id = 1, CW-RS, or content in name/role)
+      const isContentWriter = 
+        subDeptId === 1 || 
+        subDeptCode === 'CW-RS' || 
+        subDeptName.includes('content') || 
+        nameLower.includes('writer');
+
       return !isContentWriter;
     })
     .sort((a, b) => {
@@ -431,8 +439,8 @@ const ManagerDailyTodo = () => {
           {workloadEmployees.map(emp => {
             const count = getEmployeeTaskCount(emp.id);
             const initials = getInitials(emp.full_name);
-            const roleSuffix = getSubDeptSuffix(emp.sub_department_id);
-            const role = roleSuffix ? roleSuffix.replace(/[()]/g, '').trim() : 'Designer';
+            const roleName = emp.sub_department_name || (getSubDeptSuffix(emp.sub_department_id) || '').replace(/[()]/g, '').trim();
+            const role = roleName || 'Designer';
 
             // Distinct gradients for visual excellence
             const colors = [
