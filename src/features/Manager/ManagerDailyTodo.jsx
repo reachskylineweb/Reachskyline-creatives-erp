@@ -51,8 +51,9 @@ const getSubDeptSuffix = (subDeptId) => {
   const id = Number(subDeptId);
   if (id === 1) return ' (Content Writer)';
   if (id === 2) return ' (Graphic Designer)';
-  if (id === 3) return ' (Video Editor)';
+  if (id === 3 || id === 5) return ' (Video Editor)';
   if (id === 4) return ' (Creative Designer)';
+  return ' (Designer)';
 };
 
 const getPendingReason = (item) => {
@@ -174,15 +175,14 @@ const ManagerDailyTodo = () => {
       Number(item.assigned_employee_id) === Number(empId) && item.status !== 'pending'
     ).length;
     
-    // Count job works (todayJobWorks) - only if assigned to designer/editor and status is active
+    // Count job works (todayJobWorks) - count active job works assigned to designer/editor
     const jwCount = todayJobWorks.filter(jw => {
       const assignedId = isSMM ? jw.smm_employee_id : jw.assigned_employee_id;
       if (Number(assignedId) !== Number(empId)) return false;
       if (isSMM) return true;
       
       const status = (jw.status || '').toLowerCase();
-      const hasContent = !!jw.content_link;
-      return ['assigned_employee', 'submitted', 'completed', 'posted'].includes(status) && hasContent;
+      return ['assigned_employee', 'submitted', 'completed', 'posted', 'script_submitted', 'waiting_for_approval', 'manager_review_script', 'manager_review_design', 'in_progress', 'pending'].includes(status);
     }).length;
     
     return delCount + jwCount;
@@ -380,12 +380,14 @@ const ManagerDailyTodo = () => {
       bg: '#ffffff'
     };
   };
-
-  // Sort and filter employees for the workload summary (exclude Content Writers for design/video departments)
   const workloadEmployees = employees
     .filter(emp => {
-      if (false && managerProfile.department_code === 'SEO-RS') return true;
-      return Number(emp.sub_department_id) !== 3; // Exclude Content Writers (id = 3)
+      const subDeptId = Number(emp.sub_department_id);
+      const subDeptCode = (emp.sub_department_code || '').toUpperCase();
+      const subDeptName = (emp.sub_department_name || '').toLowerCase();
+      // Exclude Content Writers (sub_department_id = 1, CW-RS, or content in name)
+      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content');
+      return !isContentWriter;
     })
     .sort((a, b) => {
       if (a.sub_department_id !== b.sub_department_id) {
@@ -435,12 +437,12 @@ const ManagerDailyTodo = () => {
             // Distinct gradients for visual excellence
             const colors = [
               'linear-gradient(135deg, #06b6d4, #0891b2)', // Graphic Designer (Cyan)
+              'linear-gradient(135deg, #ec4899, #be185d)', // Creative Designer (Pink)
               'linear-gradient(135deg, #6366f1, #4f46e5)', // Video Editor (Indigo)
-              'linear-gradient(135deg, #f59e0b, #d97706)', // Content Writer (Amber)
-              'linear-gradient(135deg, #ec4899, #be185d)'  // Creative Designer (Pink)
+              'linear-gradient(135deg, #f59e0b, #d97706)'  // Amber
             ];
             const subDeptId = Number(emp.sub_department_id);
-            const gradient = (subDeptId >= 1 && subDeptId <= 4) ? colors[subDeptId - 1] : colors[subDeptId % colors.length];
+            const gradient = (subDeptId >= 2 && subDeptId <= 5) ? colors[(subDeptId - 2) % colors.length] : colors[0];
 
             return (
               <div 
