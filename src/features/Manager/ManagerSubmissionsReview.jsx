@@ -491,7 +491,11 @@ const ManagerSubmissionsReview = () => {
           feedback: feedbackText,
           voiceNote: null
         };
-        res = await api.put(endpoint, payload);
+        try {
+          res = await api.post(endpoint, payload);
+        } catch (_) {
+          res = await api.put(endpoint, payload);
+        }
       }
 
       if (res.data.success) {

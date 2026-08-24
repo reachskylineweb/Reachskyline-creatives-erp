@@ -181,9 +181,12 @@ const ManagerClientRework = () => {
         employeeId: selectedEmployeeId ? Number(selectedEmployeeId) : null
       };
 
-      const res = reassignItem.isJobWork
-        ? await api.post(endpoint, payload)
-        : await api.put(endpoint, payload);
+      let res;
+      try {
+        res = await api.post(endpoint, payload);
+      } catch (_) {
+        res = await api.put(endpoint, payload);
+      }
 
       if (res.data.success) {
         alert('Work successfully reassigned to designer employee.');
@@ -215,9 +218,12 @@ const ManagerClientRework = () => {
       
       const payload = { action: 'approved' };
 
-      const res = approveItem.isJobWork
-        ? await api.post(endpoint, { action: 'approve' })
-        : await api.put(endpoint, payload);
+      let res;
+      try {
+        res = await api.post(endpoint, approveItem.isJobWork ? { action: 'approve' } : payload);
+      } catch (_) {
+        res = await api.put(endpoint, payload);
+      }
 
       if (res.data.success) {
         alert('Work approved successfully!');
