@@ -94,7 +94,12 @@ const SMMMonthlyPosting = ({ isEmployee = false }) => {
     if (!(await window.confirm('Are you sure you want to mark this item as posted on social media?'))) return;
     setActionInProgress(itemId);
     try {
-      const res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+      let res;
+      try {
+        res = await api.post(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+      } catch (_) {
+        res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+      }
       if (res.data.success) {
         alert('Deliverable successfully marked as Posted!');
         setItems(prev => prev.map(item => item.id === itemId ? { ...item, status: isJobWork ? 'completed' : 'posted' } : item));

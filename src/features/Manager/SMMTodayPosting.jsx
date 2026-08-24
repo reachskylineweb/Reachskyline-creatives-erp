@@ -136,7 +136,12 @@ const SMMTodayPosting = ({ isEmployee = false }) => {
       onConfirm: async () => {
         setActionInProgress(itemId);
         try {
-          const res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+          let res;
+          try {
+            res = await api.post(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+          } catch (_) {
+            res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted', isJobWork });
+          }
           if (res.data.success) {
             showModal({
               title: 'Success',

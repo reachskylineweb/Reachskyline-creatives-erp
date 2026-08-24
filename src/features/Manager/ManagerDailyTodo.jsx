@@ -714,7 +714,12 @@ const ManagerDailyTodo = () => {
     if (!(await window.confirm('Are you sure you want to mark this item as posted?'))) return;
     setActionInProgress(itemId);
     try {
-      const res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted' });
+      let res;
+      try {
+        res = await api.post(`/deliverables/${itemId}/status`, { status: 'posted' });
+      } catch (_) {
+        res = await api.patch(`/deliverables/${itemId}/status`, { status: 'posted' });
+      }
       if (res.data.success) {
         fetchDailyTodo();
       }
