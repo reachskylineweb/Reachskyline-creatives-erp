@@ -167,43 +167,50 @@ const ManagerEfficiency = ({ isTab }) => {
     const empId = Number(emp.id);
 
     const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 3 || (emp.sub_department_name || '').toLowerCase().includes('content');
-    // Deliverables filter: only include assigned/dispatched deliverables (status != 'pending')
-    const empDeliverables = deliverables.filter(d => Number(d.assigned_employee_id) === empId && (isWriter || d.status !== 'pending'));
+    // Deliverables filter: include tasks where employee is assigned_employee_id or content_writer_id
+    const empDeliverables = deliverables.filter(d => Number(d.assigned_employee_id) === empId || Number(d.content_writer_id) === empId);
     // Job Works filter
     const empJobWorks = jobWorks.filter(jw => Number(jw.assigned_employee_id) === empId || Number(jw.content_writer_id) === empId);
 
     let filteredDelivs = [];
     let filteredJobs = [];
 
+    const getTaskDateStr = (t) => {
+      const raw = t.due_date || t.deadline || t.date || t.created_at || '';
+      return raw ? String(raw).split(/[T ]/)[0] : '';
+    };
+
     if (activeTab === 'today') {
       filteredDelivs = empDeliverables.filter(d => {
-        const taskDate = (d.due_date || d.date || d.created_at || '').split(/[T ]/)[0];
-        return taskDate === selectedDate;
+        const taskDate = getTaskDateStr(d);
+        return !taskDate || taskDate === selectedDate;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const taskDate = (jw.deadline || jw.due_date || jw.created_at || '').split(/[T ]/)[0];
-        return taskDate === selectedDate;
+        const taskDate = getTaskDateStr(jw);
+        return !taskDate || taskDate === selectedDate;
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
-        const taskMonth = (d.due_date || d.date || d.created_at || '').substring(0, 7);
-        return taskMonth === selectedMonth;
+        const taskMonth = getTaskDateStr(d).substring(0, 7);
+        return !taskMonth || taskMonth === selectedMonth;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const taskMonth = (jw.deadline || jw.due_date || jw.created_at || '').substring(0, 7);
-        return taskMonth === selectedMonth;
+        const taskMonth = getTaskDateStr(jw).substring(0, 7);
+        return !taskMonth || taskMonth === selectedMonth;
       });
     }
 
     const allPeriodTasks = [...filteredDelivs, ...filteredJobs];
+    const fallbackTasks = [...empDeliverables, ...empJobWorks];
+    const finalTasks = allPeriodTasks.length > 0 ? allPeriodTasks : fallbackTasks;
 
-    const taskDetails = allPeriodTasks.map(task => {
+    const taskDetails = finalTasks.map(task => {
       const isJobWork = task.is_job_work === undefined;
       const rawDue = isJobWork ? task.deadline : task.due_date;
-      const dueStr = rawDue ? rawDue.split(' ')[0].split('T')[0] : '';
+      const dueStr = rawDue ? String(rawDue).split(/[T ]/)[0] : '';
 
       const isCompleted = ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((task.status || '').toLowerCase());
-      const completionDate = task.updated_at ? task.updated_at.split(/[T ]/)[0] : '';
+      const completionDate = task.updated_at ? String(task.updated_at).split(/[T ]/)[0] : '';
 
       let timingStatus = 'On Time';
       if (isCompleted) {
@@ -231,12 +238,11 @@ const ManagerEfficiency = ({ isTab }) => {
       };
     });
 
-    const hasDetails = taskDetails.length > 0;
-    const computedTotal = hasDetails ? taskDetails.length : emp.total_tasks;
-    const computedCompleted = hasDetails 
+    const computedTotal = taskDetails.length > 0 ? taskDetails.length : Math.max(emp.total_tasks || 0, fallbackTasks.length);
+    const computedCompleted = taskDetails.length > 0 
       ? taskDetails.filter(t => ['On Time', 'Completed Late'].includes(t.timingStatus) || ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length 
-      : emp.completed_tasks;
-    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : emp.efficiency;
+      : Math.max(emp.completed_tasks || 0, fallbackTasks.filter(t => ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length);
+    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : (emp.efficiency || 0);
 
     return {
       ...emp,
