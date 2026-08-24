@@ -176,27 +176,31 @@ const ManagerEfficiency = ({ isTab }) => {
     let filteredJobs = [];
 
     const getTaskDateStr = (t) => {
-      const raw = t.due_date || t.deadline || t.date || t.created_at || '';
-      return raw ? String(raw).split(/[T ]/)[0] : '';
+      let raw = t.due_date || t.deadline || t.date || t.created_at || '';
+      if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) {
+        raw = t.created_at || t.updated_at || '';
+      }
+      if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) return '';
+      return String(raw).split(/[T ]/)[0];
     };
 
     if (activeTab === 'today') {
       filteredDelivs = empDeliverables.filter(d => {
         const taskDate = getTaskDateStr(d);
-        return !taskDate || taskDate === selectedDate;
+        return taskDate === selectedDate || (!taskDate && (d.created_at || '').split(/[T ]/)[0] === selectedDate);
       });
       filteredJobs = empJobWorks.filter(jw => {
         const taskDate = getTaskDateStr(jw);
-        return !taskDate || taskDate === selectedDate;
+        return taskDate === selectedDate || (!taskDate && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
         const taskMonth = getTaskDateStr(d).substring(0, 7);
-        return !taskMonth || taskMonth === selectedMonth;
+        return taskMonth === selectedMonth || (!taskMonth && (d.created_at || '').substring(0, 7) === selectedMonth);
       });
       filteredJobs = empJobWorks.filter(jw => {
         const taskMonth = getTaskDateStr(jw).substring(0, 7);
-        return !taskMonth || taskMonth === selectedMonth;
+        return taskMonth === selectedMonth || (!taskMonth && (jw.created_at || '').substring(0, 7) === selectedMonth);
       });
     }
 
