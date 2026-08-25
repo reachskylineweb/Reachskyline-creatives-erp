@@ -136,38 +136,45 @@ const Sidebar = () => {
     return getAdminMenuItems();
   };
 
+  const handleNavClick = () => {
+    document.body.classList.remove('mobile-sidebar-open');
+  };
+
   const menuItems = getMenuItems();
 
   return (
-    <aside className="sidebar">
-      <div className="sidebar-logo">
-        <img src="https://res.cloudinary.com/srfbqmic/image/upload/f_auto,q_auto/download_1_1_l9glns" alt="ReachSkyline Logo" />
-        <span>ReachSkyline</span>
-        
-        <svg width="0" height="0" style={{ position: 'absolute' }}>
-          <defs>
-            <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#DAA71B" />
-              <stop offset="100%" stopColor="#4f46e5" />
-            </linearGradient>
-          </defs>
-        </svg>
-      </div>
+    <>
+      <div className="sidebar-backdrop" onClick={handleNavClick}></div>
+      <aside className="sidebar">
+        <div className="sidebar-logo">
+          <img src="https://res.cloudinary.com/srfbqmic/image/upload/f_auto,q_auto/download_1_1_l9glns" alt="ReachSkyline Logo" />
+          <span>ReachSkyline</span>
+          
+          <svg width="0" height="0" style={{ position: 'absolute' }}>
+            <defs>
+              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#DAA71B" />
+                <stop offset="100%" stopColor="#4f46e5" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
 
-      <ul className="sidebar-menu">
-        {menuItems.map((item, index) => (
-          <li key={index} className="sidebar-item">
-            <NavLink
-              to={item.path}
-              state={item.state}
-              className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
-            >
-              {item.icon}
-              <span>{item.label}</span>
-            </NavLink>
-          </li>
-        ))}
-      </ul>
+        <ul className="sidebar-menu">
+          {menuItems.map((item, index) => (
+            <li key={index} className="sidebar-item">
+              <NavLink
+                to={item.path}
+                state={item.state}
+                onClick={handleNavClick}
+                className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}
+              >
+                {item.icon}
+                <span>{item.label}</span>
+              </NavLink>
+            </li>
+          ))}
+        </ul>
 
       <div className="sidebar-footer">
         <button
@@ -189,6 +196,7 @@ const Sidebar = () => {
         </button>
       </div>
     </aside>
+    </>
   );
 };
 

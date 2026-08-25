@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle } from 'lucide-react';
+import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle, Menu } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import Modal from './Modal';
@@ -12,29 +12,29 @@ const Header = () => {
   const [searchLoading, setSearchLoading] = useState(false);
   const [searchResults, setSearchResults] = useState(null);
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  // Search state (notifications removed)
-
-  // Handle global search submission
-  const handleSearchSubmit = async (e) => {
-    e.preventDefault();
-    if (!searchQuery.trim()) return;
-
-    setSearchLoading(true);
-    setShowSearchModal(true);
-    try {
-      const response = await api.get(`/search?q=${encodeURIComponent(searchQuery)}`);
-      if (response.data && response.data.success) {
-        setSearchResults(response.data.data);
-      }
-    } catch (err) {
-      console.error('Global search error:', err.message);
-    } finally {
-      setSearchLoading(false);
+  const toggleMobileMenu = () => {
+    const nextState = !mobileMenuOpen;
+    setMobileMenuOpen(nextState);
+    if (nextState) {
+      document.body.classList.add('mobile-sidebar-open');
+    } else {
+      document.body.classList.remove('mobile-sidebar-open');
     }
   };
 
-  // Removed getNotificationIcon
+  // Close mobile menu on resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 768) {
+        document.body.classList.remove('mobile-sidebar-open');
+        setMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const isClientPath = window.location.pathname.startsWith('/client');
   const displayUser = isClientPath ? (
@@ -68,18 +68,28 @@ const Header = () => {
 
   return (
     <header className="header">
-      {/* Search Bar */}
-      <form onSubmit={handleSearchSubmit}>
-        <div className="header-search">
-          <Search size={18} className="text-muted" />
-          <input
-            type="text"
-            placeholder="Global search client, project, staff..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-      </form>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1 }}>
+        <button 
+          className="mobile-menu-toggle" 
+          onClick={toggleMobileMenu} 
+          aria-label="Toggle Navigation"
+        >
+          {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Search Bar */}
+        <form onSubmit={handleSearchSubmit} style={{ flex: 1, maxWidth: '480px' }}>
+          <div className="header-search">
+            <Search size={18} className="text-muted" />
+            <input
+              type="text"
+              placeholder="Global search client, project, staff..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+        </form>
+      </div>
 
       {/* Actions (User Profile Menu Only) */}
       <div className="header-actions">
