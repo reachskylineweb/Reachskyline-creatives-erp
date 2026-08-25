@@ -126,7 +126,12 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   const handleDeleteEmployee = async (id) => {
     if (!(await window.confirm('Are you sure you want to delete this employee?'))) return;
     try {
-      const res = await api.delete(`/users/employees/${id}`);
+      let res;
+      try {
+        res = await api.post(`/users/employees/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/users/employees/${id}`);
+      }
       if (res.data.success) {
         fetchDetails();
       }
@@ -282,7 +287,11 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
       let res;
       if (currentManager) {
-        res = await api.put(`/users/managers/${currentManager.id}`, payload);
+        try {
+          res = await api.post(`/users/managers/${currentManager.id}/update`, payload);
+        } catch (_) {
+          res = await api.put(`/users/managers/${currentManager.id}`, payload);
+        }
       } else {
         res = await api.post('/users/managers', payload);
       }
