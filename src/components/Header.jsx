@@ -36,6 +36,25 @@ const Header = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Handle global search submission
+  const handleSearchSubmit = async (e) => {
+    e.preventDefault();
+    if (!searchQuery.trim()) return;
+
+    setSearchLoading(true);
+    setShowSearchModal(true);
+    try {
+      const response = await api.get(`/search?q=${encodeURIComponent(searchQuery)}`);
+      if (response.data && response.data.success) {
+        setSearchResults(response.data.data);
+      }
+    } catch (err) {
+      console.error('Global search error:', err.message);
+    } finally {
+      setSearchLoading(false);
+    }
+  };
+
   const isClientPath = window.location.pathname.startsWith('/client');
   const displayUser = isClientPath ? (
     (user && (user.role === 'client' || user.user_type === 'client'))
