@@ -508,7 +508,8 @@ const WorkUpdates = () => {
       const assignDesignerEvt = getEvent('manager_assign_designer');
       const approveScriptEvt = getEvent('manager_approve_script');
       const stage2EndEvt = assignDesignerEvt || approveScriptEvt;
-      const isStage2Done = !!stage2EndEvt || (isStage1Done && !['pending', 'assigned', 'submitted'].includes(status));
+      const isDesignerAssigned = Boolean(item.assigned_employee_id) && Number(item.assigned_employee_id) !== Number(item.content_writer_id);
+      const isStage2Done = !!stage2EndEvt || (isStage1Done && (isDesignerAssigned || ['sent_to_client', 'client_approved', 'approved', 'completed', 'posted'].includes(status)));
       
       const stage2Start = stage1End || stage1Start;
       const stage2End = stage2EndEvt ? new Date(stage2EndEvt.created_at) : (isStage2Done ? new Date(item.updated_at) : null);
@@ -523,18 +524,18 @@ const WorkUpdates = () => {
         detail: isStage2Done 
           ? `Content approved. Assigned to designer: ${item.employee_name || 'Designer'}.`
           : isStage1Done 
-            ? `Script uploaded. Awaiting manager approval & designer assignment. (Assigned Designer: ${item.employee_name || 'Designer'}).`
+            ? `Script uploaded. Awaiting manager approval & designer assignment.`
             : `Awaiting script upload. (Assigned Designer: ${item.employee_name || 'Designer'}).`,
         pendingSince: isStage1Done && !isStage2Done ? stage2Start : null
       });
 
       // Stage 3: Designer Work Output
-      const hasDesignOutput = !!item.google_drive_link || !!item.designer_output;
+      const hasDesignOutput = (!!item.google_drive_link && String(item.google_drive_link).trim() !== '') || (!!item.designer_output && String(item.designer_output).trim() !== '');
       const designerSubmitEvt = getEvent('designer_submit_design');
-      const isStage3Done = !!designerSubmitEvt || hasDesignOutput || !['pending', 'assigned', 'in_progress', 'assigned_employee'].includes(status);
+      const isStage3Done = !!designerSubmitEvt || (hasDesignOutput && isStage2Done) || ['sent_to_client', 'client_approved', 'approved', 'completed', 'posted'].includes(status);
       
       const stage3Start = stage2End || stage2Start;
-      const stage3End = designerSubmitEvt ? new Date(designerSubmitEvt.created_at) : (hasDesignOutput ? new Date(item.updated_at) : null);
+      const stage3End = designerSubmitEvt ? new Date(designerSubmitEvt.created_at) : (hasDesignOutput && isStage2Done ? new Date(item.updated_at) : null);
       const stage3Duration = stage3End ? formatDuration(stage3End - stage3Start) : (isStage2Done ? formatDuration(now - stage3Start) : '');
 
       timeline.push({
@@ -548,9 +549,9 @@ const WorkUpdates = () => {
           : isStage2Done 
             ? `Work in progress by designer: ${item.employee_name || 'Designer'}.`
             : item.assigned_employee_id 
-              ? `Awaiting script approval so designer can start. (Assigned Designer: ${item.employee_name || 'Designer'}).` 
+              ? `Awaiting script approval so designer can start.` 
               : `Awaiting designer assignment.`,
-        link: item.google_drive_link || item.designer_output || null,
+        link: (hasDesignOutput && isStage2Done) ? (item.google_drive_link || item.designer_output) : null,
         linkText: 'Open Design Output',
         pendingSince: isStage2Done && !isStage3Done ? stage3Start : null
       });
@@ -559,7 +560,7 @@ const WorkUpdates = () => {
       const sendClientEvt = getEvent('manager_send_client');
       const routeSmmEvt = getEvent('manager_route_smm');
       const stage4EndEvt = sendClientEvt || routeSmmEvt;
-      const isStage4Done = !!stage4EndEvt || (isStage3Done && ['sent_to_client', 'client_approved', 'client_rework', 'approved', 'completed', 'posted'].includes(status));
+      const isStage4Done = !!stage4EndEvt || ['sent_to_client', 'client_approved', 'client_rework', 'approved', 'completed', 'posted'].includes(status);
       
       const stage4Start = stage3End || stage3Start;
       const stage4End = stage4EndEvt ? new Date(stage4EndEvt.created_at) : (isStage4Done ? new Date(item.updated_at) : null);
@@ -587,7 +588,7 @@ const WorkUpdates = () => {
 
       // Stage 5: Client Approval
       const clientApproveEvt = getEvent('client_approve');
-      const isStage5Done = !!clientApproveEvt || (isStage4Done && ['client_approved', 'approved', 'completed', 'posted'].includes(status));
+      const isStage5Done = !!clientApproveEvt || ['client_approved', 'approved', 'completed', 'posted'].includes(status);
       
       const stage5Start = stage4End || stage4Start;
       const stage5End = clientApproveEvt ? new Date(clientApproveEvt.created_at) : (isStage5Done ? new Date(item.updated_at) : null);
