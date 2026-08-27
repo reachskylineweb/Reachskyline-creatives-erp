@@ -2435,7 +2435,7 @@ const ManagerDailyTodo = () => {
                                 }}
                               >
                                 <option value="">Select Writer</option>
-                                {employees.filter(e => Number(e.sub_department_id) === 3 || e.sub_department_code === 'CW-RS' || (e.sub_department_name || '').toLowerCase().includes('content') || (e.sub_department_name || '').toLowerCase().includes('writer')).map(emp => (
+                                {employees.filter(e => Number(e.sub_department_id) === 3 || e.sub_department_code === 'CW-RS' || (e.sub_department_code || '').toUpperCase().includes('CW') || (e.sub_department_name || '').toLowerCase().includes('content') || (e.sub_department_name || '').toLowerCase().includes('writer') || (e.sub_department_name || '').toLowerCase().includes('writing')).map(emp => (
                                   <option key={emp.id} value={emp.id}>{emp.full_name}</option>
                                 ))}
                               </select>
