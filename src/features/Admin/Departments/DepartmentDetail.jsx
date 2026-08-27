@@ -1011,14 +1011,6 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                                    <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
                                      <button 
                                        className="btn btn-secondary btn-sm" 
-                                       onClick={() => handleOpenEditManager(mgr)} 
-                                       title="Edit Manager"
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       <Edit2 size={14} />
-                                     </button>
-                                     <button 
-                                       className="btn btn-secondary btn-sm" 
                                        onClick={() => handleToggleManagerStatus(mgr)} 
                                        title={mgr.status === 'active' ? 'Deactivate' : 'Activate'}
                                        style={{ padding: '6px 8px' }}
@@ -1117,14 +1109,6 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                                 </td>
                                  <td style={{ padding: '14px 10px', textAlign: 'right' }}>
                                    <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
-                                     <button 
-                                       className="btn btn-secondary btn-sm" 
-                                       onClick={() => handleOpenEditEmployee(emp)} 
-                                       title="Edit Employee"
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       <Edit2 size={14} />
-                                     </button>
                                      <button 
                                        className="btn btn-secondary btn-sm" 
                                        onClick={() => handleToggleEmployeeStatus(emp)} 
