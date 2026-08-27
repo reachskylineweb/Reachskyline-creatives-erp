@@ -2496,7 +2496,7 @@ const ManagerDailyTodo = () => {
                                 }}
                               >
                                 <option value="">Select Designer / Video Editor</option>
-                                {employees.filter(e => [1, 2, 4].includes(Number(e.sub_department_id)) || ['GD-RS', 'VE-RS', 'CRD-RS'].includes(e.sub_department_code) || (Number(e.sub_department_id) !== 3 && !e.sub_department_code?.includes('CW-RS'))).map(emp => (
+                                {employees.filter(e => ['GD-RS', 'VE-RS', 'CRD-RS', '4321-RS'].includes(e.sub_department_code) || (e.sub_department_name || '').toLowerCase().includes('design') || (e.sub_department_name || '').toLowerCase().includes('graphic') || (e.sub_department_name || '').toLowerCase().includes('creative') || (e.sub_department_name || '').toLowerCase().includes('video') || (e.sub_department_name || '').toLowerCase().includes('editor') || (Number(e.sub_department_id) !== 3 && !e.sub_department_code?.includes('CW-RS') && !(e.sub_department_name || '').toLowerCase().includes('content'))).map(emp => (
                                   <option key={emp.id} value={emp.id}>{emp.full_name} ({emp.sub_department_name || 'Design/Video'})</option>
                                 ))}
                               </select>
