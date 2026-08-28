@@ -2022,7 +2022,7 @@ const ManagerDailyTodo = () => {
                                  title="Content script must be submitted by Content Writer before designer assignment."
                                >
                                  <AlertCircle size={12} style={{ color: '#94a3b8' }} />
-                                 Awaiting Content ({item.content_writer_name || assignedName || 'Unassigned'})
+                                 Awaiting Content ({item.content_writer_name || 'Unassigned'})
                                </span>
                             ) : (
                               <button
