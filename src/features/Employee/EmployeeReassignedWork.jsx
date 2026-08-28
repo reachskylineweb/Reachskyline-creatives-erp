@@ -150,7 +150,7 @@ const EmployeeReassignedWork = () => {
           fetchReworkQueue();
         }
       } else {
-        const res = await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+        const res = await api.post(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
         if (res.data.success) {
           alert('Rework successfully submitted to manager.');
           setDriveLinks(prev => {

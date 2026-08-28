@@ -65,7 +65,7 @@ const EmployeeTodayDeliverables = () => {
     
     setSubmittingId(item.id);
     try {
-      const res = await api.put(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
+      const res = await api.post(`/deliverables/${item.id}/submit`, { googleDriveLink: link });
       if (res.data.success) {
         alert('Work successfully submitted to manager.');
         setDriveLinks(prev => {
