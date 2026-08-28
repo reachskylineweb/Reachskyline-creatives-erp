@@ -1985,45 +1985,45 @@ const ManagerDailyTodo = () => {
                                 </strong>
                               </div>
                             );
-                          })()}
+                           })()}
 
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                            {deliverablesFilter === 'approved' || ['completed', 'posted', 'client_approved'].includes(status) ? (
-                              <span 
-                                style={{
-                                  padding: '6px 12px',
-                                  backgroundColor: '#d1fae5',
-                                  color: '#065f46',
-                                  border: '1px solid #a7f3d0',
-                                  borderRadius: 'var(--radius-sm)',
-                                  fontSize: '12px',
-                                  fontWeight: 700,
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '4px'
-                                }}
-                              >
-                                <CheckCircle size={12} /> Completed & Posted
-                              </span>
-                            ) : ((!item.content_link) && ([1, 2, 4].includes(Number(item.sub_department_id)) || ['AT001', 'AT002', 'AT003', 'AT004', 'AT005', 'AT006', 'AT008'].includes(item.activity_type_code))) ? (
-                              <span 
-                                style={{
-                                  padding: '6px 12px',
-                                  backgroundColor: '#f1f5f9',
-                                  color: '#64748b',
-                                  border: '1px solid #e2e8f0',
-                                  borderRadius: 'var(--radius-sm)',
-                                  fontSize: '12px',
-                                  fontWeight: 700,
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '4px'
-                                }}
-                                title="Content script must be submitted by Content Writer before designer assignment."
-                              >
-                                <AlertCircle size={12} style={{ color: '#94a3b8' }} />
-                                Awaiting Content ({item.content_writer_name || 'Unassigned'})
-                              </span>
+                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                             {deliverablesFilter === 'approved' || ['completed', 'posted', 'client_approved'].includes(status) ? (
+                               <span 
+                                 style={{
+                                   padding: '6px 12px',
+                                   backgroundColor: '#d1fae5',
+                                   color: '#065f46',
+                                   border: '1px solid #a7f3d0',
+                                   borderRadius: 'var(--radius-sm)',
+                                   fontSize: '12px',
+                                   fontWeight: 700,
+                                   display: 'inline-flex',
+                                   alignItems: 'center',
+                                   gap: '4px'
+                                 }}
+                               >
+                                 <CheckCircle size={12} /> Completed & Posted
+                               </span>
+                             ) : ((!item.content_link) && ([1, 2, 4].includes(Number(item.sub_department_id)) || ['AT001', 'AT002', 'AT003', 'AT004', 'AT005', 'AT006', 'AT008'].includes(item.activity_type_code))) ? (
+                               <span 
+                                 style={{
+                                   padding: '6px 12px',
+                                   backgroundColor: '#f1f5f9',
+                                   color: '#64748b',
+                                   border: '1px solid #e2e8f0',
+                                   borderRadius: 'var(--radius-sm)',
+                                   fontSize: '12px',
+                                   fontWeight: 700,
+                                   display: 'inline-flex',
+                                   alignItems: 'center',
+                                   gap: '4px'
+                                 }}
+                                 title="Content script must be submitted by Content Writer before designer assignment."
+                               >
+                                 <AlertCircle size={12} style={{ color: '#94a3b8' }} />
+                                 Awaiting Content ({item.content_writer_name || assignedName || 'Unassigned'})
+                               </span>
                             ) : (
                               <button
                                 onClick={() => startAssigning(item)}
