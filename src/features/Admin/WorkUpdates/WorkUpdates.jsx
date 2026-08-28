@@ -509,6 +509,7 @@ const WorkUpdates = () => {
       const approveScriptEvt = getEvent('manager_approve_script');
       const stage2EndEvt = assignDesignerEvt || approveScriptEvt;
       const isDesignerAssigned = Boolean(item.assigned_employee_id) && Number(item.assigned_employee_id) !== Number(item.content_writer_id);
+      const designerName = isDesignerAssigned ? (item.employee_name || 'Designer') : 'Unassigned Designer';
       const isStage2Done = !!stage2EndEvt || (isStage1Done && (isDesignerAssigned || ['sent_to_client', 'client_approved', 'approved', 'completed', 'posted'].includes(status)));
       
       const stage2Start = stage1End || stage1Start;
@@ -522,10 +523,10 @@ const WorkUpdates = () => {
         end: stage2End,
         duration: stage2Duration,
         detail: isStage2Done 
-          ? `Content approved. Assigned to designer: ${item.employee_name || 'Designer'}.`
+          ? `Content approved. Assigned to designer: ${designerName}.`
           : isStage1Done 
             ? `Script uploaded. Awaiting manager approval & designer assignment.`
-            : `Awaiting script upload. (Assigned Designer: ${item.employee_name || 'Designer'}).`,
+            : `Awaiting script upload.`,
         pendingSince: isStage1Done && !isStage2Done ? stage2Start : null
       });
 
@@ -545,11 +546,11 @@ const WorkUpdates = () => {
         end: stage3End,
         duration: stage3Duration,
         detail: isStage3Done 
-          ? `Design draft uploaded by designer: ${item.employee_name || 'Designer'}.` 
+          ? `Design draft uploaded by designer: ${designerName}.` 
           : isStage2Done 
-            ? `Work in progress by designer: ${item.employee_name || 'Designer'}.`
-            : item.assigned_employee_id 
-              ? `Awaiting script approval so designer can start.` 
+            ? `Work in progress by designer: ${designerName}.`
+            : isDesignerAssigned 
+              ? `Awaiting script approval so designer can start. (Assigned Designer: ${designerName}).` 
               : `Awaiting designer assignment.`,
         link: (hasDesignOutput && isStage2Done) ? (item.google_drive_link || item.designer_output) : null,
         linkText: 'Open Design Output',
@@ -671,6 +672,7 @@ const WorkUpdates = () => {
 
     // Stage 2: Content Review & Designer Assignment
     const isDesignerAssigned = Boolean(item.assigned_employee_id) && Number(item.assigned_employee_id) !== Number(item.content_writer_id);
+    const designerName = isDesignerAssigned ? (item.employee_name || 'Designer') : 'Unassigned Designer';
     const isStage2Done = isStage1Done && (isDesignerAssigned || ['submitted', 'sent_to_client', 'client_approved', 'posted'].includes(status));
     let stage2Start = stage1End || createdDate;
     let stage2End = null;
@@ -693,7 +695,7 @@ const WorkUpdates = () => {
       end: stage2End,
       duration: stage2Duration,
       detail: isStage2Done 
-        ? `Content approved. Assigned to designer: ${item.employee_name || 'Designer'}.`
+        ? `Content approved. Assigned to designer: ${designerName}.`
         : isStage1Done 
           ? `Script uploaded. Awaiting manager approval & designer assignment.`
           : `Awaiting script upload.`,
@@ -724,11 +726,11 @@ const WorkUpdates = () => {
       end: stage3End,
       duration: stage3Duration,
       detail: isStage3Done 
-        ? `Design draft uploaded by designer: ${item.employee_name || 'Designer'}.` 
+        ? `Design draft uploaded by designer: ${designerName}.` 
         : isStage2Done 
-          ? `Work in progress by designer: ${item.employee_name || 'Designer'}.`
-          : item.assigned_employee_id 
-            ? `Awaiting script approval so designer can start.` 
+          ? `Work in progress by designer: ${designerName}.`
+          : isDesignerAssigned 
+            ? `Awaiting script approval so designer can start. (Assigned Designer: ${designerName}).` 
             : `Awaiting designer assignment.`,
       link: item.google_drive_link || item.designer_output || null,
       linkText: 'Open Design Output',
