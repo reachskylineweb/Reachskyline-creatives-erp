@@ -248,6 +248,7 @@ const ClientList = () => {
       const formattedDate = formatDateYYYYMMDD(formData.start_date);
       const cleanFormData = {
         ...formData,
+        email: formData.email?.trim() || null,
         start_date: formattedDate
       };
 
