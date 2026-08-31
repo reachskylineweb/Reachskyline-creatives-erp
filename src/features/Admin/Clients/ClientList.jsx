@@ -94,9 +94,7 @@ const ClientList = () => {
     const errors = {};
     if (!formData.company_name?.trim()) errors.company_name = 'Company Name is required';
     if (!formData.client_name?.trim()) errors.client_name = 'Client Contact Name is required';
-    if (!formData.email?.trim()) {
-      errors.email = 'Email Address is required';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email.trim())) {
+    if (formData.email?.trim() && !/\S+@\S+\.\S+/.test(formData.email.trim())) {
       errors.email = 'Please enter a valid email address';
     }
     if (!formData.phone?.trim()) errors.phone = 'Phone Number is required';
@@ -570,7 +568,6 @@ const ClientList = () => {
               value={formData.email}
               onChange={handleInputChange}
               error={formErrors.email}
-              required
             />
             <FormInput
               label="Phone Number"
