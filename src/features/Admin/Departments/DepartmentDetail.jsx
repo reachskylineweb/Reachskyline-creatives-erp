@@ -162,18 +162,24 @@ const DepartmentDetail = ({ deptId, onBack }) => {
       let res;
       try {
         res = await api.post(`/users/managers/${id}/delete`);
-      } catch (_) {
-        try {
-          res = await api.post('/users/delete', { id, userType: 'manager' });
-        } catch (_) {
-          res = await api.delete(`/users/managers/${id}`);
+      } catch (err1) {
+        if (err1.response?.status === 500) {
+          // If hard delete fails due to DB foreign key constraints, deactivate status to revoke access safely
+          res = await api.post('/users/change-status', { profileId: id, userType: 'manager', status: 'inactive' });
+          alert('This manager has active sub-department/deliverable references in the database, so their status has been set to INACTIVE to revoke access without corrupting database records.');
+        } else {
+          try {
+            res = await api.post('/users/delete', { id, userType: 'manager' });
+          } catch (_) {
+            res = await api.delete(`/users/managers/${id}`);
+          }
         }
       }
-      if (res.data?.success || res.status === 200) {
+      if (res?.data?.success || res?.status === 200) {
         fetchDetails();
       }
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to delete manager.');
+      alert(err.response?.data?.message || 'Failed to delete manager. Try deactivating their status instead.');
     }
   };
 

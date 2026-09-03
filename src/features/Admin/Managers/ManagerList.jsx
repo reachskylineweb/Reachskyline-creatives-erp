@@ -312,11 +312,16 @@ const ManagerList = () => {
     try {
       try {
         await api.post(`/users/managers/${id}/delete`);
-      } catch (_) {
-        try {
-          await api.post('/users/delete', { id, userType: 'manager' });
-        } catch (_) {
-          await api.delete(`/users/managers/${id}`);
+      } catch (err1) {
+        if (err1.response?.status === 500) {
+          await api.post('/users/change-status', { profileId: id, userType: 'manager', status: 'inactive' });
+          alert('This manager has active sub-department/deliverable references in the database, so their status has been set to INACTIVE to revoke access without corrupting database records.');
+        } else {
+          try {
+            await api.post('/users/delete', { id, userType: 'manager' });
+          } catch (_) {
+            await api.delete(`/users/managers/${id}`);
+          }
         }
       }
       setData(prev => prev.filter(item => item.id !== id));
