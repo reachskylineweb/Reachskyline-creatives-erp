@@ -19,6 +19,7 @@ const WritersAssignment = () => {
   const [singleItem, setSingleItem] = useState(null);
   const [bulkInputs, setBulkInputs] = useState({});
   const [selectedWriterId, setSelectedWriterId] = useState('');
+  const [fallbackWriters, setFallbackWriters] = useState([]);
   const [formError, setFormError] = useState('');
   const [actionLoading, setActionLoading] = useState(false);
 
@@ -140,10 +141,32 @@ const WritersAssignment = () => {
     setSelectedMonth(`${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`);
   };
 
+  const getWritersList = () => {
+    if (Array.isArray(data.writers) && data.writers.length > 0) {
+      return data.writers;
+    }
+    return fallbackWriters;
+  };
+
   // Open Bulk Modal
-  const openBulkModal = () => {
+  const openBulkModal = async () => {
+    let currentWriters = getWritersList();
+    if (!currentWriters || currentWriters.length === 0) {
+      try {
+        const res = await api.get('/users/employees/dropdown');
+        if (res.data.success && res.data.data?.employees) {
+          currentWriters = res.data.data.employees.filter(
+            emp => Number(emp.sub_department_id) === 3
+          );
+          setFallbackWriters(currentWriters);
+        }
+      } catch (err) {
+        console.error('Error fetching fallback writers:', err);
+      }
+    }
+
     const initialInputs = {};
-    (data.writers || []).forEach(w => {
+    (currentWriters || []).forEach(w => {
       initialInputs[w.id] = '';
     });
     setBulkInputs(initialInputs);
@@ -151,14 +174,28 @@ const WritersAssignment = () => {
     setIsBulkModalOpen(true);
   };
 
+  const getActiveTabUnassignedCount = () => {
+    const list = activeMainTab === 'content' 
+      ? (Array.isArray(data?.contentCal) ? data.contentCal : []) 
+      : (Array.isArray(data?.eventDays) ? data.eventDays : []);
+    
+    const unassignedInList = list.filter(item => !item.assigned_employee_id).length;
+    const backendCount = activeMainTab === 'content' 
+      ? data?.counts?.contentUnassigned 
+      : data?.counts?.eventUnassigned;
+
+    if (typeof backendCount === 'number' && backendCount > 0) {
+      return backendCount;
+    }
+    return unassignedInList;
+  };
+
   // Submit Bulk Assignment
   const handleBulkSubmit = async (e) => {
     e.preventDefault();
     setFormError('');
     
-    const unassignedCount = activeMainTab === 'content' 
-      ? (data?.counts?.contentUnassigned || 0) 
-      : (data?.counts?.eventUnassigned || 0);
+    const unassignedCount = getActiveTabUnassignedCount();
 
     let totalRequested = 0;
     const assignmentsMap = {};
@@ -176,7 +213,7 @@ const WritersAssignment = () => {
       return;
     }
 
-    if (totalRequested > unassignedCount) {
+    if (unassignedCount > 0 && totalRequested > unassignedCount) {
       setFormError(`You cannot assign ${totalRequested} works when only ${unassignedCount} are unassigned.`);
       return;
     }
@@ -235,11 +272,6 @@ const WritersAssignment = () => {
     }
   };
 
-  const getActiveTabUnassignedCount = () => {
-    return activeMainTab === 'content' 
-      ? (data?.counts?.contentUnassigned || 0) 
-      : (data?.counts?.eventUnassigned || 0);
-  };
 
   const getFilteredList = () => {
     const contentCal = Array.isArray(data?.contentCal) ? data.contentCal : [];
@@ -383,7 +415,7 @@ const WritersAssignment = () => {
             <button 
               className="btn btn-primary"
               onClick={openBulkModal}
-              disabled={getActiveTabUnassignedCount() === 0}
+              disabled={loading}
               style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
               <Layers size={16} />
@@ -557,7 +589,7 @@ const WritersAssignment = () => {
             )}
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxHeight: '300px', overflowY: 'auto', paddingRight: '4px' }}>
-              {(data.writers || []).map(w => (
+              {(getWritersList() || []).map(w => (
                 <div key={w.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
                   <span style={{ fontWeight: 700, fontSize: '14px' }}>{w.full_name}</span>
                   <input
@@ -613,7 +645,7 @@ const WritersAssignment = () => {
                 required
               >
                 <option value="">-- Choose Writer --</option>
-                {(data.writers || []).map(w => (
+                {(getWritersList() || []).map(w => (
                   <option key={w.id} value={w.id}>{w.full_name}</option>
                 ))}
               </select>
