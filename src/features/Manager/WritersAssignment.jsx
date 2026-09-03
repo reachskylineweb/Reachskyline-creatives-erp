@@ -287,8 +287,19 @@ const WritersAssignment = () => {
 
   const renderPaginationControls = () => {
     if (totalPages <= 1) return null;
+    
+    let startPage = Math.max(1, page - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    if (endPage - startPage < 4) {
+      startPage = Math.max(1, endPage - 4);
+    }
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      if (i >= 1 && i <= totalPages) pageNumbers.push(i);
+    }
+
     return (
-      <div style={{ display: 'flex', gap: '4px', alignItems: 'center' }}>
+      <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'nowrap' }}>
         <button
           className="btn btn-secondary btn-sm"
           disabled={page === 1}
@@ -297,7 +308,21 @@ const WritersAssignment = () => {
         >
           <ChevronLeft size={16} />
         </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map(p => (
+
+        {startPage > 1 && (
+          <>
+            <button
+              onClick={() => setPage(1)}
+              className="btn btn-sm btn-secondary"
+              style={{ minWidth: '32px', height: '32px', fontWeight: 700 }}
+            >
+              1
+            </button>
+            {startPage > 2 && <span style={{ padding: '0 4px', color: 'var(--text-muted)', fontSize: '12px' }}>...</span>}
+          </>
+        )}
+
+        {pageNumbers.map(p => (
           <button
             key={p}
             onClick={() => setPage(p)}
@@ -315,6 +340,20 @@ const WritersAssignment = () => {
             {p}
           </button>
         ))}
+
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && <span style={{ padding: '0 4px', color: 'var(--text-muted)', fontSize: '12px' }}>...</span>}
+            <button
+              onClick={() => setPage(totalPages)}
+              className="btn btn-sm btn-secondary"
+              style={{ minWidth: '32px', height: '32px', fontWeight: 700 }}
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+
         <button
           className="btn btn-secondary btn-sm"
           disabled={page === totalPages || totalPages === 0}
@@ -342,6 +381,17 @@ const WritersAssignment = () => {
         </div>
         
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {activeMainTab !== 'ledger' && (
+            <button 
+              className="btn btn-primary"
+              onClick={openBulkModal}
+              disabled={loading}
+              style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+            >
+              <Layers size={16} />
+              Bulk Assign Writers
+            </button>
+          )}
           <button className="btn btn-secondary" onClick={fetchAssignmentData} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
             <RefreshCw size={14} /> Refresh
           </button>
