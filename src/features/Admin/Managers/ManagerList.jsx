@@ -313,7 +313,11 @@ const ManagerList = () => {
       try {
         await api.post(`/users/managers/${id}/delete`);
       } catch (_) {
-        await api.delete(`/users/managers/${id}`);
+        try {
+          await api.post('/users/delete', { id, userType: 'manager' });
+        } catch (_) {
+          await api.delete(`/users/managers/${id}`);
+        }
       }
       setData(prev => prev.filter(item => item.id !== id));
       setTotal(prev => Math.max(0, prev - 1));

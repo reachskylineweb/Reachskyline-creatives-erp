@@ -159,8 +159,17 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   const handleDeleteManager = async (id) => {
     if (!(await window.confirm('Are you sure you want to delete this manager?'))) return;
     try {
-      const res = await api.delete(`/users/managers/${id}`);
-      if (res.data.success) {
+      let res;
+      try {
+        res = await api.post(`/users/managers/${id}/delete`);
+      } catch (_) {
+        try {
+          res = await api.post('/users/delete', { id, userType: 'manager' });
+        } catch (_) {
+          res = await api.delete(`/users/managers/${id}`);
+        }
+      }
+      if (res.data?.success || res.status === 200) {
         fetchDetails();
       }
     } catch (err) {
