@@ -25,9 +25,12 @@ const EmployeeList = () => {
   const [effLoading, setEffLoading] = useState(false);
   const [effSearch, setEffSearch] = useState('');
   const [effDeptFilter, setEffDeptFilter] = useState('');
-  const [effFilterType, setEffFilterType] = useState('monthly');
+  const [effFilterType, setEffFilterType] = useState('daily');
   const [effDate, setEffDate] = useState(() => new Date().toISOString().substring(0, 10));
   const [effMonth, setEffMonth] = useState(() => new Date().toISOString().substring(0, 7));
+  const [deliverables, setDeliverables] = useState([]);
+  const [jobWorks, setJobWorks] = useState([]);
+  const [contentSubmissions, setContentSubmissions] = useState([]);
 
   // Dropdown lists
   const [departments, setDepartments] = useState([]);
@@ -49,12 +52,11 @@ const EmployeeList = () => {
     password: '',
     email: '',
     phone: '',
-    department_id: '',
     sub_department_id: '',
+    department_id: '',
     reporting_manager_id: '',
     joining_date: '',
-    status: 'active',
-    profile_image: null
+    status: 'active'
   });
   
   const [formErrors, setFormErrors] = useState({});
@@ -67,18 +69,18 @@ const EmployeeList = () => {
   const fetchDropdowns = useCallback(async () => {
     try {
       const [deptRes, mgrRes] = await Promise.all([
-        api.get('/departments/dropdown'),
+        api.get('/departments'),
         api.get('/users/managers/dropdown')
       ]);
       
       if (deptRes.data.success) {
-        setDepartments(deptRes.data.data.departments.map(d => ({ value: d.id, label: `${d.name} (${d.code})` })));
+        setDepartments(deptRes.data.data.departments.map(d => ({ value: d.id, label: d.name })));
       }
       if (mgrRes.data.success) {
-        setManagers(mgrRes.data.data.managers.map(m => ({ value: m.id, label: `${m.full_name} (${m.manager_id_code}) - ${m.department_name}` })));
+        setManagers(mgrRes.data.data.managers.map(m => ({ value: m.id, label: m.full_name })));
       }
     } catch (err) {
-      console.error('Error fetching dropdowns:', err.message);
+      console.error('Error loading dropdown lists:', err.message);
     }
   }, []);
 
@@ -118,16 +120,31 @@ const EmployeeList = () => {
   const fetchEfficiency = useCallback(async () => {
     setEffLoading(true);
     try {
-      const res = await api.get('/users/efficiency', {
-        params: {
-          filterType: effFilterType,
-          date: effDate,
-          month: effMonth,
-          departmentFilter: effDeptFilter || 'all'
-        }
-      });
-      if (res.data.success) {
-        setEfficiencyData(res.data.data || []);
+      const [effRes, delivsRes, jobsRes, contentRes] = await Promise.all([
+        api.get('/users/efficiency', {
+          params: {
+            filterType: effFilterType,
+            date: effDate,
+            month: effMonth,
+            departmentFilter: effDeptFilter || 'all'
+          }
+        }),
+        api.get('/deliverables', { params: { limit: 10000, page: 1 } }),
+        api.get('/deliverables/job-work/manager'),
+        api.get('/content-work/submissions').catch(() => ({ data: { success: false, data: [] } }))
+      ]);
+
+      if (effRes.data.success) {
+        setEfficiencyData(effRes.data.data || []);
+      }
+      if (delivsRes.data.success) {
+        setDeliverables(delivsRes.data.data.deliverables || []);
+      }
+      if (jobsRes.data.success) {
+        setJobWorks(jobsRes.data.data || []);
+      }
+      if (contentRes && contentRes.data && contentRes.data.success) {
+        setContentSubmissions(contentRes.data.data || []);
       }
     } catch (err) {
       console.error('Failed to fetch employee efficiency:', err.message);
@@ -466,7 +483,176 @@ const EmployeeList = () => {
     }
   ];
 
-  const filteredEffData = efficiencyData.filter(emp => {
+  const workloadData = efficiencyData.map(emp => {
+    const empId = Number(emp.id);
+
+    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
+    
+    const activeAssignedStatuses = [
+      'assigned',
+      'assigned_employee',
+      'in_progress',
+      'submitted',
+      'script_submitted',
+      'manager_review_script',
+      'manager_review_design',
+      'pending_review',
+      'in_review',
+      'waiting_for_approval',
+      'pending_approval',
+      'sent_to_approval',
+      'reassigned',
+      'rework',
+      'approved',
+      'client_approved',
+      'completed',
+      'posted',
+      'sent_to_client'
+    ];
+
+    const empDeliverables = deliverables.filter(d => {
+      const status = (d.status || '').toLowerCase();
+      if (!activeAssignedStatuses.includes(status)) return false;
+      return (
+        Number(d.assigned_employee_id) === empId || 
+        Number(d.content_writer_id) === empId ||
+        Number(d.smm_employee_id) === empId
+      );
+    });
+    
+    const empJobWorks = jobWorks.filter(jw => {
+      const status = (jw.status || '').toLowerCase();
+      if (!activeAssignedStatuses.includes(status)) return false;
+      return (
+        Number(jw.assigned_employee_id) === empId || 
+        Number(jw.content_writer_id) === empId ||
+        Number(jw.smm_employee_id) === empId
+      );
+    });
+
+    const empContentTasks = contentSubmissions.filter(c => {
+      const status = (c.submission_status || c.status || '').toLowerCase();
+      if (status === 'pending' || status === 'unassigned' || status === 'cancelled') return false;
+      return (
+        Number(c.content_writer_id) === empId ||
+        Number(c.writer_id) === empId ||
+        Number(c.assigned_employee_id) === empId
+      );
+    });
+
+    let filteredDelivs = [];
+    let filteredJobs = [];
+    let filteredContent = [];
+
+    const matchesMonth = (itemMonth, targetMonth) => {
+      if (!itemMonth) return false;
+      const str = String(itemMonth).trim();
+      if (str === targetMonth || str.substring(0, 7) === targetMonth) return true;
+      
+      const parts = targetMonth.split('-');
+      if (parts.length < 2) return false;
+      const targetYear = parts[0];
+      const targetMm = parts[1];
+      
+      const dateObj = new Date(Number(targetYear), Number(targetMm) - 1, 1);
+      if (isNaN(dateObj.getTime())) return false;
+      
+      const shortMonth = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      const longMonth = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      
+      const strLower = str.toLowerCase();
+      return strLower === shortMonth.toLowerCase() || strLower === longMonth.toLowerCase();
+    };
+
+    const getTaskDueDateStr = (t) => {
+      let raw = t.due_date || t.deadline || t.date || '';
+      if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) return '';
+      return String(raw).split(/[T ]/)[0];
+    };
+
+    if (effFilterType === 'daily') {
+      filteredDelivs = empDeliverables.filter(d => {
+        const dueStr = getTaskDueDateStr(d);
+        return dueStr === effDate;
+      });
+      filteredJobs = empJobWorks.filter(jw => {
+        const dueStr = getTaskDueDateStr(jw);
+        return dueStr === effDate || (!dueStr && (jw.created_at || '').split(/[T ]/)[0] === effDate);
+      });
+      filteredContent = empContentTasks.filter(c => {
+        const dueStr = getTaskDueDateStr(c);
+        return dueStr === effDate || (!dueStr && (c.date || c.created_at || '').split(/[T ]/)[0] === effDate);
+      });
+    } else {
+      filteredDelivs = empDeliverables.filter(d => {
+        const dueMonth = getTaskDueDateStr(d).substring(0, 7);
+        return matchesMonth(d.month, effMonth) || (dueMonth && dueMonth === effMonth);
+      });
+      filteredJobs = empJobWorks.filter(jw => {
+        const dueMonth = getTaskDueDateStr(jw).substring(0, 7);
+        return matchesMonth(jw.month, effMonth) || (dueMonth && dueMonth === effMonth);
+      });
+      filteredContent = empContentTasks.filter(c => {
+        const dueMonth = getTaskDueDateStr(c).substring(0, 7);
+        return matchesMonth(c.month, effMonth) || (dueMonth && dueMonth === effMonth);
+      });
+    }
+
+    const allPeriodTasks = [...filteredDelivs, ...filteredJobs, ...filteredContent];
+
+    const taskDetails = allPeriodTasks.map(task => {
+      const isJobWork = task.is_job_work === undefined && !task.category;
+      const rawDue = isJobWork ? task.deadline : (task.due_date || task.date);
+      const dueStr = rawDue ? String(rawDue).split(/[T ]/)[0] : '';
+
+      const statusVal = (task.submission_status || task.status || '').toLowerCase();
+      const isCompleted = ['submitted', 'script_submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes(statusVal);
+      const completionDate = task.updated_at ? String(task.updated_at).split(/[T ]/)[0] : '';
+
+      let timingStatus = 'On Time';
+      if (isCompleted) {
+        if (completionDate && dueStr && completionDate > dueStr) {
+          timingStatus = 'Completed Late';
+        } else {
+          timingStatus = 'On Time';
+        }
+      } else {
+        const compareDate = effFilterType === 'daily' ? effDate : `${effMonth}-31`;
+        if (dueStr && dueStr < compareDate) {
+          timingStatus = 'Overdue';
+        } else {
+          timingStatus = 'Pending';
+        }
+      }
+
+      return {
+        name: task.title || task.activity_name || task.deliverable || task.activity_type_code || 'Task',
+        type: task.category ? (task.category === 'event_days' ? 'Event Day' : 'Content Calendar') : (isJobWork ? 'Job Work' : 'Deliverable'),
+        dueDate: dueStr,
+        completedDate: isCompleted ? (completionDate || dueStr) : '',
+        status: statusVal,
+        timingStatus
+      };
+    });
+
+    const computedTotal = taskDetails.length;
+    const computedCompleted = taskDetails.filter(t => 
+      ['On Time', 'Completed Late'].includes(t.timingStatus) || 
+      ['submitted', 'script_submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())
+    ).length;
+    
+    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : 0;
+
+    return {
+      ...emp,
+      total_tasks: computedTotal,
+      completed_tasks: computedCompleted,
+      efficiency: computedEfficiency,
+      details: taskDetails
+    };
+  });
+
+  const filteredEffData = workloadData.filter(emp => {
     const matchesSearch = emp.full_name?.toLowerCase().includes(effSearch.toLowerCase()) ||
                           emp.employee_id_code?.toLowerCase().includes(effSearch.toLowerCase());
     const selectedDeptOpt = departments.find(d => Number(d.value) === Number(effDeptFilter));

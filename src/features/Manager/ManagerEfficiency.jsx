@@ -29,6 +29,7 @@ const ManagerEfficiency = ({ isTab }) => {
   const [efficiencyData, setEfficiencyData] = useState([]);
   const [deliverables, setDeliverables] = useState([]);
   const [jobWorks, setJobWorks] = useState([]);
+  const [contentSubmissions, setContentSubmissions] = useState([]);
   const [subDepartments, setSubDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -76,12 +77,13 @@ const ManagerEfficiency = ({ isTab }) => {
         departmentFilter: deptId
       };
 
-      const [empRes, delivsRes, jobsRes, subDeptRes, effRes] = await Promise.all([
+      const [empRes, delivsRes, jobsRes, subDeptRes, effRes, contentRes] = await Promise.all([
         api.get('/users/employees', { params: { departmentFilter: deptId, limit: 500 } }),
         api.get('/deliverables', { params }),
         api.get('/deliverables/job-work/manager'),
         api.get(`/departments/${deptId}/sub-departments`),
-        api.get('/users/efficiency', { params: effParams })
+        api.get('/users/efficiency', { params: effParams }),
+        api.get('/content-work/submissions').catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       if (empRes.data.success) {
@@ -98,6 +100,9 @@ const ManagerEfficiency = ({ isTab }) => {
       }
       if (effRes.data.success) {
         setEfficiencyData(effRes.data.data || []);
+      }
+      if (contentRes && contentRes.data && contentRes.data.success) {
+        setContentSubmissions(contentRes.data.data || []);
       }
     } catch (err) {
       console.error('Error fetching efficiency data:', err.message);
@@ -211,8 +216,19 @@ const ManagerEfficiency = ({ isTab }) => {
       );
     });
 
+    const empContentTasks = contentSubmissions.filter(c => {
+      const status = (c.submission_status || c.status || '').toLowerCase();
+      if (status === 'pending' || status === 'unassigned' || status === 'cancelled') return false;
+      return (
+        Number(c.content_writer_id) === empId ||
+        Number(c.writer_id) === empId ||
+        Number(c.assigned_employee_id) === empId
+      );
+    });
+
     let filteredDelivs = [];
     let filteredJobs = [];
+    let filteredContent = [];
 
     const matchesMonth = (itemMonth, targetMonth) => {
       if (!itemMonth) return false;
@@ -249,6 +265,10 @@ const ManagerEfficiency = ({ isTab }) => {
         const dueStr = getTaskDueDateStr(jw);
         return dueStr === selectedDate || (!dueStr && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
       });
+      filteredContent = empContentTasks.filter(c => {
+        const dueStr = getTaskDueDateStr(c);
+        return dueStr === selectedDate || (!dueStr && (c.date || c.created_at || '').split(/[T ]/)[0] === selectedDate);
+      });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
         const dueMonth = getTaskDueDateStr(d).substring(0, 7);
@@ -258,16 +278,21 @@ const ManagerEfficiency = ({ isTab }) => {
         const dueMonth = getTaskDueDateStr(jw).substring(0, 7);
         return matchesMonth(jw.month, selectedMonth) || (dueMonth && dueMonth === selectedMonth);
       });
+      filteredContent = empContentTasks.filter(c => {
+        const dueMonth = getTaskDueDateStr(c).substring(0, 7);
+        return matchesMonth(c.month, selectedMonth) || (dueMonth && dueMonth === selectedMonth);
+      });
     }
 
-    const allPeriodTasks = [...filteredDelivs, ...filteredJobs];
+    const allPeriodTasks = [...filteredDelivs, ...filteredJobs, ...filteredContent];
 
     const taskDetails = allPeriodTasks.map(task => {
-      const isJobWork = task.is_job_work === undefined;
-      const rawDue = isJobWork ? task.deadline : task.due_date;
+      const isJobWork = task.is_job_work === undefined && !task.category;
+      const rawDue = isJobWork ? task.deadline : (task.due_date || task.date);
       const dueStr = rawDue ? String(rawDue).split(/[T ]/)[0] : '';
 
-      const isCompleted = ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((task.status || '').toLowerCase());
+      const statusVal = (task.submission_status || task.status || '').toLowerCase();
+      const isCompleted = ['submitted', 'script_submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes(statusVal);
       const completionDate = task.updated_at ? String(task.updated_at).split(/[T ]/)[0] : '';
 
       let timingStatus = 'On Time';
