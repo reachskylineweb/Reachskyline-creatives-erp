@@ -55,7 +55,7 @@ const ManagerEfficiency = ({ isTab }) => {
     setLoading(true);
     try {
       const params = {
-        limit: 500,
+        limit: 10000,
         page: 1
       };
 
@@ -185,34 +185,49 @@ const ManagerEfficiency = ({ isTab }) => {
     let filteredDelivs = [];
     let filteredJobs = [];
 
-    const getTaskDateStr = (t) => {
-      let raw = t.due_date || t.deadline || t.date || t.created_at || '';
-      if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) {
-        raw = t.created_at || t.updated_at || '';
-      }
+    const matchesMonth = (itemMonth, targetMonth) => {
+      if (!itemMonth) return false;
+      const str = String(itemMonth).trim();
+      if (str === targetMonth || str.substring(0, 7) === targetMonth) return true;
+      
+      const parts = targetMonth.split('-');
+      if (parts.length < 2) return false;
+      const targetYear = parts[0];
+      const targetMm = parts[1];
+      
+      const dateObj = new Date(Number(targetYear), Number(targetMm) - 1, 1);
+      if (isNaN(dateObj.getTime())) return false;
+      
+      const shortMonth = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+      const longMonth = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      
+      const strLower = str.toLowerCase();
+      return strLower === shortMonth.toLowerCase() || strLower === longMonth.toLowerCase();
+    };
+
+    const getTaskDueDateStr = (t) => {
+      let raw = t.due_date || t.deadline || t.date || '';
       if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) return '';
       return String(raw).split(/[T ]/)[0];
     };
 
     if (activeTab === 'today') {
       filteredDelivs = empDeliverables.filter(d => {
-        const taskDate = getTaskDateStr(d);
-        return taskDate === selectedDate || (!taskDate && (d.created_at || '').split(/[T ]/)[0] === selectedDate);
+        const dueStr = getTaskDueDateStr(d);
+        return dueStr === selectedDate;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const taskDate = getTaskDateStr(jw);
-        return taskDate === selectedDate || (!taskDate && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
+        const dueStr = getTaskDueDateStr(jw);
+        return dueStr === selectedDate || (!dueStr && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
-        const dMonth = d.month ? String(d.month).trim() : '';
-        const taskMonth = getTaskDateStr(d).substring(0, 7);
-        return dMonth === selectedMonth || taskMonth === selectedMonth;
+        const dueMonth = getTaskDueDateStr(d).substring(0, 7);
+        return matchesMonth(d.month, selectedMonth) || (dueMonth && dueMonth === selectedMonth);
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const jwMonth = jw.month ? String(jw.month).trim() : '';
-        const taskMonth = getTaskDateStr(jw).substring(0, 7);
-        return jwMonth === selectedMonth || taskMonth === selectedMonth;
+        const dueMonth = getTaskDueDateStr(jw).substring(0, 7);
+        return matchesMonth(jw.month, selectedMonth) || (dueMonth && dueMonth === selectedMonth);
       });
     }
 
