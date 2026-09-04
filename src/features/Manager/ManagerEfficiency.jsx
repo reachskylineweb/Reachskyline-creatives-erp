@@ -227,10 +227,24 @@ const ManagerEfficiency = ({ isTab }) => {
         return !seenTopics.has(key);
       });
     } else {
-      // Designers, Editors, SMM: workload comes from Deliverables table & Assigned Job Works
+      // Designers, Editors, SMM: workload comes from active assigned Deliverables & Job Works
+      const activeDesignStatuses = [
+        'assigned',
+        'assigned_employee',
+        'in_progress',
+        'reassigned',
+        'client_rework',
+        'submitted',
+        'sent_to_client',
+        'approved',
+        'client_approved',
+        'completed',
+        'posted'
+      ];
+
       empDeliverables = deliverables.filter(d => {
         const status = (d.status || '').toLowerCase();
-        if (status === 'cancelled' || status === 'deleted') return false;
+        if (!activeDesignStatuses.includes(status)) return false;
         return (
           Number(d.assigned_employee_id) === empId || 
           Number(d.smm_employee_id) === empId
