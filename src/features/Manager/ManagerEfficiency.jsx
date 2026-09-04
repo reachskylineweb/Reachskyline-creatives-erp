@@ -310,21 +310,21 @@ const ManagerEfficiency = ({ isTab }) => {
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === selectedMonth) return true;
         if (d.month && matchesMonth(d.month, selectedMonth)) return true;
-        return !dueMonth && !d.month;
+        return false;
       });
       filteredJobs = empJobWorks.filter(jw => {
         const dueStr = getTaskDueDateStr(jw);
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === selectedMonth) return true;
         if (jw.month && matchesMonth(jw.month, selectedMonth)) return true;
-        return !dueMonth && !jw.month;
+        return false;
       });
       filteredContent = empContentTasks.filter(c => {
         const dueStr = getTaskDueDateStr(c);
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === selectedMonth) return true;
         if (c.month && matchesMonth(c.month, selectedMonth)) return true;
-        return !dueMonth && !c.month;
+        return false;
       });
     }
 

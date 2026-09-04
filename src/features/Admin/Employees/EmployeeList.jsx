@@ -625,21 +625,21 @@ const EmployeeList = () => {
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === effMonth) return true;
         if (d.month && matchesMonth(d.month, effMonth)) return true;
-        return !dueMonth && !d.month;
+        return false;
       });
       filteredJobs = empJobWorks.filter(jw => {
         const dueStr = getTaskDueDateStr(jw);
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === effMonth) return true;
         if (jw.month && matchesMonth(jw.month, effMonth)) return true;
-        return !dueMonth && !jw.month;
+        return false;
       });
       filteredContent = empContentTasks.filter(c => {
         const dueStr = getTaskDueDateStr(c);
         const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
         if (dueMonth && dueMonth === effMonth) return true;
         if (c.month && matchesMonth(c.month, effMonth)) return true;
-        return !dueMonth && !c.month;
+        return false;
       });
     }
 
