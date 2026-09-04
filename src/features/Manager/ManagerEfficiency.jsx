@@ -166,11 +166,21 @@ const ManagerEfficiency = ({ isTab }) => {
   const workloadData = efficiencyData.map(emp => {
     const empId = Number(emp.id);
 
-    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 3 || (emp.sub_department_name || '').toLowerCase().includes('content');
-    // Deliverables filter: include tasks where employee is assigned_employee_id or content_writer_id
-    const empDeliverables = deliverables.filter(d => Number(d.assigned_employee_id) === empId || Number(d.content_writer_id) === empId);
+    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
+    
+    // Deliverables filter: include tasks where employee is assigned_employee_id, content_writer_id, or smm_employee_id
+    const empDeliverables = deliverables.filter(d => 
+      Number(d.assigned_employee_id) === empId || 
+      Number(d.content_writer_id) === empId ||
+      Number(d.smm_employee_id) === empId
+    );
+    
     // Job Works filter
-    const empJobWorks = jobWorks.filter(jw => Number(jw.assigned_employee_id) === empId || Number(jw.content_writer_id) === empId);
+    const empJobWorks = jobWorks.filter(jw => 
+      Number(jw.assigned_employee_id) === empId || 
+      Number(jw.content_writer_id) === empId ||
+      Number(jw.smm_employee_id) === empId
+    );
 
     let filteredDelivs = [];
     let filteredJobs = [];
@@ -195,20 +205,20 @@ const ManagerEfficiency = ({ isTab }) => {
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
+        const dMonth = d.month ? String(d.month).trim() : '';
         const taskMonth = getTaskDateStr(d).substring(0, 7);
-        return taskMonth === selectedMonth || (!taskMonth && (d.created_at || '').substring(0, 7) === selectedMonth);
+        return dMonth === selectedMonth || taskMonth === selectedMonth;
       });
       filteredJobs = empJobWorks.filter(jw => {
+        const jwMonth = jw.month ? String(jw.month).trim() : '';
         const taskMonth = getTaskDateStr(jw).substring(0, 7);
-        return taskMonth === selectedMonth || (!taskMonth && (jw.created_at || '').substring(0, 7) === selectedMonth);
+        return jwMonth === selectedMonth || taskMonth === selectedMonth;
       });
     }
 
     const allPeriodTasks = [...filteredDelivs, ...filteredJobs];
-    const fallbackTasks = [...empDeliverables, ...empJobWorks];
-    const finalTasks = allPeriodTasks.length > 0 ? allPeriodTasks : fallbackTasks;
 
-    const taskDetails = finalTasks.map(task => {
+    const taskDetails = allPeriodTasks.map(task => {
       const isJobWork = task.is_job_work === undefined;
       const rawDue = isJobWork ? task.deadline : task.due_date;
       const dueStr = rawDue ? String(rawDue).split(/[T ]/)[0] : '';
@@ -242,11 +252,13 @@ const ManagerEfficiency = ({ isTab }) => {
       };
     });
 
-    const computedTotal = taskDetails.length > 0 ? taskDetails.length : Math.max(emp.total_tasks || 0, fallbackTasks.length);
-    const computedCompleted = taskDetails.length > 0 
-      ? taskDetails.filter(t => ['On Time', 'Completed Late'].includes(t.timingStatus) || ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length 
-      : Math.max(emp.completed_tasks || 0, fallbackTasks.filter(t => ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length);
-    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : (emp.efficiency || 0);
+    const computedTotal = taskDetails.length;
+    const computedCompleted = taskDetails.filter(t => 
+      ['On Time', 'Completed Late'].includes(t.timingStatus) || 
+      ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())
+    ).length;
+    
+    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : 0;
 
     return {
       ...emp,
