@@ -30,6 +30,7 @@ const ManagerEfficiency = ({ isTab }) => {
   const [deliverables, setDeliverables] = useState([]);
   const [jobWorks, setJobWorks] = useState([]);
   const [contentSubmissions, setContentSubmissions] = useState([]);
+  const [calendarItems, setCalendarItems] = useState([]);
   const [subDepartments, setSubDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -77,13 +78,14 @@ const ManagerEfficiency = ({ isTab }) => {
         departmentFilter: deptId
       };
 
-      const [empRes, delivsRes, jobsRes, subDeptRes, effRes, contentRes] = await Promise.all([
+      const [empRes, delivsRes, jobsRes, subDeptRes, effRes, contentRes, calRes] = await Promise.all([
         api.get('/users/employees', { params: { departmentFilter: deptId, limit: 500 } }),
         api.get('/deliverables', { params }),
         api.get('/deliverables/job-work/manager'),
         api.get(`/departments/${deptId}/sub-departments`),
         api.get('/users/efficiency', { params: effParams }),
-        api.get('/content-work/submissions').catch(() => ({ data: { success: false, data: [] } }))
+        api.get('/content-work/submissions').catch(() => ({ data: { success: false, data: [] } })),
+        api.get('/calendar', { params: { month: selectedMonth } }).catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       if (empRes.data.success) {
@@ -103,6 +105,9 @@ const ManagerEfficiency = ({ isTab }) => {
       }
       if (contentRes && contentRes.data && contentRes.data.success) {
         setContentSubmissions(contentRes.data.data || []);
+      }
+      if (calRes && calRes.data && calRes.data.success) {
+        setCalendarItems(calRes.data.data || []);
       }
     } catch (err) {
       console.error('Error fetching efficiency data:', err.message);
@@ -173,37 +178,51 @@ const ManagerEfficiency = ({ isTab }) => {
 
     const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
     
-    const empDeliverables = deliverables.filter(d => {
-      const status = (d.status || '').toLowerCase();
-      if (status === 'cancelled' || status === 'deleted') return false;
-      return (
-        Number(d.assigned_employee_id) === empId || 
-        Number(d.content_writer_id) === empId ||
-        Number(d.smm_employee_id) === empId
-      );
-    });
-    
-    const empJobWorks = jobWorks.filter(jw => {
-      const status = (jw.status || '').toLowerCase();
-      if (status === 'cancelled' || status === 'deleted') return false;
-      return (
-        Number(jw.assigned_employee_id) === empId || 
-        Number(jw.content_writer_id) === empId ||
-        Number(jw.smm_employee_id) === empId
-      );
-    });
+    let empDeliverables = [];
+    let empJobWorks = [];
+    let empContentTasks = [];
 
-    const empContentTasks = contentSubmissions.filter(c => {
-      const status = (c.submission_status || c.status || '').toLowerCase();
-      if (status === 'cancelled' || status === 'deleted') return false;
-      const isAssigned = (
-        Number(c.content_writer_id) === empId ||
-        Number(c.writer_id) === empId ||
-        Number(c.assigned_employee_id) === empId
-      );
-      if (!isAssigned) return false;
-      return !empDeliverables.some(d => Number(d.id) === Number(c.id));
-    });
+    if (isWriter) {
+      // Content writers: workload comes from Content Calendar topics & Writer Job Works
+      empDeliverables = calendarItems.filter(c => {
+        const status = (c.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+      });
+
+      empJobWorks = jobWorks.filter(jw => {
+        const status = (jw.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return Number(jw.content_writer_id) === empId;
+      });
+
+      empContentTasks = contentSubmissions.filter(c => {
+        const status = (c.submission_status || c.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        const isAssigned = Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+        if (!isAssigned) return false;
+        return !empDeliverables.some(d => Number(d.id) === Number(c.id));
+      });
+    } else {
+      // Designers, Editors, SMM: workload comes from Deliverables table & Assigned Job Works
+      empDeliverables = deliverables.filter(d => {
+        const status = (d.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return (
+          Number(d.assigned_employee_id) === empId || 
+          Number(d.smm_employee_id) === empId
+        );
+      });
+      
+      empJobWorks = jobWorks.filter(jw => {
+        const status = (jw.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return (
+          Number(jw.assigned_employee_id) === empId || 
+          Number(jw.smm_employee_id) === empId
+        );
+      });
+    }
 
     let filteredDelivs = [];
     let filteredJobs = [];
@@ -211,8 +230,9 @@ const ManagerEfficiency = ({ isTab }) => {
 
     const matchesMonth = (itemMonth, targetMonth) => {
       if (!itemMonth) return false;
-      const str = String(itemMonth).trim();
-      if (str === targetMonth || str.substring(0, 7) === targetMonth) return true;
+      const str = String(itemMonth).replace(/,/g, '').trim().toLowerCase();
+      const targetStr = String(targetMonth).trim().toLowerCase();
+      if (str === targetStr || str.substring(0, 7) === targetStr) return true;
       
       const parts = targetMonth.split('-');
       if (parts.length < 2) return false;
@@ -222,11 +242,10 @@ const ManagerEfficiency = ({ isTab }) => {
       const dateObj = new Date(Number(targetYear), Number(targetMm) - 1, 1);
       if (isNaN(dateObj.getTime())) return false;
       
-      const shortMonth = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-      const longMonth = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+      const shortMonth = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toLowerCase();
+      const longMonth = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase();
       
-      const strLower = str.toLowerCase();
-      return strLower === shortMonth.toLowerCase() || strLower === longMonth.toLowerCase();
+      return str === shortMonth || str === longMonth || str.includes(longMonth) || str.includes(shortMonth);
     };
 
     const getTaskDueDateStr = (t) => {
