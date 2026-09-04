@@ -24,27 +24,44 @@ const getTodayOffsetDateStr = (offsetDays = 0) => {
 };
 
 const getFilteredEmployees = (reqSubDeptId, employeesList) => {
-  if (!reqSubDeptId) return employeesList;
+  if (!employeesList || !Array.isArray(employeesList)) return [];
+
   const reqId = Number(reqSubDeptId);
-  let filtered = employeesList.filter(emp => {
+
+  return employeesList.filter(emp => {
     const empSubDeptId = Number(emp.sub_department_id);
     const code = (emp.sub_department_code || '').toUpperCase();
     const name = (emp.sub_department_name || '').toLowerCase();
+    const empName = (emp.full_name || '').toLowerCase();
 
-    if (reqId === 3) {
-      // Content Writing (CW-RS / Sub-dept 3)
-      return empSubDeptId === 3 || code === 'CW-RS' || name.includes('content') || name.includes('writer');
+    // Identify if employee is a Content Writer
+    const isContentWriter = 
+      empSubDeptId === 1 || 
+      code === 'CW-RS' || 
+      name.includes('content') || 
+      empName.includes('writer');
+
+    // If looking specifically for Content Writers (reqId === 1 or 'CW-RS')
+    if (reqId === 1 || reqSubDeptId === 'CW-RS') {
+      return isContentWriter;
     }
-    // Designers & Video Editors (GD-RS, VE-RS, CRD-RS / Sub-depts 1, 2, 4)
-    return (
-      [1, 2, 4].includes(empSubDeptId) ||
-      ['GD-RS', 'VE-RS', 'CRD-RS'].includes(code) ||
-      name.includes('graphic') || name.includes('video') || name.includes('designer') ||
-      (empSubDeptId !== 3 && Number(emp.department_id) === 1)
-    );
-  });
 
-  return filtered;
+    // For ALL design and video roles (Graphic, Video, Creative) -> NEVER include Content Writers!
+    if (isContentWriter) return false;
+
+    // Filter by specific sub-department if specified
+    if (reqId === 2) {
+      return empSubDeptId === 2 || empSubDeptId === 4 || code === 'GD-RS' || code === 'CD-RS' || name.includes('graphic') || name.includes('creative');
+    }
+    if (reqId === 3 || reqId === 5) {
+      return empSubDeptId === 3 || empSubDeptId === 5 || empSubDeptId === 4 || code === 'VE-RS' || code === 'VD-RS' || code === 'CD-RS' || name.includes('video') || name.includes('editor') || name.includes('creative');
+    }
+    if (reqId === 4) {
+      return empSubDeptId === 4 || code === 'CD-RS' || code === 'CRD-RS' || name.includes('creative') || [2, 3].includes(empSubDeptId);
+    }
+
+    return true;
+  });
 };
 
 const getSubDeptSuffix = (subDeptId) => {
@@ -876,17 +893,17 @@ const ManagerDailyTodo = () => {
     setAssigningItemId(item.id);
     const actCode = (item.activity_type_code || '').toUpperCase();
     const isVideo = ['AT004', 'AT005', 'REELS', 'YT', 'YTS'].some(code => actCode.includes(code) || (item.deliverable || '').toLowerCase().includes('video') || (item.deliverable || '').toLowerCase().includes('reel'));
-    const reqSubDept = isVideo ? 2 : 1;
-    let filtered = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 3);
+    const reqSubDept = isVideo ? 3 : 2;
+    let filtered = getFilteredEmployees(reqSubDept, employees);
     
     if (item.assigned_employee_id) {
       const currEmp = employees.find(e => e.id === item.assigned_employee_id);
-      if (currEmp && Number(currEmp.sub_department_id) !== 3 && !filtered.some(e => e.id === currEmp.id)) {
+      if (currEmp && !filtered.some(e => e.id === currEmp.id)) {
         filtered = [...filtered, currEmp];
       }
     }
     
-    const isAssignedValid = filtered.some(emp => Number(emp.id) === Number(item.assigned_employee_id) && Number(emp.sub_department_id) !== 3);
+    const isAssignedValid = filtered.some(emp => Number(emp.id) === Number(item.assigned_employee_id));
     if (isAssignedValid) {
       setSelectedDesigner(item.assigned_employee_id);
     } else if (filtered.length > 0) {
@@ -1865,10 +1882,10 @@ const ManagerDailyTodo = () => {
                             const actCode = (item.activity_type_code || '').toUpperCase();
                             const isVideo = ['AT004', 'AT005', 'REELS', 'YT', 'YTS'].some(code => actCode.includes(code) || (item.deliverable || '').toLowerCase().includes('video') || (item.deliverable || '').toLowerCase().includes('reel'));
                             const reqSubDept = isVideo ? 3 : 2;
-                            let filteredEmployees = getFilteredEmployees(reqSubDept, employees).filter(e => Number(e.sub_department_id) !== 3);
+                            let filteredEmployees = getFilteredEmployees(reqSubDept, employees);
                             if (item.assigned_employee_id) {
                               const currEmp = employees.find(e => e.id === item.assigned_employee_id);
-                              if (currEmp && Number(currEmp.sub_department_id) !== 3 && !filteredEmployees.some(e => e.id === currEmp.id)) {
+                              if (currEmp && !filteredEmployees.some(e => e.id === currEmp.id)) {
                                 filteredEmployees = [...filteredEmployees, currEmp];
                               }
                             }
