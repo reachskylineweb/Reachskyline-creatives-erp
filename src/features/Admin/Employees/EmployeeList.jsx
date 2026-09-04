@@ -499,10 +499,32 @@ const EmployeeList = () => {
 
     if (isWriter) {
       // Content writers: workload comes from Content Calendar topics & Writer Job Works
-      empDeliverables = calendarItems.filter(c => {
-        const status = (c.status || '').toLowerCase();
+      const writerDeliverables = deliverables.filter(d => {
+        const status = (d.status || '').toLowerCase();
         if (status === 'cancelled' || status === 'deleted') return false;
-        return Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+        return Number(d.content_writer_id) === empId || Number(d.writer_id) === empId;
+      });
+
+      // Deduplicate multiple sub-deliverables (Post, Story, Reel) that share the same content calendar topic
+      const seenTopics = new Set();
+      empDeliverables = writerDeliverables.filter(d => {
+        const key = d.content_calendar_id || d.calendar_id || d.topic || (d.deliverable ? `${d.deliverable}_${d.date || d.due_date || d.month}` : d.id);
+        if (seenTopics.has(key)) return false;
+        seenTopics.add(key);
+        return true;
+      });
+
+      // Include calendar items if any exist that were not in deliverables
+      calendarItems.forEach(c => {
+        const status = (c.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return;
+        const isAssigned = Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+        if (!isAssigned) return;
+        const key = c.id || c.content_calendar_id;
+        if (!seenTopics.has(key)) {
+          seenTopics.add(key);
+          empDeliverables.push(c);
+        }
       });
 
       empJobWorks = jobWorks.filter(jw => {
@@ -516,7 +538,8 @@ const EmployeeList = () => {
         if (status === 'cancelled' || status === 'deleted') return false;
         const isAssigned = Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
         if (!isAssigned) return false;
-        return !empDeliverables.some(d => Number(d.id) === Number(c.id));
+        const key = c.content_calendar_id || c.calendar_id || c.id;
+        return !seenTopics.has(key);
       });
     } else {
       // Designers, Editors, SMM: workload comes from Deliverables table & Assigned Job Works
@@ -584,16 +607,25 @@ const EmployeeList = () => {
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
-        const dueMonth = getTaskDueDateStr(d).substring(0, 7);
-        return matchesMonth(d.month, effMonth) || (dueMonth && dueMonth === effMonth);
+        const dueStr = getTaskDueDateStr(d);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === effMonth) return true;
+        if (d.month && matchesMonth(d.month, effMonth)) return true;
+        return !dueMonth && !d.month;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const dueMonth = getTaskDueDateStr(jw).substring(0, 7);
-        return matchesMonth(jw.month, effMonth) || (dueMonth && dueMonth === effMonth);
+        const dueStr = getTaskDueDateStr(jw);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === effMonth) return true;
+        if (jw.month && matchesMonth(jw.month, effMonth)) return true;
+        return !dueMonth && !jw.month;
       });
       filteredContent = empContentTasks.filter(c => {
-        const dueMonth = getTaskDueDateStr(c).substring(0, 7);
-        return matchesMonth(c.month, effMonth) || (dueMonth && dueMonth === effMonth);
+        const dueStr = getTaskDueDateStr(c);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === effMonth) return true;
+        if (c.month && matchesMonth(c.month, effMonth)) return true;
+        return !dueMonth && !c.month;
       });
     }
 
