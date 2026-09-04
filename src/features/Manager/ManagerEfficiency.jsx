@@ -168,19 +168,48 @@ const ManagerEfficiency = ({ isTab }) => {
 
     const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
     
-    // Deliverables filter: include tasks where employee is assigned_employee_id, content_writer_id, or smm_employee_id
-    const empDeliverables = deliverables.filter(d => 
-      Number(d.assigned_employee_id) === empId || 
-      Number(d.content_writer_id) === empId ||
-      Number(d.smm_employee_id) === empId
-    );
+    // Filter to active assigned tasks only (exclude pending unassigned template items)
+    const activeAssignedStatuses = [
+      'assigned',
+      'assigned_employee',
+      'in_progress',
+      'submitted',
+      'script_submitted',
+      'manager_review_script',
+      'manager_review_design',
+      'pending_review',
+      'in_review',
+      'waiting_for_approval',
+      'pending_approval',
+      'sent_to_approval',
+      'reassigned',
+      'rework',
+      'approved',
+      'client_approved',
+      'completed',
+      'posted',
+      'sent_to_client'
+    ];
+
+    const empDeliverables = deliverables.filter(d => {
+      const status = (d.status || '').toLowerCase();
+      if (!activeAssignedStatuses.includes(status)) return false;
+      return (
+        Number(d.assigned_employee_id) === empId || 
+        Number(d.content_writer_id) === empId ||
+        Number(d.smm_employee_id) === empId
+      );
+    });
     
-    // Job Works filter
-    const empJobWorks = jobWorks.filter(jw => 
-      Number(jw.assigned_employee_id) === empId || 
-      Number(jw.content_writer_id) === empId ||
-      Number(jw.smm_employee_id) === empId
-    );
+    const empJobWorks = jobWorks.filter(jw => {
+      const status = (jw.status || '').toLowerCase();
+      if (!activeAssignedStatuses.includes(status)) return false;
+      return (
+        Number(jw.assigned_employee_id) === empId || 
+        Number(jw.content_writer_id) === empId ||
+        Number(jw.smm_employee_id) === empId
+      );
+    });
 
     let filteredDelivs = [];
     let filteredJobs = [];
