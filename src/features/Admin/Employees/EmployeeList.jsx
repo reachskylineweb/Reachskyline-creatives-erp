@@ -488,31 +488,9 @@ const EmployeeList = () => {
 
     const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
     
-    const activeAssignedStatuses = [
-      'assigned',
-      'assigned_employee',
-      'in_progress',
-      'submitted',
-      'script_submitted',
-      'manager_review_script',
-      'manager_review_design',
-      'pending_review',
-      'in_review',
-      'waiting_for_approval',
-      'pending_approval',
-      'sent_to_approval',
-      'reassigned',
-      'rework',
-      'approved',
-      'client_approved',
-      'completed',
-      'posted',
-      'sent_to_client'
-    ];
-
     const empDeliverables = deliverables.filter(d => {
       const status = (d.status || '').toLowerCase();
-      if (!activeAssignedStatuses.includes(status)) return false;
+      if (status === 'cancelled' || status === 'deleted') return false;
       return (
         Number(d.assigned_employee_id) === empId || 
         Number(d.content_writer_id) === empId ||
@@ -522,7 +500,7 @@ const EmployeeList = () => {
     
     const empJobWorks = jobWorks.filter(jw => {
       const status = (jw.status || '').toLowerCase();
-      if (!activeAssignedStatuses.includes(status)) return false;
+      if (status === 'cancelled' || status === 'deleted') return false;
       return (
         Number(jw.assigned_employee_id) === empId || 
         Number(jw.content_writer_id) === empId ||
@@ -532,12 +510,14 @@ const EmployeeList = () => {
 
     const empContentTasks = contentSubmissions.filter(c => {
       const status = (c.submission_status || c.status || '').toLowerCase();
-      if (status === 'pending' || status === 'unassigned' || status === 'cancelled') return false;
-      return (
+      if (status === 'cancelled' || status === 'deleted') return false;
+      const isAssigned = (
         Number(c.content_writer_id) === empId ||
         Number(c.writer_id) === empId ||
         Number(c.assigned_employee_id) === empId
       );
+      if (!isAssigned) return false;
+      return !empDeliverables.some(d => Number(d.id) === Number(c.id));
     });
 
     let filteredDelivs = [];
