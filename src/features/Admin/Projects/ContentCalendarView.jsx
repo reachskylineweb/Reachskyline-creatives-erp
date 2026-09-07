@@ -171,6 +171,37 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
     }
   }, [fetchClients, user?.role]);
 
+  const [employees, setEmployees] = useState([]);
+
+  const fetchEmployees = useCallback(async () => {
+    try {
+      const res = await api.get('/users/employees', { params: { limit: 1000 } });
+      if (res.data.success && res.data.data) {
+        setEmployees(res.data.data.employees || []);
+      }
+    } catch (err) {
+      console.error('Error fetching employees:', err.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
+
+  const getAssignedEmployeeName = (item) => {
+    if (!item) return 'employee';
+    if (item.assigned_employee_name) return item.assigned_employee_name;
+    if (item.content_writer_name) return item.content_writer_name;
+    if (item.employee_name) return item.employee_name;
+    if (item.writer_name) return item.writer_name;
+    const empId = item.assigned_employee_id || item.content_writer_id || item.writer_id;
+    if (empId) {
+      const emp = employees.find(e => Number(e.id) === Number(empId));
+      if (emp) return emp.full_name;
+    }
+    return 'the content writer';
+  };
+
   useEffect(() => {
     if (user?.role === 'admin' || user?.role === 'manager') {
       fetchActivityTypes();
@@ -431,8 +462,9 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
       setAlreadyApprovedModalOpen(true);
       return;
     }
-    if (item.assigned_employee_id !== null) {
-      alert('Work is assigned to the content writer');
+    if (item.assigned_employee_id !== null && item.assigned_employee_id !== undefined) {
+      const empName = getAssignedEmployeeName(item);
+      alert(`Work is assigned to ${empName}`);
       return;
     }
     setCurrentItem(item);
@@ -479,8 +511,9 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
       setAlreadyApprovedModalOpen(true);
       return;
     }
-    if (currentItem && currentItem.assigned_employee_id !== null) {
-      alert('Work is assigned to the content writer');
+    if (currentItem && currentItem.assigned_employee_id !== null && currentItem.assigned_employee_id !== undefined) {
+      const empName = getAssignedEmployeeName(currentItem);
+      alert(`Work is assigned to ${empName}`);
       return;
     }
     if (!(await window.confirm('Delete this scheduled item?'))) return;
