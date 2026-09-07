@@ -185,7 +185,9 @@ const BlogCalendarView = () => {
     try {
       const res = await api.get('/users/employees', { params: { limit: 1000 } });
       if (res.data.success && res.data.data) {
-        setEmployees(res.data.data.employees || []);
+        const raw = res.data.data;
+        const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.employees) ? raw.employees : []);
+        setEmployees(list);
       }
     } catch (err) {
       console.error('Error fetching employees:', err.message);
@@ -197,22 +199,23 @@ const BlogCalendarView = () => {
   }, [fetchEmployees]);
 
   const getAssignedEmployeeName = (item) => {
-    if (!item) return 'employee';
+    if (!item) return 'the assigned employee';
     if (item.assigned_employee_name) return item.assigned_employee_name;
     if (item.content_writer_name) return item.content_writer_name;
     if (item.employee_name) return item.employee_name;
     if (item.writer_name) return item.writer_name;
-    const empId = item.assigned_employee_id || item.content_writer_id || item.writer_id;
-    if (empId) {
-      const emp = employees.find(e => Number(e.id) === Number(empId));
-      if (emp) return emp.full_name;
+    const empId = Number(item.assigned_employee_id || item.content_writer_id || item.writer_id || 0);
+    if (empId > 0 && Array.isArray(employees)) {
+      const emp = employees.find(e => Number(e.id) === empId || Number(e.employee_id) === empId);
+      if (emp) return emp.full_name || emp.name;
     }
-    return 'the content writer';
+    return 'the assigned employee';
   };
 
   // Edit Item Click
   const handleOpenEditModal = (item) => {
-    if (item.assigned_employee_id !== null && item.assigned_employee_id !== undefined) {
+    const empId = Number(item.assigned_employee_id || item.content_writer_id || item.writer_id || 0);
+    if (empId > 0) {
       const empName = getAssignedEmployeeName(item);
       alert(`Work is assigned to ${empName}`);
       return;
@@ -253,7 +256,8 @@ const BlogCalendarView = () => {
   };
 
   const handleDeleteItem = async () => {
-    if (currentItem && currentItem.assigned_employee_id !== null && currentItem.assigned_employee_id !== undefined) {
+    const empId = currentItem ? Number(currentItem.assigned_employee_id || currentItem.content_writer_id || currentItem.writer_id || 0) : 0;
+    if (empId > 0) {
       const empName = getAssignedEmployeeName(currentItem);
       alert(`Work is assigned to ${empName}`);
       return;
