@@ -391,14 +391,21 @@ const ManagerJobWorks = () => {
                 setAssigningJobId(jw.id);
                 setIsAssignModalOpen(true);
                 // Pre-select first employee from SMM or Creatives
+                const isContentWriter = (emp) => 
+                  emp.sub_department_id === 1 || 
+                  emp.sub_department_id === 3 || 
+                  emp.sub_department_code === 'CW-RS' || 
+                  (emp.sub_department_name || '').toLowerCase().includes('content');
+
                 const filteredEmps = isSMMManager
                   ? employees.filter(emp => emp.department_id === 3)
                   : employees.filter(emp => 
                       jw.status === 'assigned' 
-                        ? emp.sub_department_id === 3 
-                        : [1, 2, 4].includes(emp.sub_department_id)
+                        ? isContentWriter(emp)
+                        : !isContentWriter(emp)
                     );
-                if (filteredEmps.length > 0) setSelectedEmployee(filteredEmps[0].id);
+                const displayEmps = filteredEmps.length > 0 ? filteredEmps : employees;
+                if (displayEmps.length > 0) setSelectedEmployee(displayEmps[0].id);
               }}
               disabled={actionInProgress !== null}
               style={{
@@ -542,13 +549,20 @@ const ManagerJobWorks = () => {
       {isAssignModalOpen && (() => {
         const assigningJob = jobWorks.find(jw => jw.id === assigningJobId);
         const isSMMManager = user?.managerProfile?.department_code === 'SMM-RS';
+        const isContentWriter = (emp) => 
+          emp.sub_department_id === 1 || 
+          emp.sub_department_id === 3 || 
+          emp.sub_department_code === 'CW-RS' || 
+          (emp.sub_department_name || '').toLowerCase().includes('content');
+
         const filteredEmployees = isSMMManager
           ? employees.filter(emp => emp.department_id === 3)
           : employees.filter(emp => 
               assigningJob?.status === 'assigned' 
-                ? emp.sub_department_id === 3 
-                : [1, 2, 4].includes(emp.sub_department_id)
+                ? isContentWriter(emp)
+                : !isContentWriter(emp)
             );
+        const finalEmployeesList = filteredEmployees.length > 0 ? filteredEmployees : employees;
 
         return (
           <Modal
@@ -571,9 +585,9 @@ const ManagerJobWorks = () => {
                   required
                 >
                   <option value="">-- Choose Employee --</option>
-                  {filteredEmployees.map(emp => (
+                  {finalEmployeesList.map(emp => (
                     <option key={emp.id} value={emp.id}>
-                      {emp.full_name} ({emp.department_name || 'Creative Team'})
+                      {emp.full_name} ({emp.sub_department_name || emp.department_name || 'Creative Team'})
                     </option>
                   ))}
                 </select>

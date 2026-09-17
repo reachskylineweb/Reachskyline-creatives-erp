@@ -101,8 +101,7 @@ const Sidebar = () => {
         { label: 'Employees', path: '/manager/employees', icon: <Users size={20} /> },
         { label: 'Employee Efficiency', path: '/manager/efficiency', icon: <BarChart3 size={20} /> },
         { label: 'Approval works', path: '/manager/submissions-review', icon: <FileSpreadsheet size={20} /> },
-        { label: 'OP from Client', path: '/manager/client-reworks', icon: <RefreshCw size={20} /> },
-        { label: 'Job Works', path: '/manager/job-works', icon: <FileSpreadsheet size={20} /> }
+        { label: 'OP from Client', path: '/manager/client-reworks', icon: <RefreshCw size={20} /> }
       ];
     }
 
