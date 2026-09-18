@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building, Plus, RefreshCw, AlertCircle, ArrowRight } from 'lucide-react';
+import { Building, Plus, RefreshCw, AlertCircle, ArrowRight, Trash2 } from 'lucide-react';
 import api from '../../utils/api';
 import Table from '../../components/Table';
 import Modal from '../../components/Modal';
@@ -49,6 +49,20 @@ const SuperAdminBranches = () => {
     }
   };
 
+  const handleDeleteBranch = async (branch) => {
+    if (window.confirm(`Are you sure you want to delete branch "${branch.name}"?\n\nThis action will permanently remove this branch location and all its associated data from the ERP system and database.`)) {
+      try {
+        const res = await api.delete(`/super-admin/branches/${branch.id}`);
+        if (res.data.success) {
+          setFeedback({ type: 'success', text: res.data.message || `Branch "${branch.name}" deleted successfully.` });
+          fetchBranches();
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || 'Failed to delete branch.');
+      }
+    }
+  };
+
   const columns = [
     { key: 'id', label: 'ID', width: '80px', render: (id) => <span style={{ fontWeight: 600 }}>#{id}</span> },
     { key: 'name', label: 'Branch Location Name', render: (name, b) => (
@@ -67,13 +81,22 @@ const SuperAdminBranches = () => {
       key: 'actions',
       label: 'Actions',
       render: (_, b) => (
-        <button 
-          className="btn btn-secondary btn-sm"
-          onClick={() => navigate(`/super-admin/branches/${b.id}`)}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '6px 12px' }}
-        >
-          Manage Branch <ArrowRight size={13} />
-        </button>
+        <div style={{ display: 'flex', gap: '8px' }}>
+          <button 
+            className="btn btn-secondary btn-sm"
+            onClick={() => navigate(`/super-admin/branches/${b.id}`)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '6px 12px' }}
+          >
+            Manage Branch <ArrowRight size={13} />
+          </button>
+          <button 
+            className="btn btn-danger btn-sm"
+            onClick={() => handleDeleteBranch(b)}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', padding: '6px 10px', backgroundColor: 'var(--danger)', color: '#fff', border: 'none', borderRadius: '4px', cursor: 'pointer' }}
+          >
+            <Trash2 size={13} /> Delete
+          </button>
+        </div>
       )
     }
   ];

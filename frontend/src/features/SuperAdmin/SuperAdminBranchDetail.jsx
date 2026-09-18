@@ -72,6 +72,21 @@ const SuperAdminBranchDetail = () => {
     fetchBranchDetails();
   }, [fetchBranchDetails]);
 
+  const handleDeleteBranch = async () => {
+    if (!data?.branch) return;
+    if (window.confirm(`Are you sure you want to delete branch "${data.branch.name}"?\n\nThis action will permanently delete this branch location and all associated data from the ERP system and database.`)) {
+      try {
+        const res = await api.delete(`/super-admin/branches/${branchId}`);
+        if (res.data.success) {
+          alert(`Branch "${data.branch.name}" deleted successfully.`);
+          navigate('/super-admin/branches');
+        }
+      } catch (err) {
+        alert(err.response?.data?.message || 'Failed to delete branch.');
+      }
+    }
+  };
+
   const fetchDepartmentsList = useCallback(async () => {
     try {
       const res = await api.get('/departments/dropdown');
@@ -827,20 +842,31 @@ const SuperAdminBranchDetail = () => {
     <div style={{ padding: '30px', maxWidth: '1400px', margin: '0 auto' }}>
       
       {/* Header Breadcrumb */}
-      <div style={{ marginBottom: '24px' }}>
-        <button 
-          onClick={() => navigate('/super-admin/branches')}
-          style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '13px', cursor: 'pointer', padding: 0, marginBottom: '12px' }}
-        >
-          <ArrowLeft size={14} /> Back to Branches List
-        </button>
-        <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Building size={28} style={{ color: 'var(--primary)' }} />
-          {loading ? 'Loading branch...' : `${data?.branch?.name} Branch`}
-        </h1>
-        <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
-          Detailed branch configuration, human resource profiles, and creatives department workflow.
-        </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px' }}>
+        <div>
+          <button 
+            onClick={() => navigate('/super-admin/branches')}
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', border: 'none', background: 'none', color: 'var(--primary)', fontWeight: 700, fontSize: '13px', cursor: 'pointer', padding: 0, marginBottom: '12px' }}
+          >
+            <ArrowLeft size={14} /> Back to Branches List
+          </button>
+          <h1 style={{ margin: 0, fontSize: '26px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <Building size={28} style={{ color: 'var(--primary)' }} />
+            {loading ? 'Loading branch...' : `${data?.branch?.name} Branch`}
+          </h1>
+          <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: 'var(--text-muted)' }}>
+            Detailed branch configuration, human resource profiles, and creatives department workflow.
+          </p>
+        </div>
+        {data?.branch && (
+          <button
+            onClick={handleDeleteBranch}
+            className="btn btn-danger"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', backgroundColor: 'var(--danger)', color: '#fff', border: 'none', padding: '10px 16px', borderRadius: '4px', cursor: 'pointer', fontWeight: 700 }}
+          >
+            <Trash2 size={16} /> Delete Branch
+          </button>
+        )}
       </div>
 
       {feedback.text && (
