@@ -488,29 +488,98 @@ class UserService {
       const empId = employee.id;
       const userId = employee.user_id;
 
-      // 1. Unassign from monthly_deliverables
-      await connection.query("UPDATE monthly_deliverables SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
-      await connection.query("UPDATE monthly_deliverables SET smm_employee_id = NULL WHERE smm_employee_id = ?", [empId]);
-      await connection.query("UPDATE monthly_deliverables SET content_writer_id = NULL WHERE content_writer_id = ?", [empId]);
+      // Ensure monthly_deliverables.assigned_employee_id allows NULL if possible
+      try {
+        await connection.query("ALTER TABLE monthly_deliverables MODIFY assigned_employee_id INT(11) NULL");
+      } catch (_) {}
 
-      // 2. Unassign from job_works
-      await connection.query("UPDATE job_works SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
-      await connection.query("UPDATE job_works SET smm_employee_id = NULL WHERE smm_employee_id = ?", [empId]);
-      await connection.query("UPDATE job_works SET content_writer_id = NULL WHERE content_writer_id = ?", [empId]);
+      // 1. Unassign from monthly_deliverables safely BEFORE employee deletion
+      try {
+        await connection.query("UPDATE monthly_deliverables SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
+      } catch (_) {
+        try {
+          await connection.query("DELETE FROM monthly_deliverables WHERE assigned_employee_id = ?", [empId]);
+        } catch (_) {}
+      }
 
-      // 3. Unassign from content_calendar, event_days, shoot_scripts
-      await connection.query("UPDATE content_calendar SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
-      await connection.query("UPDATE event_days SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
-      await connection.query("UPDATE shoot_scripts SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
+      try {
+        await connection.query("UPDATE monthly_deliverables SET smm_employee_id = NULL WHERE smm_employee_id = ?", [empId]);
+      } catch (_) {}
 
-      // 4. Delete notifications & push subscriptions
-      await connection.query("DELETE FROM notifications WHERE user_id = ?", [userId]);
-      await connection.query("DELETE FROM user_push_subscriptions WHERE user_id = ?", [userId]);
+      try {
+        await connection.query("UPDATE monthly_deliverables SET content_writer_id = NULL WHERE content_writer_id = ?", [empId]);
+      } catch (_) {}
 
-      // 5. Now delete user account and employee profile row safely
-      await userRepository.softDeleteUser(userId, connection);
+      // 2. Unassign from job_works safely
+      try {
+        await connection.query("UPDATE job_works SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
+      } catch (_) {}
+      try {
+        await connection.query("UPDATE job_works SET smm_employee_id = NULL WHERE smm_employee_id = ?", [empId]);
+      } catch (_) {}
+      try {
+        await connection.query("UPDATE job_works SET content_writer_id = NULL WHERE content_writer_id = ?", [empId]);
+      } catch (_) {}
 
-      await dashboardRepository.createActivityLog(adminUserId, 'Delete Employee', `Employee "${employee.full_name}" (${employee.employee_id_code}) was completely removed from active ERP operations.`, connection);
+      // 3. Unassign from content_calendar, event_days, shoot_scripts safely
+      try {
+        await connection.query("UPDATE content_calendar SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
+      } catch (_) {}
+      try {
+        await connection.query("UPDATE event_days SET assigned_employee_id = NULL WHERE assigned_employee_id = ?", [empId]);
+      } catch (_) {}
+      try {
+        await connection.query("DELETE FROM shoot_scripts WHERE assigned_employee_id = ?", [empId]);
+      } catch (_) {}
+
+      // 4. Unassign/delete from tasks (where assigned_to = user_id)
+      if (userId) {
+        try {
+          await connection.query("UPDATE tasks SET assigned_to = NULL WHERE assigned_to = ?", [userId]);
+        } catch (_) {
+          try {
+            await connection.query("DELETE FROM tasks WHERE assigned_to = ?", [userId]);
+          } catch (_) {}
+        }
+      }
+
+      // 5. Delete notifications & push subscriptions safely
+      if (userId) {
+        try {
+          await connection.query("DELETE FROM notifications WHERE user_id = ?", [userId]);
+        } catch (_) {}
+        try {
+          await connection.query("DELETE FROM user_push_subscriptions WHERE user_id = ?", [userId]);
+        } catch (_) {}
+      }
+
+      // 6. HARD DELETE employee profile
+      await connection.query("DELETE FROM employees WHERE id = ?", [empId]);
+
+      // 7. Safely check if user account is linked to other roles before deleting user account
+      if (userId) {
+        let isLinked = false;
+        try {
+          const [mgrCount] = await connection.query('SELECT COUNT(*) as cnt FROM managers WHERE user_id = ?', [userId]);
+          if (mgrCount && mgrCount[0] && mgrCount[0].cnt > 0) isLinked = true;
+        } catch (_) {}
+        try {
+          const [hrCount] = await connection.query('SELECT COUNT(*) as cnt FROM hr WHERE user_id = ?', [userId]);
+          if (hrCount && hrCount[0] && hrCount[0].cnt > 0) isLinked = true;
+        } catch (_) {}
+
+        if (!isLinked) {
+          try {
+            await connection.query("DELETE FROM users WHERE id = ?", [userId]);
+          } catch (_) {}
+        }
+      }
+
+      try {
+        if (adminUserId && dashboardRepository && dashboardRepository.createActivityLog) {
+          await dashboardRepository.createActivityLog(adminUserId, 'Delete Employee', `Employee "${employee.full_name}" (${employee.employee_id_code}) was completely removed.`, connection);
+        }
+      } catch (_) {}
 
       await connection.commit();
     } catch (error) {
