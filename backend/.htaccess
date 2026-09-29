@@ -1,0 +1,17 @@
+<LimitExcept GET POST HEAD OPTIONS>
+    Allow from all
+</LimitExcept>
+
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+</IfModule>
+<IfModule mod_headers.c>
+    Header always set Access-Control-Allow-Origin "*"
+    Header always set Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS, PATCH"
+    Header always set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+<Limit GET POST PUT DELETE OPTIONS PATCH>
+    Order allow,deny
+    Allow from all
+</Limit>
