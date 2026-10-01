@@ -97511,3 +97511,683 @@
 [2026-09-16T13:14:20.917Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.264 ms
 [2026-09-16T13:15:20.888Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.898 ms
 [2026-09-16T13:16:20.914Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.931 ms
+[2026-09-29T06:16:41.277Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:41.280Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:41.281Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:41.283Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:41.285Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:41.288Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:41.292Z] [ERROR] ==============================
+[2026-09-29T06:16:47.006Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:47.008Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:47.010Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:47.012Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:47.014Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:47.017Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:47.019Z] [ERROR] ==============================
+[2026-09-29T06:16:48.344Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:48.351Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:48.364Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:48.373Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:48.380Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:48.385Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:48.388Z] [ERROR] ==============================
+[2026-09-29T06:16:52.313Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:52.315Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:52.317Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:52.319Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:52.321Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:52.323Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:52.325Z] [ERROR] ==============================
+[2026-09-29T06:16:54.387Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:54.391Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:54.393Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:54.396Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:54.398Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:54.401Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:54.403Z] [ERROR] ==============================
+[2026-09-29T06:16:55.522Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-09-29T06:16:55.976Z] [INFO] Database connection established successfully.
+[2026-09-29T06:16:55.980Z] [INFO] ==================================================
+[2026-09-29T06:16:55.981Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-09-29T06:16:55.982Z] [INFO] Local Access URL: http://localhost:5050
+[2026-09-29T06:16:55.983Z] [INFO] ==================================================
+[2026-09-29T06:16:56.779Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:16:56.783Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:16:56.785Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:16:56.789Z] [ERROR] DB_USER: root
+[2026-09-29T06:16:56.792Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:16:56.794Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:16:56.796Z] [ERROR] ==============================
+[2026-09-29T06:16:57.427Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-09-29T06:16:57.495Z] [INFO] Database connection established successfully.
+[2026-09-29T06:16:57.500Z] [INFO] ==================================================
+[2026-09-29T06:16:57.501Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-09-29T06:16:57.502Z] [INFO] Local Access URL: http://localhost:5050
+[2026-09-29T06:16:57.504Z] [INFO] ==================================================
+[2026-09-29T06:19:01.973Z] [INFO] HTTP Request: GET /api/notifications 403 121 - 10.613 ms
+[2026-09-29T06:19:01.980Z] [INFO] HTTP Request: GET /api/auth/session 403 121 - 2.834 ms
+[2026-09-29T06:19:01.986Z] [INFO] HTTP Request: GET /api/notifications 403 121 - 1.281 ms
+[2026-09-29T06:19:02.048Z] [INFO] HTTP Request: GET /api/auth/session 403 121 - 1.029 ms
+[2026-09-29T06:19:31.930Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.516 ms
+[2026-09-29T06:20:01.923Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.345 ms
+[2026-09-29T06:20:31.928Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.488 ms
+[2026-09-29T06:21:01.928Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.408 ms
+[2026-09-29T06:21:31.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.365 ms
+[2026-09-29T06:22:01.928Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.483 ms
+[2026-09-29T06:22:31.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.226 ms
+[2026-09-29T06:23:01.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.324 ms
+[2026-09-29T06:23:31.929Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.328 ms
+[2026-09-29T06:24:02.407Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.739 ms
+[2026-09-29T06:24:32.380Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.353 ms
+[2026-09-29T06:25:03.397Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.395 ms
+[2026-09-29T06:26:03.414Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.396 ms
+[2026-09-29T06:26:59.669Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.958 ms
+[2026-09-29T06:27:01.928Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.280 ms
+[2026-09-29T06:27:31.929Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.316 ms
+[2026-09-29T06:28:01.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.226 ms
+[2026-09-29T06:28:31.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.753 ms
+[2026-09-29T06:28:44.168Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:28:44.172Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:28:44.174Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:28:44.177Z] [ERROR] DB_USER: root
+[2026-09-29T06:28:44.178Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:28:44.180Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:28:44.181Z] [ERROR] ==============================
+[2026-09-29T06:28:44.904Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-09-29T06:28:44.971Z] [INFO] Database connection established successfully.
+[2026-09-29T06:28:44.977Z] [INFO] ==================================================
+[2026-09-29T06:28:44.978Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-09-29T06:28:44.979Z] [INFO] Local Access URL: http://localhost:5050
+[2026-09-29T06:28:44.982Z] [INFO] ==================================================
+[2026-09-29T06:29:01.954Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 7.992 ms
+[2026-09-29T06:29:31.929Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 1.396 ms
+[2026-09-29T06:30:01.929Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.671 ms
+[2026-09-29T06:30:31.928Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.525 ms
+[2026-09-29T06:31:01.938Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.492 ms
+[2026-09-29T06:31:31.927Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.475 ms
+[2026-09-29T06:32:02.390Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.554 ms
+[2026-09-29T06:32:20.459Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T06:32:20.465Z] [ERROR] DB_HOST: localhost
+[2026-09-29T06:32:20.466Z] [ERROR] DB_PORT: 3306
+[2026-09-29T06:32:20.467Z] [ERROR] DB_USER: root
+[2026-09-29T06:32:20.467Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T06:32:20.468Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T06:32:20.469Z] [ERROR] ==============================
+[2026-09-29T06:32:32.380Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.442 ms
+[2026-09-29T06:33:01.922Z] [INFO] HTTP Request: GET /api/notifications 401 110 - 0.383 ms
+[2026-09-29T06:33:04.737Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 587.712 ms
+[2026-09-29T06:33:05.685Z] [INFO] HTTP Request: GET /api/notifications 200 - - 34.561 ms
+[2026-09-29T06:33:05.718Z] [INFO] HTTP Request: GET /api/auth/session 200 168 - 52.547 ms
+[2026-09-29T06:33:05.726Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.461 ms
+[2026-09-29T06:33:05.752Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 3.838 ms
+[2026-09-29T06:33:05.984Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 200 - - 45.054 ms
+[2026-09-29T06:33:06.005Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 304 - - 17.678 ms
+[2026-09-29T06:33:09.160Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.703 ms
+[2026-09-29T06:33:09.167Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.229 ms
+[2026-09-29T06:33:12.098Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 304 - - 19.762 ms
+[2026-09-29T06:33:12.124Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 304 - - 19.668 ms
+[2026-09-29T06:33:36.405Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.785 ms
+[2026-09-29T06:34:06.391Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.409 ms
+[2026-09-29T06:34:36.410Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.769 ms
+[2026-09-29T06:35:06.389Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.073 ms
+[2026-09-29T06:35:36.386Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.260 ms
+[2026-09-29T06:36:05.615Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.272 ms
+[2026-09-29T06:36:35.610Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.854 ms
+[2026-09-29T06:37:05.607Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.958 ms
+[2026-09-29T06:37:36.398Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.736 ms
+[2026-09-29T06:38:06.387Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.729 ms
+[2026-09-29T06:39:03.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.370 ms
+[2026-09-29T06:39:21.438Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.254 ms
+[2026-09-29T06:39:36.421Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.235 ms
+[2026-09-29T06:40:06.391Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.100 ms
+[2026-09-29T06:40:36.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.869 ms
+[2026-09-29T06:41:36.839Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.384 ms
+[2026-09-29T06:42:07.666Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.794 ms
+[2026-09-29T06:42:36.388Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.199 ms
+[2026-09-29T06:44:03.399Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.295 ms
+[2026-09-29T06:45:03.471Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.124 ms
+[2026-09-29T06:46:03.504Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.455 ms
+[2026-09-29T06:47:03.401Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.513 ms
+[2026-09-29T06:48:03.389Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.986 ms
+[2026-09-29T06:49:03.392Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.398 ms
+[2026-09-29T06:50:03.398Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.224 ms
+[2026-09-29T06:51:03.616Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.611 ms
+[2026-09-29T06:51:36.080Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.997 ms
+[2026-09-29T06:52:06.385Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.713 ms
+[2026-09-29T06:52:35.608Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.307 ms
+[2026-09-29T06:53:05.608Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.673 ms
+[2026-09-29T06:53:35.605Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.327 ms
+[2026-09-29T06:54:05.606Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.086 ms
+[2026-09-29T06:54:35.604Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.280 ms
+[2026-09-29T06:55:05.604Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.597 ms
+[2026-09-29T06:55:35.608Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.350 ms
+[2026-09-29T06:56:05.608Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.384 ms
+[2026-09-29T06:56:35.604Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.636 ms
+[2026-09-29T06:57:05.603Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.695 ms
+[2026-09-29T06:57:36.378Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.442 ms
+[2026-09-29T06:58:06.385Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.330 ms
+[2026-09-29T06:59:03.387Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.735 ms
+[2026-09-29T07:00:03.389Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.720 ms
+[2026-09-29T07:01:03.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.257 ms
+[2026-09-29T07:02:03.392Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.692 ms
+[2026-09-29T07:03:03.387Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.099 ms
+[2026-09-29T07:04:03.486Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.826 ms
+[2026-09-29T07:05:03.378Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.397 ms
+[2026-09-29T07:06:03.383Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.961 ms
+[2026-09-29T07:07:03.471Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.289 ms
+[2026-09-29T07:08:03.441Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.282 ms
+[2026-09-29T07:09:03.388Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.902 ms
+[2026-09-29T07:10:03.424Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.010 ms
+[2026-09-29T07:11:03.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.112 ms
+[2026-09-29T07:12:03.440Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.508 ms
+[2026-09-29T07:13:03.388Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.829 ms
+[2026-09-29T07:14:03.485Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.989 ms
+[2026-09-29T07:15:03.480Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.414 ms
+[2026-09-29T07:16:03.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.940 ms
+[2026-09-29T07:17:03.387Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.790 ms
+[2026-09-29T07:18:03.429Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.870 ms
+[2026-09-29T07:19:04.285Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.929 ms
+[2026-09-29T07:20:03.392Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.925 ms
+[2026-09-29T07:21:03.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.970 ms
+[2026-09-29T07:22:03.442Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.065 ms
+[2026-09-29T07:23:03.561Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.003 ms
+[2026-09-29T07:24:03.400Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.942 ms
+[2026-09-29T07:25:03.444Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.920 ms
+[2026-09-29T07:26:03.457Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.266 ms
+[2026-09-29T07:27:03.438Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.190 ms
+[2026-09-29T07:28:03.434Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.072 ms
+[2026-09-29T07:29:03.429Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.759 ms
+[2026-09-29T07:30:03.426Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.023 ms
+[2026-09-29T07:31:03.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.981 ms
+[2026-09-29T07:32:03.404Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.250 ms
+[2026-09-29T07:32:21.311Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.036 ms
+[2026-09-29T07:32:36.082Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.840 ms
+[2026-09-29T07:33:06.382Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.590 ms
+[2026-09-29T07:34:03.393Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.078 ms
+[2026-09-29T07:35:03.506Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.709 ms
+[2026-09-29T07:36:03.431Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.254 ms
+[2026-09-29T07:37:03.396Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.570 ms
+[2026-09-29T07:38:03.518Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.844 ms
+[2026-09-29T07:39:03.423Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.173 ms
+[2026-09-29T07:40:03.419Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.072 ms
+[2026-09-29T07:41:03.474Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.784 ms
+[2026-09-29T07:42:03.402Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.380 ms
+[2026-09-29T07:43:03.436Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.021 ms
+[2026-09-29T07:44:03.442Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.274 ms
+[2026-09-29T07:45:03.414Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.830 ms
+[2026-09-29T07:46:03.429Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.960 ms
+[2026-09-29T07:47:03.415Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.908 ms
+[2026-09-29T07:48:03.418Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.310 ms
+[2026-09-29T07:49:03.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.878 ms
+[2026-09-29T07:50:03.429Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.366 ms
+[2026-09-29T07:51:03.645Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.020 ms
+[2026-09-29T07:52:03.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.375 ms
+[2026-09-29T07:53:03.380Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.165 ms
+[2026-09-29T07:54:03.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.092 ms
+[2026-09-29T07:55:03.425Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.802 ms
+[2026-09-29T07:56:03.514Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.259 ms
+[2026-09-29T07:57:03.441Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.797 ms
+[2026-09-29T07:58:03.428Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.050 ms
+[2026-09-29T07:59:03.401Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.209 ms
+[2026-09-29T08:00:03.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.837 ms
+[2026-09-29T08:01:03.381Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.612 ms
+[2026-09-29T08:02:03.455Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.883 ms
+[2026-09-29T08:03:03.384Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.136 ms
+[2026-09-29T08:04:03.430Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.899 ms
+[2026-09-29T08:05:03.404Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.213 ms
+[2026-09-29T08:06:03.440Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.730 ms
+[2026-09-29T08:07:03.393Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.002 ms
+[2026-09-29T08:08:03.421Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.786 ms
+[2026-09-29T08:09:03.406Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.960 ms
+[2026-09-29T08:10:03.472Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.930 ms
+[2026-09-29T08:11:03.434Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.848 ms
+[2026-09-29T08:12:03.425Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.822 ms
+[2026-09-29T08:13:03.410Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.059 ms
+[2026-09-29T08:14:03.426Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.937 ms
+[2026-09-29T08:15:03.420Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.268 ms
+[2026-09-29T08:16:03.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.210 ms
+[2026-09-29T08:17:03.448Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.016 ms
+[2026-09-29T08:18:03.432Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.502 ms
+[2026-09-29T08:19:03.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.778 ms
+[2026-09-29T08:20:03.406Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.928 ms
+[2026-09-29T08:21:03.379Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.055 ms
+[2026-09-29T08:22:03.402Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.984 ms
+[2026-09-29T08:23:03.419Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.751 ms
+[2026-09-29T08:24:03.438Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.712 ms
+[2026-09-29T08:25:03.418Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.799 ms
+[2026-09-29T08:26:03.415Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.668 ms
+[2026-09-29T08:27:03.416Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.654 ms
+[2026-09-29T08:28:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.522 ms
+[2026-09-29T08:29:03.416Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.845 ms
+[2026-09-29T08:30:03.437Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.801 ms
+[2026-09-29T08:31:03.445Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.038 ms
+[2026-09-29T08:32:03.432Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.767 ms
+[2026-09-29T08:33:03.419Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.854 ms
+[2026-09-29T08:34:03.400Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.785 ms
+[2026-09-29T08:35:03.403Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.004 ms
+[2026-09-29T08:36:03.386Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.913 ms
+[2026-09-29T08:37:03.394Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.814 ms
+[2026-09-29T08:38:03.431Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.456 ms
+[2026-09-29T08:39:03.413Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.455 ms
+[2026-09-29T08:40:03.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.703 ms
+[2026-09-29T08:41:03.403Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.892 ms
+[2026-09-29T08:42:03.433Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.705 ms
+[2026-09-29T08:43:03.421Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.892 ms
+[2026-09-29T08:44:03.435Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.690 ms
+[2026-09-29T08:45:03.407Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.284 ms
+[2026-09-29T08:46:03.432Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.340 ms
+[2026-09-29T08:47:03.456Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.070 ms
+[2026-09-29T08:48:03.422Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.608 ms
+[2026-09-29T09:12:30.892Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.746 ms
+[2026-09-29T09:13:03.376Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.034 ms
+[2026-09-29T09:14:03.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.464 ms
+[2026-09-29T09:15:03.417Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.324 ms
+[2026-09-29T09:16:03.433Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.010 ms
+[2026-09-29T09:17:03.446Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.738 ms
+[2026-09-29T09:18:03.459Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.156 ms
+[2026-09-29T09:19:03.418Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.905 ms
+[2026-09-29T09:20:03.542Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.457 ms
+[2026-09-29T09:21:03.430Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.130 ms
+[2026-09-29T09:22:03.475Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.289 ms
+[2026-09-29T09:23:03.460Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.758 ms
+[2026-09-29T09:24:03.443Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.295 ms
+[2026-09-29T09:25:03.445Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.127 ms
+[2026-09-29T09:26:03.499Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.970 ms
+[2026-09-29T09:27:03.467Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.646 ms
+[2026-09-29T09:28:03.433Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.041 ms
+[2026-09-29T09:29:03.438Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.815 ms
+[2026-09-29T09:29:38.956Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.883 ms
+[2026-09-29T09:30:06.397Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.132 ms
+[2026-09-29T09:30:36.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.911 ms
+[2026-09-29T09:31:06.487Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.873 ms
+[2026-09-29T09:32:03.434Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.989 ms
+[2026-09-29T09:33:03.452Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.896 ms
+[2026-09-29T09:34:03.481Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.466 ms
+[2026-09-29T09:35:03.424Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.135 ms
+[2026-09-29T09:36:03.473Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.888 ms
+[2026-09-29T09:37:03.454Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.942 ms
+[2026-09-29T09:38:03.450Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.236 ms
+[2026-09-29T09:38:24.979Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.568 ms
+[2026-09-29T09:38:25.838Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.887 ms
+[2026-09-29T09:38:25.847Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.349 ms
+[2026-09-29T09:38:25.866Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 8.170 ms
+[2026-09-29T09:38:25.893Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 2.178 ms
+[2026-09-29T09:38:26.368Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 304 - - 38.387 ms
+[2026-09-29T09:38:26.387Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-09-29&month=2026-09 304 - - 16.381 ms
+[2026-09-29T09:38:56.394Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.841 ms
+[2026-09-29T09:39:26.379Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.509 ms
+[2026-09-29T09:39:56.386Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.359 ms
+[2026-09-29T09:40:26.400Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.354 ms
+[2026-09-29T09:40:56.410Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.654 ms
+[2026-09-29T09:41:26.393Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.424 ms
+[2026-09-29T09:42:03.416Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.518 ms
+[2026-09-29T09:43:03.466Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.709 ms
+[2026-09-29T09:44:03.437Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.654 ms
+[2026-09-29T09:45:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.696 ms
+[2026-09-29T09:46:03.438Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.680 ms
+[2026-09-29T09:47:03.459Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.871 ms
+[2026-09-29T09:48:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.016 ms
+[2026-09-29T09:49:03.515Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.755 ms
+[2026-09-29T09:50:03.502Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.738 ms
+[2026-09-29T09:51:03.444Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.011 ms
+[2026-09-29T09:52:03.450Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.052 ms
+[2026-09-29T09:53:03.451Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.961 ms
+[2026-09-29T09:54:03.445Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.835 ms
+[2026-09-29T09:55:03.458Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.880 ms
+[2026-09-29T09:56:03.458Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.275 ms
+[2026-09-29T09:57:03.513Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.301 ms
+[2026-09-29T09:58:03.460Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.628 ms
+[2026-09-29T09:59:03.457Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.737 ms
+[2026-09-29T10:00:03.517Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.200 ms
+[2026-09-29T10:01:03.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.257 ms
+[2026-09-29T10:01:38.818Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.707 ms
+[2026-09-29T10:01:56.387Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.404 ms
+[2026-09-29T10:02:26.407Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.262 ms
+[2026-09-29T10:03:03.491Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.915 ms
+[2026-09-29T10:04:03.451Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.821 ms
+[2026-09-29T10:05:03.443Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.896 ms
+[2026-09-29T10:06:03.516Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.876 ms
+[2026-09-29T10:07:03.604Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.094 ms
+[2026-09-29T10:08:03.518Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.317 ms
+[2026-09-29T10:09:03.476Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.546 ms
+[2026-09-29T10:10:03.518Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.273 ms
+[2026-09-29T10:11:03.406Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.349 ms
+[2026-09-29T10:12:03.455Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.583 ms
+[2026-09-29T10:13:03.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.516 ms
+[2026-09-29T10:14:03.436Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.333 ms
+[2026-09-29T10:15:03.516Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.994 ms
+[2026-09-29T10:16:03.497Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.646 ms
+[2026-09-29T10:17:03.505Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.332 ms
+[2026-09-29T10:18:03.516Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.718 ms
+[2026-09-29T10:19:03.460Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.501 ms
+[2026-09-29T10:20:03.519Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.659 ms
+[2026-09-29T10:21:03.503Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.962 ms
+[2026-09-29T10:22:03.518Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.843 ms
+[2026-09-29T10:23:03.443Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.244 ms
+[2026-09-29T10:24:03.556Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.004 ms
+[2026-09-29T10:25:03.504Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.423 ms
+[2026-09-29T10:26:03.522Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.103 ms
+[2026-09-29T10:27:03.518Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.852 ms
+[2026-09-29T10:28:03.520Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.202 ms
+[2026-09-29T10:29:03.493Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.069 ms
+[2026-09-29T10:30:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.214 ms
+[2026-09-29T10:31:03.450Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.367 ms
+[2026-09-29T10:32:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.118 ms
+[2026-09-29T10:33:03.492Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.197 ms
+[2026-09-29T10:34:03.455Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.722 ms
+[2026-09-29T10:35:03.498Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.276 ms
+[2026-09-29T10:36:03.508Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.362 ms
+[2026-09-29T10:37:03.510Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.944 ms
+[2026-09-29T10:38:03.507Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.518 ms
+[2026-09-29T10:39:03.506Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.647 ms
+[2026-09-29T10:40:03.517Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.856 ms
+[2026-09-29T10:41:03.450Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.440 ms
+[2026-09-29T10:42:03.455Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.896 ms
+[2026-09-29T10:43:03.489Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.313 ms
+[2026-09-29T10:44:03.464Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.015 ms
+[2026-09-29T10:45:03.497Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.381 ms
+[2026-09-29T10:46:03.453Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.087 ms
+[2026-09-29T10:47:03.516Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.506 ms
+[2026-09-29T10:48:03.509Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.376 ms
+[2026-09-29T10:49:03.510Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.209 ms
+[2026-09-29T10:50:03.447Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.250 ms
+[2026-09-29T10:51:03.604Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.575 ms
+[2026-09-29T10:52:03.453Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.217 ms
+[2026-09-29T10:53:03.541Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.226 ms
+[2026-09-29T10:53:15.274Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T10:53:15.277Z] [ERROR] DB_HOST: localhost
+[2026-09-29T10:53:15.278Z] [ERROR] DB_PORT: 3306
+[2026-09-29T10:53:15.279Z] [ERROR] DB_USER: root
+[2026-09-29T10:53:15.280Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T10:53:15.281Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T10:53:15.283Z] [ERROR] ==============================
+[2026-09-29T10:53:16.090Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-09-29T10:53:16.162Z] [INFO] Database connection established successfully.
+[2026-09-29T10:53:16.168Z] [INFO] ==================================================
+[2026-09-29T10:53:16.168Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-09-29T10:53:16.171Z] [INFO] Local Access URL: http://localhost:5050
+[2026-09-29T10:53:16.172Z] [INFO] ==================================================
+[2026-09-29T10:53:17.141Z] [ERROR] ========== DB DEBUG ==========
+[2026-09-29T10:53:17.145Z] [ERROR] DB_HOST: localhost
+[2026-09-29T10:53:17.147Z] [ERROR] DB_PORT: 3306
+[2026-09-29T10:53:17.148Z] [ERROR] DB_USER: root
+[2026-09-29T10:53:17.151Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-09-29T10:53:17.155Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-09-29T10:53:17.156Z] [ERROR] ==============================
+[2026-09-29T10:53:17.732Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-09-29T10:53:17.789Z] [INFO] Database connection established successfully.
+[2026-09-29T10:53:17.793Z] [INFO] ==================================================
+[2026-09-29T10:53:17.794Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-09-29T10:53:17.795Z] [INFO] Local Access URL: http://localhost:5050
+[2026-09-29T10:53:17.796Z] [INFO] ==================================================
+[2026-09-29T10:54:03.573Z] [INFO] HTTP Request: GET /api/notifications 304 - - 45.101 ms
+[2026-09-29T10:55:03.487Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.857 ms
+[2026-09-29T10:56:03.466Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.327 ms
+[2026-09-29T10:57:03.484Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.826 ms
+[2026-09-29T10:58:03.441Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.938 ms
+[2026-09-29T10:59:03.504Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.066 ms
+[2026-09-29T11:00:03.526Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.518 ms
+[2026-09-29T11:01:03.474Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.267 ms
+[2026-09-29T11:02:03.517Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.152 ms
+[2026-09-29T11:03:03.521Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.699 ms
+[2026-09-29T11:04:03.434Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.582 ms
+[2026-09-29T11:05:03.528Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.083 ms
+[2026-09-29T11:06:03.441Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.319 ms
+[2026-09-29T11:07:03.533Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.441 ms
+[2026-09-29T11:08:03.521Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.263 ms
+[2026-09-29T11:09:03.515Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.549 ms
+[2026-09-29T11:10:03.473Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.983 ms
+[2026-09-29T11:11:03.511Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.634 ms
+[2026-09-29T11:12:03.508Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.655 ms
+[2026-09-29T11:13:03.507Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.327 ms
+[2026-09-29T11:14:03.511Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.664 ms
+[2026-09-29T11:15:03.509Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.579 ms
+[2026-09-29T11:16:03.477Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.835 ms
+[2026-09-29T11:17:03.502Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.503 ms
+[2026-09-29T11:18:03.455Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.506 ms
+[2026-09-29T11:19:03.384Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.522 ms
+[2026-09-29T11:20:03.435Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.266 ms
+[2026-09-29T11:20:48.108Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.107 ms
+[2026-09-29T11:20:55.854Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.439 ms
+[2026-09-29T11:21:02.332Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 12.136 ms
+[2026-09-29T11:21:02.343Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.864 ms
+[2026-09-29T11:21:03.930Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.157 ms
+[2026-09-29T11:21:03.938Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.937 ms
+[2026-09-29T11:21:06.291Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 5.482 ms
+[2026-09-29T11:21:06.302Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 4.446 ms
+[2026-09-29T11:21:06.305Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 16.523 ms
+[2026-09-29T11:21:06.317Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.409 ms
+[2026-09-29T11:21:10.346Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 3.538 ms
+[2026-09-29T11:21:10.357Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 7.500 ms
+[2026-09-29T11:21:10.359Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 4.702 ms
+[2026-09-29T11:21:10.368Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 16.130 ms
+[2026-09-29T11:21:10.371Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 5.514 ms
+[2026-09-29T11:21:10.380Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 6.142 ms
+[2026-09-29T11:21:25.862Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.744 ms
+[2026-09-29T11:21:29.670Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 7.456 ms
+[2026-09-29T11:21:29.677Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 12.835 ms
+[2026-09-29T11:21:29.688Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 14.126 ms
+[2026-09-29T11:21:29.698Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.557 ms
+[2026-09-29T11:21:31.423Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.862 ms
+[2026-09-29T11:21:31.433Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 5.945 ms
+[2026-09-29T11:21:42.366Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-09 200 88 - 11.173 ms
+[2026-09-29T11:21:42.370Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 15.079 ms
+[2026-09-29T11:21:42.386Z] [INFO] HTTP Request: GET /api/calendar?month=2026-09 200 91 - 35.435 ms
+[2026-09-29T11:21:42.393Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-09 304 - - 16.277 ms
+[2026-09-29T11:21:42.397Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 17.812 ms
+[2026-09-29T11:21:42.417Z] [INFO] HTTP Request: GET /api/activity-types 304 - - 58.312 ms
+[2026-09-29T11:21:42.430Z] [INFO] HTTP Request: GET /api/activity-types 304 - - 3.105 ms
+[2026-09-29T11:21:42.436Z] [INFO] HTTP Request: GET /api/calendar?month=2026-09 304 - - 31.011 ms
+[2026-09-29T11:21:44.998Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.860 ms
+[2026-09-29T11:21:45.008Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.553 ms
+[2026-09-29T11:21:55.893Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.346 ms
+[2026-09-29T11:22:26.392Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.649 ms
+[2026-09-29T11:23:03.511Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.394 ms
+[2026-09-29T11:23:48.613Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.495 ms
+[2026-09-29T11:23:55.840Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.721 ms
+[2026-09-29T11:24:02.082Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.195 ms
+[2026-09-29T11:24:02.096Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.503 ms
+[2026-09-29T11:24:04.281Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.865 ms
+[2026-09-29T11:24:04.290Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.765 ms
+[2026-09-29T11:24:25.868Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.343 ms
+[2026-09-29T11:24:55.870Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.387 ms
+[2026-09-29T11:25:26.339Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.871 ms
+[2026-09-29T11:25:43.856Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 7.322 ms
+[2026-09-29T11:25:43.885Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.181 ms
+[2026-09-29T11:25:56.403Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.080 ms
+[2026-09-29T11:26:26.399Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.542 ms
+[2026-09-29T11:27:03.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.152 ms
+[2026-09-29T11:28:03.493Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.144 ms
+[2026-09-29T11:29:03.480Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.675 ms
+[2026-09-29T11:30:03.491Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.680 ms
+[2026-09-29T11:31:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.499 ms
+[2026-09-29T11:32:03.541Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.269 ms
+[2026-09-29T11:33:03.482Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.423 ms
+[2026-09-29T11:34:03.494Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.131 ms
+[2026-09-29T11:35:03.442Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.070 ms
+[2026-09-29T11:36:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.047 ms
+[2026-09-29T11:37:03.448Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.556 ms
+[2026-09-29T11:38:03.479Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.380 ms
+[2026-09-29T11:39:03.485Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.041 ms
+[2026-09-29T11:40:03.508Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.445 ms
+[2026-09-29T11:40:26.409Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.116 ms
+[2026-09-29T11:40:56.414Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.432 ms
+[2026-09-29T11:42:03.503Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.648 ms
+[2026-09-29T11:43:03.507Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.824 ms
+[2026-09-29T11:44:03.528Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.005 ms
+[2026-09-29T11:45:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.463 ms
+[2026-09-29T11:46:03.420Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.248 ms
+[2026-09-29T11:47:03.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.557 ms
+[2026-09-29T11:48:03.474Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.087 ms
+[2026-09-29T11:49:03.508Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.160 ms
+[2026-09-29T11:50:03.444Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.103 ms
+[2026-09-29T11:51:03.465Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.453 ms
+[2026-09-29T11:52:03.497Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.781 ms
+[2026-09-29T11:52:26.394Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.541 ms
+[2026-09-29T11:52:55.840Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.025 ms
+[2026-09-29T11:53:25.874Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.345 ms
+[2026-09-29T11:53:55.858Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.790 ms
+[2026-09-29T11:54:25.868Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.488 ms
+[2026-09-29T11:54:55.858Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.080 ms
+[2026-09-29T11:55:25.859Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.440 ms
+[2026-09-29T11:55:55.869Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.779 ms
+[2026-09-29T11:56:25.859Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.594 ms
+[2026-09-29T11:56:55.864Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.495 ms
+[2026-09-29T11:57:25.890Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.114 ms
+[2026-09-29T11:57:55.853Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.413 ms
+[2026-09-29T11:58:25.868Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.567 ms
+[2026-09-29T11:58:55.865Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.475 ms
+[2026-09-29T11:59:25.867Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.246 ms
+[2026-09-29T11:59:55.864Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.819 ms
+[2026-09-29T12:00:25.870Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.092 ms
+[2026-09-29T12:00:55.867Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.045 ms
+[2026-09-29T12:01:15.253Z] [INFO] HTTP Request: GET /api/departments/6/details 200 430 - 12.070 ms
+[2026-09-29T12:01:15.264Z] [INFO] HTTP Request: GET /api/departments/6/details 304 - - 6.420 ms
+[2026-09-29T12:01:17.849Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-09 304 - - 6.433 ms
+[2026-09-29T12:01:17.866Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 20.966 ms
+[2026-09-29T12:01:17.892Z] [INFO] HTTP Request: GET /api/activity-types 304 - - 46.205 ms
+[2026-09-29T12:01:17.900Z] [INFO] HTTP Request: GET /api/calendar?month=2026-09 304 - - 59.581 ms
+[2026-09-29T12:01:17.923Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-09 304 - - 26.786 ms
+[2026-09-29T12:01:17.934Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 6.313 ms
+[2026-09-29T12:01:17.947Z] [INFO] HTTP Request: GET /api/activity-types 304 - - 17.850 ms
+[2026-09-29T12:01:17.957Z] [INFO] HTTP Request: GET /api/calendar?month=2026-09 304 - - 25.737 ms
+[2026-09-29T12:01:25.863Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.797 ms
+[2026-09-29T12:01:55.867Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.397 ms
+[2026-09-29T12:02:25.875Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.834 ms
+[2026-09-29T12:02:55.855Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.557 ms
+[2026-09-29T12:03:25.859Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.289 ms
+[2026-09-29T12:03:55.867Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.983 ms
+[2026-09-29T12:04:25.881Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.979 ms
+[2026-09-29T12:04:55.875Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.470 ms
+[2026-09-29T12:05:25.858Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.069 ms
+[2026-09-29T12:05:55.856Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.215 ms
+[2026-09-29T12:06:23.619Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-10 200 88 - 5.444 ms
+[2026-09-29T12:06:23.623Z] [INFO] HTTP Request: GET /api/calendar?month=2026-10 200 91 - 10.989 ms
+[2026-09-29T12:06:25.407Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 3.688 ms
+[2026-09-29T12:06:25.419Z] [INFO] HTTP Request: GET /api/blog-calendar?month=2026-09 304 - - 18.252 ms
+[2026-09-29T12:06:25.426Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 14.250 ms
+[2026-09-29T12:06:25.430Z] [INFO] HTTP Request: GET /api/users/employees?limit=1000 304 - - 24.399 ms
+[2026-09-29T12:06:25.444Z] [INFO] HTTP Request: GET /api/blog-calendar?month=2026-09 304 - - 7.935 ms
+[2026-09-29T12:06:25.451Z] [INFO] HTTP Request: GET /api/users/employees?limit=1000 304 - - 13.496 ms
+[2026-09-29T12:06:25.839Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.010 ms
+[2026-09-29T12:06:55.872Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.057 ms
+[2026-09-29T12:07:25.835Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.085 ms
+[2026-09-29T12:07:55.859Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.863 ms
+[2026-09-29T12:08:25.850Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.682 ms
+[2026-09-29T12:08:55.871Z] [INFO] HTTP Request: GET /api/notifications 304 - - 10.861 ms
+[2026-09-29T12:09:25.862Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.152 ms
+[2026-09-29T12:09:55.854Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.121 ms
+[2026-09-29T12:10:25.860Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.530 ms
+[2026-09-29T12:10:55.850Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.023 ms
+[2026-09-29T12:11:25.874Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.268 ms
+[2026-09-29T12:11:56.406Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.138 ms
+[2026-09-29T12:13:03.493Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.452 ms
+[2026-09-29T12:13:25.849Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.335 ms
+[2026-09-29T12:13:55.866Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.395 ms
+[2026-09-29T12:14:25.854Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.623 ms
+[2026-09-29T12:14:55.869Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.788 ms
+[2026-09-29T12:15:25.856Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.559 ms
+[2026-09-29T12:15:55.857Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.221 ms
+[2026-09-29T12:16:18.075Z] [INFO] HTTP Request: GET /api/blog-assignments/managers 304 - - 4.292 ms
+[2026-09-29T12:16:18.078Z] [INFO] HTTP Request: GET /api/blog-assignments/clients?searchQuery=&managerFilter=&statusFilter= 304 - - 9.377 ms
+[2026-09-29T12:16:18.081Z] [INFO] HTTP Request: GET /api/blog-assignments/job-work/admin 304 - - 8.484 ms
+[2026-09-29T12:16:18.091Z] [INFO] HTTP Request: GET /api/blog-assignments/managers 304 - - 5.720 ms
+[2026-09-29T12:16:18.097Z] [INFO] HTTP Request: GET /api/blog-assignments/clients?searchQuery=&managerFilter=&statusFilter= 304 - - 10.849 ms
+[2026-09-29T12:16:18.102Z] [INFO] HTTP Request: GET /api/blog-assignments/job-work/admin 304 - - 13.777 ms
+[2026-09-29T12:16:25.861Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.230 ms
+[2026-09-29T12:16:55.858Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.229 ms
+[2026-09-29T12:17:25.909Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.952 ms
+[2026-09-29T12:17:55.847Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.275 ms
+[2026-09-29T12:18:25.853Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.849 ms
+[2026-09-29T12:18:55.868Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.185 ms
+[2026-09-29T12:19:25.865Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.742 ms
+[2026-09-29T12:19:55.878Z] [INFO] HTTP Request: GET /api/notifications 304 - - 13.911 ms
+[2026-09-29T12:20:07.304Z] [INFO] HTTP Request: GET /api/event-days?month=2026-09 200 85 - 19.064 ms
+[2026-09-29T12:20:07.313Z] [INFO] HTTP Request: GET /api/event-days?month=2026-09 304 - - 7.231 ms
+[2026-09-29T12:20:11.027Z] [INFO] HTTP Request: GET /api/blog-assignments/clients?searchQuery=&managerFilter=&statusFilter= 304 - - 5.759 ms
+[2026-09-29T12:20:11.030Z] [INFO] HTTP Request: GET /api/blog-assignments/managers 304 - - 4.514 ms
+[2026-09-29T12:20:11.039Z] [INFO] HTTP Request: GET /api/blog-assignments/job-work/admin 304 - - 7.458 ms
+[2026-09-29T12:20:11.046Z] [INFO] HTTP Request: GET /api/blog-assignments/clients?searchQuery=&managerFilter=&statusFilter= 304 - - 9.266 ms
+[2026-09-29T12:20:11.049Z] [INFO] HTTP Request: GET /api/blog-assignments/managers 304 - - 4.858 ms
+[2026-09-29T12:20:11.057Z] [INFO] HTTP Request: GET /api/blog-assignments/job-work/admin 304 - - 2.838 ms
+[2026-09-29T12:20:25.863Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.913 ms
+[2026-09-29T12:20:55.872Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.594 ms
+[2026-09-29T12:21:25.870Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.608 ms
+[2026-09-29T12:21:55.862Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.922 ms
+[2026-09-29T12:22:25.852Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.665 ms
+[2026-09-29T12:22:55.855Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.064 ms
+[2026-09-29T12:23:26.399Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.098 ms
+[2026-09-29T12:23:56.402Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.494 ms
+[2026-09-29T12:24:26.416Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.197 ms
+[2026-09-29T12:25:03.502Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.646 ms
+[2026-09-29T12:26:03.475Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.331 ms
+[2026-09-29T12:27:03.439Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.214 ms
+[2026-09-29T12:28:03.409Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.986 ms
+[2026-09-29T12:29:03.519Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.024 ms
+[2026-09-29T12:30:03.476Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.921 ms
+[2026-09-29T12:31:03.503Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.992 ms
+[2026-09-29T12:32:03.495Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.782 ms
+[2026-09-29T12:33:03.497Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.347 ms
+[2026-09-29T12:34:03.485Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.799 ms
+[2026-09-29T12:35:03.512Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.052 ms
+[2026-09-29T12:36:03.499Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.038 ms
+[2026-09-29T12:36:26.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.337 ms
+[2026-09-29T12:36:56.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.843 ms
+[2026-09-29T12:37:26.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.088 ms
+[2026-09-29T12:38:03.482Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.551 ms
+[2026-09-29T12:39:03.470Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.491 ms
+[2026-09-29T12:40:03.451Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.637 ms
+[2026-09-29T12:41:03.506Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.369 ms
+[2026-09-29T12:42:03.492Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.353 ms
+[2026-09-29T12:43:03.475Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.937 ms
+[2026-09-29T12:44:03.471Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.950 ms
+[2026-09-29T12:45:03.501Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.164 ms
+[2026-09-29T12:46:03.467Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.999 ms
+[2026-09-29T12:47:03.498Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.126 ms
+[2026-09-29T12:48:03.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.061 ms
+[2026-09-29T12:49:03.466Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.080 ms
+[2026-09-29T12:50:03.459Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.391 ms
+[2026-09-29T12:51:03.506Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.024 ms
+[2026-09-29T12:52:03.550Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.233 ms
+[2026-09-29T12:53:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.225 ms
+[2026-09-29T12:54:03.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.040 ms
+[2026-09-29T12:55:03.501Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.291 ms
+[2026-09-29T12:56:03.507Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.161 ms
+[2026-09-29T12:57:03.511Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.205 ms
+[2026-09-29T12:58:03.451Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.290 ms
+[2026-09-29T12:58:31.260Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.201 ms
+[2026-09-29T12:58:56.399Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.893 ms
+[2026-09-29T12:59:26.410Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.553 ms
+[2026-09-29T13:00:03.491Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.877 ms
+[2026-09-29T13:01:03.474Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.752 ms
+[2026-09-29T13:02:02.271Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.497 ms
+[2026-09-29T13:02:26.394Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.150 ms
+[2026-09-29T13:02:56.401Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.952 ms
+[2026-09-29T13:04:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.433 ms
+[2026-09-29T13:05:01.094Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.959 ms
+[2026-09-29T13:05:26.384Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.487 ms
+[2026-09-29T13:05:56.408Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.150 ms
+[2026-09-29T13:06:26.435Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.881 ms
+[2026-09-29T13:06:56.386Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.681 ms
+[2026-09-29T13:08:03.479Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.861 ms
+[2026-09-29T13:09:03.442Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.503 ms
+[2026-09-29T13:10:03.390Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.731 ms
+[2026-09-29T13:10:26.413Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.398 ms
+[2026-09-29T13:10:55.843Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.278 ms
+[2026-09-29T13:11:26.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.668 ms
+[2026-09-29T13:11:56.400Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.442 ms
+[2026-09-29T13:13:03.483Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.822 ms
+[2026-09-29T13:14:03.612Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.386 ms
+[2026-09-29T13:15:03.537Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.356 ms
+[2026-09-29T13:16:03.460Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.788 ms
+[2026-09-29T13:17:03.493Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.581 ms
+[2026-09-29T13:18:03.501Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.829 ms
+[2026-09-29T13:19:03.499Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.707 ms
+[2026-09-29T13:20:03.510Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.387 ms
+[2026-09-29T13:21:03.447Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.925 ms
+[2026-09-29T13:22:03.434Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.624 ms
+[2026-09-29T13:23:03.513Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.613 ms
+[2026-09-29T13:24:03.480Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.881 ms
+[2026-09-29T13:25:03.487Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.716 ms
+[2026-10-01T04:36:31.705Z] [INFO] HTTP Request: GET /api/notifications 403 121 - 5.742 ms
