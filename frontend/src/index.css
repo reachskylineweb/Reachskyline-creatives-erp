@@ -948,101 +948,21 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: center;
 }
 
-/* Card Animated Border Glow Wrapper (Stationary) */
-.login-card-animated-glow {
-  position: relative;
-  width: 100%;
-  max-width: 460px;
-  border-radius: 24px;
-}
-
-/* Outer Ambient Diffused Glow (Breathing Pulse) */
-.login-card-glow-blur {
-  position: absolute;
-  inset: -3px;
-  border-radius: 24px;
-  background: transparent;
-  box-shadow: 0 0 25px rgba(218, 166, 24, 0.45), 0 0 50px rgba(218, 166, 24, 0.2);
-  z-index: 0;
-  pointer-events: none;
-  animation: pulseCardGlow 3.5s ease-in-out infinite;
-  transition: opacity 0.3s ease, box-shadow 0.3s ease;
-}
-
-.login-card-animated-glow:hover .login-card-glow-blur,
-.login-card-animated-glow:focus-within .login-card-glow-blur {
-  opacity: 1;
-  box-shadow: 0 0 35px rgba(218, 166, 24, 0.65), 0 0 70px rgba(218, 166, 24, 0.35);
-}
-
-@keyframes pulseCardGlow {
-  0%, 100% {
-    opacity: 0.55;
-    box-shadow: 0 0 20px rgba(218, 166, 24, 0.35), 0 0 45px rgba(218, 166, 24, 0.15);
-  }
-  50% {
-    opacity: 0.95;
-    box-shadow: 0 0 32px rgba(218, 166, 24, 0.6), 0 0 65px rgba(218, 166, 24, 0.3);
-  }
-}
-
-/* Sharp 2.5px Rotating Border Container */
-.login-card-glow-border {
-  position: relative;
-  border-radius: 22px;
-  padding: 2.5px;
-  overflow: hidden;
-  z-index: 1;
-  box-shadow: 0 20px 45px -12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
-  display: flex;
-}
-
-/* Rotating Conic Beam that fills the 2.5px border channel */
-.login-card-glow-border::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 250%;
-  height: 250%;
-  background: conic-gradient(
-    from 0deg,
-    rgba(218, 166, 24, 0.1) 0deg,
-    rgba(218, 166, 24, 0.35) 60deg,
-    rgba(218, 166, 24, 1) 120deg,
-    #ffe27a 160deg,
-    #ffffff 180deg,
-    #ffe27a 200deg,
-    rgba(218, 166, 24, 1) 240deg,
-    rgba(218, 166, 24, 0.35) 300deg,
-    rgba(218, 166, 24, 0.1) 360deg
-  );
-  animation: rotateBorderGlow 4s linear infinite;
-  z-index: 0;
-}
-
-@keyframes rotateBorderGlow {
-  0% {
-    transform: translate(-50%, -50%) rotate(0deg);
-  }
-  100% {
-    transform: translate(-50%, -50%) rotate(360deg);
-  }
-}
-
 .login-form-card {
   position: relative;
-  z-index: 1;
   background-color: #ffffff;
   border-radius: 20px;
   padding: 44px 38px;
   width: 100%;
+  border: 1px solid #eef2f6;
+  box-shadow: 0 20px 45px -12px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.02);
   box-sizing: border-box;
   animation: fadeInRight 0.5s ease-out;
+  transition: box-shadow 0.3s ease;
 }
 
 .login-form-card:hover {
-  box-shadow: none;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.11), 0 1px 3px rgba(0, 0, 0, 0.02);
 }
 
 @keyframes fadeInRight {
@@ -1239,10 +1159,6 @@ h1, h2, h3, h4, h5, h6 {
   .login-right-section {
     max-width: 100%;
     padding: 0;
-  }
-
-  .login-card-animated-glow {
-    max-width: 100%;
   }
 
   .login-form-card {
