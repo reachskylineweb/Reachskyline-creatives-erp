@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Lock, User, AlertCircle, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useAuth } from '../../../context/AuthContext';
+import reachskylineLogo from '../../../assets/reachskyline-logo.webp';
 
 const Login = () => {
   const { login } = useAuth();
@@ -19,12 +20,14 @@ const Login = () => {
   const isExpired = searchParams.get('expired') === 'true';
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
 
-    if (!username.trim() || !password.trim()) {
-      const msg = 'Wrong credentials! Username and password are required.';
+    const cleanUsername = username.trim();
+    const cleanPassword = password.trim();
+
+    if (!cleanUsername || !cleanPassword) {
+      const msg = 'Username and password are required.';
       setError(msg);
-      alert(msg);
       return;
     }
 
@@ -33,8 +36,8 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const result = await login(username, password, (attempt, delay) => {
-        setRetryStatus(`Server is starting... Trying again (Attempt ${attempt}/3)...`);
+      const result = await login(cleanUsername, cleanPassword, (attempt, delay) => {
+        setRetryStatus(`Connecting to server... (Attempt ${attempt}/3)`);
       });
 
       console.log('[Login] login result:', result);
@@ -61,13 +64,11 @@ const Login = () => {
       } else {
         const errMsg = result?.message || 'Wrong credentials! Invalid email/username or password.';
         setError(errMsg);
-        alert(errMsg);
       }
     } catch (err) {
       console.error('[Login] Error:', err);
       const errMsg = err.response?.data?.message || 'Wrong credentials! Invalid email/username or password.';
       setError(errMsg);
-      alert(errMsg);
     } finally {
       setLoading(false);
       setRetryStatus('');
@@ -75,179 +76,126 @@ const Login = () => {
   };
 
   return (
-    <div className="login-layout">
-      <div className="login-card">
-        <div className="login-header">
-          <div className="login-logo">
-            <img src="https://res.cloudinary.com/srfbqmic/image/upload/f_auto,q_auto/download_1_1_l9glns" alt="ReachSkyline Logo" />
+    <div className="login-page-container">
+      <div className="login-main-wrapper">
+        {/* Left Side: Large Animated Logo with Strong #DAA618 Spreading Gradient Glow */}
+        <div className="login-left-section">
+          <div className="reachskyline-logo-wrapper">
+            <div className="reachskyline-logo-glow"></div>
+            <img 
+              src={reachskylineLogo} 
+              alt="ReachSkyline Logo" 
+              className="reachskyline-brand-logo"
+            />
           </div>
-          <h2 className="login-title">ReachSkyline ERP</h2>
-          
         </div>
 
-        {/* Global Warnings / Errors */}
-        {error && (
-          <div 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '12px 16px',
-              backgroundColor: 'var(--danger-light)',
-              color: 'var(--danger)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '13px',
-              fontWeight: 600,
-              marginBottom: '20px'
-            }}
-          >
-            <AlertCircle size={18} style={{ flexShrink: 0 }} />
-            <span>{error}</span>
-          </div>
-        )}
-
-        {/* Retry/Reconnecting status banner */}
-        {retryStatus && (
-          <div 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '12px 16px',
-              backgroundColor: '#eff6ff',
-              color: '#1d4ed8',
-              border: '1px solid #bfdbfe',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '13px',
-              fontWeight: 600,
-              marginBottom: '20px'
-            }}
-          >
-            <Loader2 size={18} className="animate-spin" style={{ flexShrink: 0, animation: 'spin 1s linear infinite' }} />
-            <span>{retryStatus}</span>
-            <style>{`
-              @keyframes spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(360deg); }
-              }
-            `}</style>
-          </div>
-        )}
-
-        {isExpired && !error && !retryStatus && (
-          <div 
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '10px',
-              padding: '12px 16px',
-              backgroundColor: 'var(--warning-light)',
-              color: 'var(--warning)',
-              borderRadius: 'var(--radius-sm)',
-              fontSize: '13px',
-              fontWeight: 600,
-              marginBottom: '20px'
-            }}
-          >
-            <AlertCircle size={18} style={{ flexShrink: 0 }} />
-            <span>Session expired. Please log in again.</span>
-          </div>
-        )}
-
-        <form onSubmit={handleSubmit}>
-          {/* Username Input */}
-          <div className="form-group" style={{ position: 'relative' }}>
-            <label className="form-label">Username</label>
-            <div style={{ position: 'relative' }}>
-              <User 
-                size={18} 
-                style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)' }} 
-              />
-              <input
-                type="text"
-                className="form-control"
-                style={{ paddingLeft: '44px' }}
-                placeholder="Enter username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                disabled={loading}
-                required
-              />
+        {/* Right Side: Sign In Form Alone in a Card */}
+        <div className="login-right-section">
+          <div className="login-form-card">
+            <div className="login-form-header">
+              <h2 className="login-form-title">Sign In</h2>
+              <p className="login-form-subtitle">Enter your credentials to access your account</p>
             </div>
-          </div>
 
-          {/* Password Input */}
-          <div className="form-group" style={{ position: 'relative' }}>
-            <label className="form-label">Password</label>
-            <div style={{ position: 'relative' }}>
-              <Lock 
-                size={18} 
-                style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)' }} 
-              />
-              <input
-                type={showPassword ? 'text' : 'password'}
-                className="form-control"
-                style={{ paddingLeft: '44px', paddingRight: '44px' }}
-                placeholder="Enter password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                disabled={loading}
-                required
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                style={{
-                  position: 'absolute',
-                  right: '14px',
-                  top: '50%',
-                  transform: 'translateY(-50%)',
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  color: 'var(--text-light)',
-                  padding: '4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-                title={showPassword ? "Hide password" : "Show password"}
-              >
-                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-              </button>
-            </div>
-          </div>
-
-          {/* Submit Button - disabled while loading */}
-          <button
-            type="submit"
-            className="btn btn-primary"
-            onClick={(e) => {
-              e.preventDefault();
-              handleSubmit(e);
-            }}
-            style={{ 
-              width: '100%', 
-              padding: '12px', 
-              marginTop: '10px', 
-              fontSize: '15px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px'
-            }}
-            disabled={loading}
-          >
-            {loading ? (
-              <>
-                <Loader2 size={16} style={{ animation: 'spin 1s linear infinite' }} />
-                <span>Authenticating...</span>
-              </>
-            ) : (
-              <span>Sign In</span>
+            {/* Global Warnings / Errors */}
+            {error && (
+              <div className="login-alert login-alert-danger">
+                <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                <span>{error}</span>
+              </div>
             )}
-          </button>
-        </form>
+
+            {/* Retry/Reconnecting status banner */}
+            {retryStatus && (
+              <div className="login-alert login-alert-info">
+                <Loader2 size={18} className="animate-spin" style={{ flexShrink: 0, animation: 'spin 1s linear infinite' }} />
+                <span>{retryStatus}</span>
+              </div>
+            )}
+
+            {isExpired && !error && !retryStatus && (
+              <div className="login-alert login-alert-warning">
+                <AlertCircle size={18} style={{ flexShrink: 0 }} />
+                <span>Session expired. Please log in again.</span>
+              </div>
+            )}
+
+            <form onSubmit={handleSubmit} className="login-form">
+              {/* Username Input */}
+              <div className="form-group">
+                <label className="form-label" htmlFor="username">Username or Email</label>
+                <div className="input-with-icon">
+                  <User 
+                    size={18} 
+                    className="input-icon"
+                  />
+                  <input
+                    id="username"
+                    name="username"
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter your username or email"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    disabled={loading}
+                    autoComplete="username"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Password Input */}
+              <div className="form-group">
+                <label className="form-label" htmlFor="password">Password</label>
+                <div className="input-with-icon">
+                  <Lock 
+                    size={18} 
+                    className="input-icon"
+                  />
+                  <input
+                    id="password"
+                    name="password"
+                    type={showPassword ? 'text' : 'password'}
+                    className="form-control"
+                    style={{ paddingRight: '44px' }}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    disabled={loading}
+                    autoComplete="current-password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle-btn"
+                    onClick={() => setShowPassword(!showPassword)}
+                    title={showPassword ? "Hide password" : "Show password"}
+                    tabIndex="-1"
+                  >
+                    {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="login-submit-btn"
+                disabled={loading}
+              >
+                {loading ? (
+                  <>
+                    <Loader2 size={18} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
+                    <span>Authenticating...</span>
+                  </>
+                ) : (
+                  <span>Sign In</span>
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   );
