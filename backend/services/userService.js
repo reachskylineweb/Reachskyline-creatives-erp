@@ -4,7 +4,25 @@ const clientRepository = require('../repositories/clientRepository');
 const dashboardRepository = require('../repositories/dashboardRepository');
 const notificationRepository = require('../repositories/notificationRepository');
 const pool = require('../config/db');
-const onesignalService = require('./onesignalService');
+function formatToMySQLDate(inputDate) {
+  if (!inputDate) return null;
+  const str = String(inputDate).trim();
+  if (str.includes('T')) return str.split('T')[0];
+  if (/^\d{2}-\d{2}-\d{4}$/.test(str)) {
+    const [dd, mm, yyyy] = str.split('-');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+    const [dd, mm, yyyy] = str.split('/');
+    return `${yyyy}-${mm}-${dd}`;
+  }
+  if (/^\d{4}-\d{2}-\d{2}$/.test(str)) return str;
+  try {
+    const d = new Date(str);
+    if (!isNaN(d.getTime())) return d.toISOString().split('T')[0];
+  } catch (_) {}
+  return str;
+}
 
 class UserService {
   // --- ID GENERATION CODE HELPERS ---
@@ -251,7 +269,7 @@ class UserService {
         department_id: data.department_id,
         sub_department_id: data.sub_department_id || null,
         branch: data.branch,
-        joining_date: data.joining_date,
+        joining_date: formatToMySQLDate(data.joining_date) || formatToMySQLDate(manager.joining_date),
         status: data.status,
         updated_by: adminUserId,
         profile_image: data.profile_image
@@ -457,7 +475,7 @@ class UserService {
         department_id: data.department_id,
         sub_department_id: data.sub_department_id || null,
         reporting_manager_id: data.reporting_manager_id,
-        joining_date: data.joining_date ? String(data.joining_date).split('T')[0] : employee.joining_date,
+        joining_date: formatToMySQLDate(data.joining_date) || formatToMySQLDate(employee.joining_date),
         status: data.status,
         updated_by: adminUserId,
         profile_image: data.profile_image !== undefined ? data.profile_image : data.avatar_url,

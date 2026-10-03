@@ -316,6 +316,21 @@ const EmployeeList = () => {
     setIsResetOpen(true);
   };
 
+  const formatDateYYYYMMDD = (dateStr) => {
+    if (!dateStr) return '';
+    const str = String(dateStr).trim();
+    if (str.includes('T')) return str.split('T')[0];
+    if (/^\d{2}-\d{2}-\d{4}$/.test(str)) {
+      const [dd, mm, yyyy] = str.split('-');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    if (/^\d{2}\/\d{2}\/\d{4}$/.test(str)) {
+      const [dd, mm, yyyy] = str.split('/');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+    return str;
+  };
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
@@ -324,16 +339,21 @@ const EmployeeList = () => {
     }
 
     setFormSubmitError('');
+    const cleanPayload = {
+      ...formData,
+      joining_date: formatDateYYYYMMDD(formData.joining_date)
+    };
+
     try {
       let res;
       if (currentEmployee) {
         try {
-          res = await api.post(`/users/employees/${currentEmployee.id}/update`, formData);
-        } catch (_) {
-          res = await api.put(`/users/employees/${currentEmployee.id}`, formData);
+          res = await api.post(`/users/employees/${currentEmployee.id}/update`, cleanPayload);
+        } catch (postErr) {
+          res = await api.put(`/users/employees/${currentEmployee.id}`, cleanPayload);
         }
       } else {
-        res = await api.post('/users/employees', formData);
+        res = await api.post('/users/employees', cleanPayload);
       }
 
       if (res.data.success) {

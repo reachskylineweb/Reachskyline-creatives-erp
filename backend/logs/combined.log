@@ -98926,3 +98926,68 @@
 [2026-10-03T07:25:42.452Z] [INFO] ERP Admin Backend Server is running in development mode.
 [2026-10-03T07:25:42.455Z] [INFO] Local Access URL: http://localhost:5050
 [2026-10-03T07:25:42.456Z] [INFO] ==================================================
+[2026-10-03T09:56:07.126Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T09:56:07.130Z] [ERROR] DB_HOST: localhost
+[2026-10-03T09:56:07.131Z] [ERROR] DB_PORT: 3306
+[2026-10-03T09:56:07.132Z] [ERROR] DB_USER: root
+[2026-10-03T09:56:07.133Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T09:56:07.134Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T09:56:07.135Z] [ERROR] ==============================
+[2026-10-03T09:56:07.782Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T09:56:07.863Z] [INFO] Database connection established successfully.
+[2026-10-03T09:56:07.867Z] [INFO] ==================================================
+[2026-10-03T09:56:07.868Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T09:56:07.868Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T09:56:07.869Z] [INFO] ==================================================
+[2026-10-03T09:56:08.492Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T09:56:08.495Z] [ERROR] DB_HOST: localhost
+[2026-10-03T09:56:08.496Z] [ERROR] DB_PORT: 3306
+[2026-10-03T09:56:08.497Z] [ERROR] DB_USER: root
+[2026-10-03T09:56:08.498Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T09:56:08.499Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T09:56:08.500Z] [ERROR] ==============================
+[2026-10-03T09:56:08.982Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T09:56:09.024Z] [INFO] Database connection established successfully.
+[2026-10-03T09:56:09.029Z] [INFO] ==================================================
+[2026-10-03T09:56:09.030Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T09:56:09.031Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T09:56:09.032Z] [INFO] ==================================================
+[2026-10-03T09:57:15.017Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T09:57:15.020Z] [ERROR] DB_HOST: localhost
+[2026-10-03T09:57:15.021Z] [ERROR] DB_PORT: 3306
+[2026-10-03T09:57:15.022Z] [ERROR] DB_USER: root
+[2026-10-03T09:57:15.023Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T09:57:15.024Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T09:57:15.025Z] [ERROR] ==============================
+[2026-10-03T09:57:15.507Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T09:57:15.556Z] [INFO] Database connection established successfully.
+[2026-10-03T09:57:15.560Z] [INFO] ==================================================
+[2026-10-03T09:57:15.560Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T09:57:15.561Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T09:57:15.562Z] [INFO] ==================================================
+[2026-10-03T09:57:46.671Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T09:57:46.674Z] [ERROR] DB_HOST: localhost
+[2026-10-03T09:57:46.674Z] [ERROR] DB_PORT: 3306
+[2026-10-03T09:57:46.675Z] [ERROR] DB_USER: root
+[2026-10-03T09:57:46.676Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T09:57:46.677Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T09:57:46.679Z] [ERROR] ==============================
+[2026-10-03T09:57:47.252Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T09:57:47.307Z] [INFO] Database connection established successfully.
+[2026-10-03T09:57:47.311Z] [INFO] ==================================================
+[2026-10-03T09:57:47.312Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T09:57:47.313Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T09:57:47.313Z] [INFO] ==================================================
+[2026-10-03T09:58:34.228Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T09:58:34.230Z] [ERROR] DB_HOST: localhost
+[2026-10-03T09:58:34.231Z] [ERROR] DB_PORT: 3306
+[2026-10-03T09:58:34.233Z] [ERROR] DB_USER: root
+[2026-10-03T09:58:34.234Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T09:58:34.235Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T09:58:34.236Z] [ERROR] ==============================
+[2026-10-03T09:58:34.804Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T09:58:34.850Z] [INFO] Database connection established successfully.
+[2026-10-03T09:58:34.854Z] [INFO] ==================================================
+[2026-10-03T09:58:34.855Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T09:58:34.855Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T09:58:34.856Z] [INFO] ==================================================
