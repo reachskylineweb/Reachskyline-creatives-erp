@@ -19,26 +19,17 @@ const EmployeeApprovedWork = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [timeTab, setTimeTab] = useState('monthly'); // 'monthly' | 'daily'
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const today = new Date();
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
-  });
-  const [selectedDate, setSelectedDate] = useState(() => {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
   });
 
   const fetchApprovedWork = useCallback(async () => {
     setLoading(true);
     try {
-      const [delivsRes, contentRes, blogRes] = await Promise.all([
+      const [delivsRes, contentRes] = await Promise.all([
         api.get('/deliverables/employee/all'),
-        api.get('/content-work/approved').catch(() => ({ data: { success: false, data: [] } })),
-        api.get(`/blog-calendar?month=${selectedMonth}`).catch(() => ({ data: { success: false, data: [] } }))
+        api.get('/content-work/approved').catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       let combined = [];
@@ -66,28 +57,13 @@ const EmployeeApprovedWork = () => {
         combined = [...combined, ...approvedContent];
       }
 
-      if (blogRes.data.success) {
-        const blogTasks = (blogRes.data.data || []).filter(
-          item => ['approved', 'sent_to_employees', 'completed'].includes(item.status) && item.assigned_employee_id !== null
-        ).map(task => ({
-          ...task,
-          isContentWork: true,
-          client_name: task.client_name,
-          month: task.month,
-          activity_type_code: (task.type || 'blog').toUpperCase(),
-          google_drive_link: task.google_drive_link || task.content_link,
-          due_date: task.date ? task.date.split('T')[0] : null
-        }));
-        combined = [...combined, ...blogTasks];
-      }
-
       setItems(combined);
     } catch (err) {
       console.error('Error fetching approved employee tasks:', err.message);
     } finally {
       setLoading(false);
     }
-  }, [selectedMonth]);
+  }, []);
 
   useEffect(() => {
     fetchApprovedWork();
@@ -111,27 +87,23 @@ const EmployeeApprovedWork = () => {
     return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
   };
 
-  // Search & Tab filtering (Monthly vs Daily)
+  // Search & Month filtering
   const filteredItems = items.filter(item => {
     const term = search.toLowerCase();
     const searchMatch = (
       !search ||
       item.client_name?.toLowerCase().includes(term) || 
       item.title?.toLowerCase().includes(term) || 
-      item.activity_code?.toLowerCase().includes(term) ||
-      item.activity_type_code?.toLowerCase().includes(term)
+      item.activity_code?.toLowerCase().includes(term)
     );
 
-    const itemDateStr = item.due_date ? item.due_date.substring(0, 10) : (item.date ? item.date.substring(0, 10) : null);
-    const itemMonth = item.isContentWork && item.month 
+    const itemMonth = item.isContentWork 
       ? item.month 
-      : (itemDateStr ? itemDateStr.substring(0, 7) : null);
+      : (item.due_date ? item.due_date.substring(0, 7) : null);
     
-    if (timeTab === 'daily') {
-      return searchMatch && itemDateStr === selectedDate;
-    }
+    const monthMatch = itemMonth === selectedMonth;
 
-    return searchMatch && itemMonth === selectedMonth;
+    return searchMatch && monthMatch;
   });
 
   const columns = [
@@ -201,14 +173,14 @@ const EmployeeApprovedWork = () => {
     <div style={{ padding: '30px', maxWidth: '1200px', margin: '0 auto' }}>
       
       {/* Page Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
             <CheckCircle2 size={26} style={{ color: 'var(--success)' }} />
-            Completed Works
+            Approved Work
           </h1>
           <p style={{ margin: '6px 0 0 0', color: 'var(--text-muted)', fontSize: '14px' }}>
-            Ledger of your completed and approved deliverables
+            Ledger of your successfully submitted and approved monthly deliverables.
           </p>
         </div>
         <button className="btn btn-secondary" onClick={fetchApprovedWork} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
@@ -216,25 +188,7 @@ const EmployeeApprovedWork = () => {
         </button>
       </div>
 
-      {/* Tabs: Monthly vs Daily */}
-      <div style={{ display: 'flex', gap: '12px', marginBottom: '20px', borderBottom: '2px solid var(--border-color)', paddingBottom: '12px' }}>
-        <button
-          onClick={() => setTimeTab('monthly')}
-          className={`btn ${timeTab === 'monthly' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ fontWeight: 800, padding: '8px 24px', borderRadius: '8px' }}
-        >
-          Monthly Completed Works
-        </button>
-        <button
-          onClick={() => setTimeTab('daily')}
-          className={`btn ${timeTab === 'daily' ? 'btn-primary' : 'btn-secondary'}`}
-          style={{ fontWeight: 800, padding: '8px 24px', borderRadius: '8px' }}
-        >
-          Daily Completed Works
-        </button>
-      </div>
-
-      {/* Filters & Date Selection */}
+      {/* Filters & Month Selection */}
       <div className="card" style={{ padding: '16px 20px', marginBottom: '16px', display: 'flex', gap: '16px', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
         
         {/* Search */}
@@ -242,7 +196,7 @@ const EmployeeApprovedWork = () => {
           <Search style={{ position: 'absolute', left: '12px', top: '10px', color: 'var(--text-muted)' }} size={16} />
           <input
             type="text"
-            placeholder="Search completed tasks..."
+            placeholder="Search approved tasks..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="form-control"
@@ -250,45 +204,30 @@ const EmployeeApprovedWork = () => {
           />
         </div>
 
-        {/* Date / Month Picker navigation */}
-        {timeTab === 'monthly' ? (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div className="pagination-controls" style={{ margin: 0 }}>
-              <button className="btn btn-secondary btn-sm" onClick={handlePrevMonth}>
-                <ChevronLeft size={16} />
-              </button>
-              <span style={{ fontWeight: 700, fontSize: '15px', color: 'var(--text-main)', minWidth: '130px', textAlign: 'center', display: 'inline-block' }}>
-                {formatMonthLabel(selectedMonth)}
-              </span>
-              <button className="btn btn-secondary btn-sm" onClick={handleNextMonth}>
-                <ChevronRight size={16} />
-              </button>
-            </div>
-            
-            <input 
-              type="month" 
-              value={selectedMonth} 
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              style={{ padding: '6px 10px', fontSize: '13px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', outline: 'none' }}
-            />
+        {/* Month Picker navigation */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="pagination-controls" style={{ margin: 0 }}>
+            <button className="btn btn-secondary btn-sm" onClick={handlePrevMonth}>
+              <ChevronLeft size={16} />
+            </button>
+            <span style={{ fontWeight: 700, fontSize: '15px', color: 'var(--text-main)', minWidth: '130px', textAlign: 'center', display: 'inline-block' }}>
+              {formatMonthLabel(selectedMonth)}
+            </span>
+            <button className="btn btn-secondary btn-sm" onClick={handleNextMonth}>
+              <ChevronRight size={16} />
+            </button>
           </div>
-        ) : (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <label style={{ fontWeight: 700, fontSize: '14px', color: 'var(--text-color)' }}>
-              Select Date:
-            </label>
-            <input
-              type="date"
-              className="form-control"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              style={{ padding: '6px 12px', borderRadius: '6px', border: '1px solid var(--border-color)', fontWeight: 600, margin: 0 }}
-            />
-          </div>
-        )}
+          
+          <input 
+            type="month" 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            style={{ padding: '6px 10px', fontSize: '13px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', outline: 'none' }}
+          />
+        </div>
 
         <div className="text-muted" style={{ fontSize: '13px', fontWeight: 600 }}>
-          Completed Items: <strong style={{ color: 'var(--primary)' }}>{filteredItems.length}</strong> tasks
+          Approved Items: <strong style={{ color: 'var(--primary)' }}>{filteredItems.length}</strong> tasks
         </div>
       </div>
 

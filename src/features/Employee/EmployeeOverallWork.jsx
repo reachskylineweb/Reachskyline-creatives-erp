@@ -23,7 +23,10 @@ const EmployeeOverallWork = () => {
   const fetchOverallData = useCallback(async () => {
     setLoading(true);
     try {
-      const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+      const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+      const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+      const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
       if (isContentWriter) {
         const [delivsRes, eventsRes, jobsRes] = await Promise.all([
           api.get(`/content-work/assigned-content-calendar?month=${selectedMonth}`),
@@ -81,7 +84,10 @@ const EmployeeOverallWork = () => {
 
   // Helper to categorize work items
   const processItems = () => {
-    const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+    const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+    const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+    const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+    const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
     
     let rawItems = [];
     if (isContentWriter) {

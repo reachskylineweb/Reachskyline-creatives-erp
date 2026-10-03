@@ -388,7 +388,8 @@ class UserService {
         joining_date: data.joining_date,
         status: data.status,
         created_by: adminUserId,
-        profile_image: data.profile_image
+        profile_image: data.profile_image || data.avatar_url || null,
+        avatar_url: data.avatar_url || data.profile_image || null
       }, connection);
 
       await dashboardRepository.createActivityLog(adminUserId, 'Create Employee', `Employee "${data.full_name}" (${employeeIdCode}) created.`, connection);
@@ -459,7 +460,8 @@ class UserService {
         joining_date: data.joining_date,
         status: data.status,
         updated_by: adminUserId,
-        profile_image: data.profile_image
+        profile_image: data.profile_image !== undefined ? data.profile_image : data.avatar_url,
+        avatar_url: data.avatar_url !== undefined ? data.avatar_url : data.profile_image
       }, connection);
 
       await dashboardRepository.createActivityLog(adminUserId, 'Update Employee', `Employee "${data.full_name}" (${employee.employee_id_code}) updated.`, connection);

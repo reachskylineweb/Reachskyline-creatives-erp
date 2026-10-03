@@ -157,10 +157,15 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   };
 
   const handleDeleteManager = async (id) => {
-    if (!(await window.confirm('Are you sure you want to delete this manager?'))) return;
+    if (!(await window.confirm('Are you sure you want to permanently delete this manager?'))) return;
     try {
-      const res = await api.delete(`/users/managers/${id}`);
-      if (res.data.success) {
+      let res;
+      try {
+        res = await api.post(`/users/managers/${id}/delete`);
+      } catch (_) {
+        res = await api.delete(`/users/managers/${id}`);
+      }
+      if (res?.data?.success || res?.status === 200) {
         fetchDetails();
       }
     } catch (err) {
@@ -449,7 +454,6 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
   const { department, manager, allManagers = [], subDepartments, employees } = details;
   const activeSubDept = subDepartments.find(sd => sd.id === activeSubDeptId);
-  const isHRDept = department?.code === 'HR-RS' || department?.name === 'HR';
 
   // Filter employees and managers for active sub-department
   const activeEmployees = employees.filter(emp => emp.sub_department_id === (activeSubDeptId || null));
@@ -528,60 +532,56 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
         {/* Manager Widget & Control */}
         <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-          {!isHRDept && (
-            <>
-              <div 
-                style={{ 
-                  backgroundColor: 'var(--bg-light)', 
-                  border: '1px solid var(--border-color)', 
-                  padding: '16px 24px', 
-                  borderRadius: 'var(--radius-sm)',
-                  minWidth: '280px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px'
-                }}
-              >
-                <Shield size={24} style={{ color: 'var(--primary)', opacity: 0.8 }} />
-                <div>
-                  <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>
-                    Department Manager
-                  </span>
-                  <strong style={{ fontSize: '15px', color: 'var(--text-color)', display: 'block', marginTop: '2px' }}>
-                    {manager ? manager.full_name : 'No Active Manager'}
-                  </strong>
-                  {manager && (
-                    <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Code: {manager.manager_id_code}</span>
-                  )}
-                </div>
-              </div>
+          <div 
+            style={{ 
+              backgroundColor: 'var(--bg-light)', 
+              border: '1px solid var(--border-color)', 
+              padding: '16px 24px', 
+              borderRadius: 'var(--radius-sm)',
+              minWidth: '280px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}
+          >
+            <Shield size={24} style={{ color: 'var(--primary)', opacity: 0.8 }} />
+            <div>
+              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>
+                Department Manager
+              </span>
+              <strong style={{ fontSize: '15px', color: 'var(--text-color)', display: 'block', marginTop: '2px' }}>
+                {manager ? manager.full_name : 'No Active Manager'}
+              </strong>
+              {manager && (
+                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Code: {manager.manager_id_code}</span>
+              )}
+            </div>
+          </div>
 
-              <button
-                onClick={() => {
-                  setMgrForm({
-                    full_name: '',
-                    username: '',
-                    password: '',
-                    email: '',
-                    phone: '',
-                    branch: 'Main Office',
-                    joining_date: new Date().toISOString().split('T')[0],
-                    status: 'active',
-                    profile_image: null,
-                    sub_department_id: ''
-                  });
-                  setMgrErrors({});
-                  setMgrSubmitError('');
-                  setCurrentManager(null);
-                  setIsManagerModalOpen(true);
-                }}
-                className="btn btn-secondary"
-                style={{ height: '54px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
-              >
-                <UserPlus size={16} /> Add Manager
-              </button>
-            </>
-          )}
+          <button
+            onClick={() => {
+              setMgrForm({
+                full_name: '',
+                username: '',
+                password: '',
+                email: '',
+                phone: '',
+                branch: 'Main Office',
+                joining_date: new Date().toISOString().split('T')[0],
+                status: 'active',
+                profile_image: null,
+                sub_department_id: ''
+              });
+              setMgrErrors({});
+              setMgrSubmitError('');
+              setCurrentManager(null);
+              setIsManagerModalOpen(true);
+            }}
+            className="btn btn-secondary"
+            style={{ height: '54px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
+          >
+            <UserPlus size={16} /> Add Manager
+          </button>
 
           <button
             onClick={() => {
@@ -603,220 +603,218 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               setIsEmployeeModalOpen(true);
             }}
             className="btn btn-success"
-            style={{ height: '54px', padding: '0 20px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
+            style={{ height: '54px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
           >
-            <UserPlus size={16} /> {isHRDept ? 'Add HR Staff' : 'Add Employee'}
+            <UserPlus size={16} /> Add Employee
           </button>
         </div>
       </div>
 
       {/* Columns Workspace */}
-      <div style={{ display: 'grid', gridTemplateColumns: isHRDept ? '1fr' : '300px 1fr', gap: '30px', alignItems: 'start' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '30px', alignItems: 'start' }}>
         
         {/* Left Column: Sub-departments */}
-        {!isHRDept && (
-          <div 
-            style={{
-              backgroundColor: '#ffffff',
-              border: '1px solid var(--border-color)',
-              borderRadius: 'var(--radius-md)',
-              boxShadow: 'var(--shadow-sm)',
-              padding: '20px'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0, textTransform: 'uppercase', color: 'var(--text-color)' }}>
-                Sub-departments
-              </h3>
-              <button 
-                onClick={() => setIsSubDeptModalOpen(true)}
+        <div 
+          style={{
+            backgroundColor: '#ffffff',
+            border: '1px solid var(--border-color)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-sm)',
+            padding: '20px'
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0, textTransform: 'uppercase', color: 'var(--text-color)' }}>
+              Sub-departments
+            </h3>
+            <button 
+              onClick={() => setIsSubDeptModalOpen(true)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '6px 10px',
+                backgroundColor: 'var(--primary)',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: 'var(--radius-xs)',
+                fontSize: '12px',
+                fontWeight: 700,
+                cursor: 'pointer'
+              }}
+              title="Add Sub-department"
+            >
+              <Plus size={14} />
+              Add
+            </button>
+          </div>
+
+          {subDepartments.length === 0 ? (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Direct Department Roster Tab when no sub-departments */}
+              <div
                 style={{
-                  display: 'inline-flex',
+                  display: 'flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '6px 10px',
-                  backgroundColor: 'var(--primary)',
-                  color: '#ffffff',
-                  border: 'none',
-                  borderRadius: 'var(--radius-xs)',
-                  fontSize: '12px',
-                  fontWeight: 700,
-                  cursor: 'pointer'
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid var(--primary)',
+                  backgroundColor: 'var(--primary-light)',
+                  transition: 'border-color 0.2s, background-color 0.2s'
                 }}
-                title="Add Sub-department"
               >
-                <Plus size={14} />
-                Add
-              </button>
-            </div>
-
-            {subDepartments.length === 0 ? (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {/* Direct Department Roster Tab when no sub-departments */}
-                <div
+                <button
                   style={{
+                    flex: 1,
+                    padding: '12px 16px',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: 'var(--primary)',
+                    textAlign: 'left',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    cursor: 'pointer',
                     display: 'flex',
-                    alignItems: 'center',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--primary)',
-                    backgroundColor: 'var(--primary-light)',
-                    transition: 'border-color 0.2s, background-color 0.2s'
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
                   }}
                 >
-                  <button
-                    style={{
-                      flex: 1,
-                      padding: '12px 16px',
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      color: 'var(--primary)',
-                      textAlign: 'left',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
+                  <span>Direct Department Roster</span>
+                  <span 
+                    style={{ 
+                      backgroundColor: 'var(--primary)', 
+                      color: '#ffffff',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700
                     }}
                   >
-                    <span>Direct Department Roster</span>
-                    <span 
-                      style={{ 
-                        backgroundColor: 'var(--primary)', 
-                        color: '#ffffff',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        fontSize: '11px',
-                        fontWeight: 700
-                      }}
-                    >
-                      {employees.filter(e => e.sub_department_id === null).length}
-                    </span>
-                  </button>
-                </div>
+                    {employees.filter(e => e.sub_department_id === null).length}
+                  </span>
+                </button>
               </div>
-            ) : (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                {/* Direct Department Roster Tab */}
-                <div
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Direct Department Roster Tab */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  borderRadius: 'var(--radius-sm)',
+                  border: '1px solid ' + (activeSubDeptId === null ? 'var(--primary)' : 'var(--border-color)'),
+                  backgroundColor: activeSubDeptId === null ? 'var(--primary-light)' : '#ffffff',
+                  transition: 'border-color 0.2s, background-color 0.2s'
+                }}
+              >
+                <button
+                  onClick={() => setActiveSubDeptId(null)}
                   style={{
+                    flex: 1,
+                    padding: '12px 16px',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    color: activeSubDeptId === null ? 'var(--primary)' : 'var(--text-color)',
+                    textAlign: 'left',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    cursor: 'pointer',
                     display: 'flex',
-                    alignItems: 'center',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid ' + (activeSubDeptId === null ? 'var(--primary)' : 'var(--border-color)'),
-                    backgroundColor: activeSubDeptId === null ? 'var(--primary-light)' : '#ffffff',
-                    transition: 'border-color 0.2s, background-color 0.2s'
+                    justifyContent: 'space-between',
+                    alignItems: 'center'
                   }}
                 >
-                  <button
-                    onClick={() => setActiveSubDeptId(null)}
-                    style={{
-                      flex: 1,
-                      padding: '12px 16px',
-                      backgroundColor: 'transparent',
-                      border: 'none',
-                      color: activeSubDeptId === null ? 'var(--primary)' : 'var(--text-color)',
-                      textAlign: 'left',
-                      fontWeight: 700,
-                      fontSize: '14px',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignItems: 'center'
+                  <span>Direct Department Roster</span>
+                  <span 
+                    style={{ 
+                      backgroundColor: activeSubDeptId === null ? 'var(--primary)' : 'var(--bg-light)', 
+                      color: activeSubDeptId === null ? '#ffffff' : 'var(--text-muted)',
+                      padding: '2px 8px',
+                      borderRadius: '10px',
+                      fontSize: '11px',
+                      fontWeight: 700
                     }}
                   >
-                    <span>Direct Department Roster</span>
-                    <span 
-                      style={{ 
-                        backgroundColor: activeSubDeptId === null ? 'var(--primary)' : 'var(--bg-light)', 
-                        color: activeSubDeptId === null ? '#ffffff' : 'var(--text-muted)',
-                        padding: '2px 8px',
-                        borderRadius: '10px',
-                        fontSize: '11px',
-                        fontWeight: 700
+                    {employees.filter(e => e.sub_department_id === null).length}
+                  </span>
+                </button>
+              </div>
+
+              {subDepartments.map(sd => {
+                const isActive = sd.id === activeSubDeptId;
+                const empCount = employees.filter(e => e.sub_department_id === sd.id).length;
+
+                return (
+                  <div
+                    key={sd.id}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      borderRadius: 'var(--radius-sm)',
+                      border: '1px solid ' + (isActive ? 'var(--primary)' : 'var(--border-color)'),
+                      backgroundColor: isActive ? 'var(--primary-light)' : '#ffffff',
+                      transition: 'border-color 0.2s, background-color 0.2s'
+                    }}
+                  >
+                    <button
+                      onClick={() => setActiveSubDeptId(sd.id)}
+                      style={{
+                        flex: 1,
+                        padding: '12px 16px',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: isActive ? 'var(--primary)' : 'var(--text-color)',
+                        textAlign: 'left',
+                        fontWeight: 700,
+                        fontSize: '14px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
                       }}
                     >
-                      {employees.filter(e => e.sub_department_id === null).length}
-                    </span>
-                  </button>
-                </div>
-
-                {subDepartments.map(sd => {
-                  const isActive = sd.id === activeSubDeptId;
-                  const empCount = employees.filter(e => e.sub_department_id === sd.id).length;
-
-                  return (
-                    <div
-                      key={sd.id}
+                      <span>{sd.name} ({sd.code})</span>
+                      <span 
+                        style={{ 
+                          backgroundColor: isActive ? 'var(--primary)' : 'var(--bg-light)', 
+                          color: isActive ? '#ffffff' : 'var(--text-muted)',
+                          padding: '2px 8px',
+                          borderRadius: '10px',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          marginRight: '6px'
+                        }}
+                      >
+                        {empCount}
+                      </span>
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteSubDept(sd);
+                      }}
                       style={{
+                        padding: '12px 12px',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        color: 'var(--danger)',
+                        cursor: 'pointer',
+                        opacity: 0.6,
+                        transition: 'opacity 0.2s',
                         display: 'flex',
                         alignItems: 'center',
-                        borderRadius: 'var(--radius-sm)',
-                        border: '1px solid ' + (isActive ? 'var(--primary)' : 'var(--border-color)'),
-                        backgroundColor: isActive ? 'var(--primary-light)' : '#ffffff',
-                        transition: 'border-color 0.2s, background-color 0.2s'
+                        justifyContent: 'center'
                       }}
+                      title="Delete sub-department"
                     >
-                      <button
-                        onClick={() => setActiveSubDeptId(sd.id)}
-                        style={{
-                          flex: 1,
-                          padding: '12px 16px',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          color: isActive ? 'var(--primary)' : 'var(--text-color)',
-                          textAlign: 'left',
-                          fontWeight: 700,
-                          fontSize: '14px',
-                          cursor: 'pointer',
-                          display: 'flex',
-                          justifyContent: 'space-between',
-                          alignItems: 'center'
-                        }}
-                      >
-                        <span>{sd.name} ({sd.code})</span>
-                        <span 
-                          style={{ 
-                            backgroundColor: isActive ? 'var(--primary)' : 'var(--bg-light)', 
-                            color: isActive ? '#ffffff' : 'var(--text-muted)',
-                            padding: '2px 8px',
-                            borderRadius: '10px',
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            marginRight: '6px'
-                          }}
-                        >
-                          {empCount}
-                        </span>
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDeleteSubDept(sd);
-                        }}
-                        style={{
-                          padding: '12px 12px',
-                          backgroundColor: 'transparent',
-                          border: 'none',
-                          color: 'var(--danger)',
-                          cursor: 'pointer',
-                          opacity: 0.6,
-                          transition: 'opacity 0.2s',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center'
-                        }}
-                        title="Delete sub-department"
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        )}
+                      <Trash2 size={15} />
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Right Column: Staff assigned under sub-department */}
         <div 
@@ -859,44 +857,42 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                 </div>
 
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  {!isHRDept && (
-                    <button
-                      onClick={() => {
-                        setMgrForm({
-                          full_name: '',
-                          username: '',
-                          password: '',
-                          email: '',
-                          phone: '',
-                          branch: 'Main Office',
-                          joining_date: new Date().toISOString().split('T')[0],
-                          status: 'active',
-                          profile_image: null,
-                          sub_department_id: activeSubDeptId || ''
-                        });
-                        setMgrErrors({});
-                        setMgrSubmitError('');
-                        setCurrentManager(null);
-                        setIsManagerModalOpen(true);
-                      }}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '6px',
-                        padding: '8px 14px',
-                        backgroundColor: 'var(--primary)',
-                        color: '#ffffff',
-                        border: 'none',
-                        borderRadius: 'var(--radius-sm)',
-                        fontSize: '13px',
-                        fontWeight: 700,
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <UserPlus size={16} />
-                      Register Manager
-                    </button>
-                  )}
+                  <button
+                    onClick={() => {
+                      setMgrForm({
+                        full_name: '',
+                        username: '',
+                        password: '',
+                        email: '',
+                        phone: '',
+                        branch: 'Main Office',
+                        joining_date: new Date().toISOString().split('T')[0],
+                        status: 'active',
+                        profile_image: null,
+                        sub_department_id: activeSubDeptId || ''
+                      });
+                      setMgrErrors({});
+                      setMgrSubmitError('');
+                      setCurrentManager(null);
+                      setIsManagerModalOpen(true);
+                    }}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px',
+                      padding: '8px 14px',
+                      backgroundColor: 'var(--primary)',
+                      color: '#ffffff',
+                      border: 'none',
+                      borderRadius: 'var(--radius-sm)',
+                      fontSize: '13px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <UserPlus size={16} />
+                    Register Manager
+                  </button>
                   <button
                     onClick={() => {
                       setEmpForm({
@@ -931,7 +927,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                     }}
                   >
                     <UserPlus size={16} />
-                    {isHRDept ? 'Register HR Staff' : 'Register Employee'}
+                    Register Employee
                   </button>
                 </div>
               </div>
@@ -1217,18 +1213,14 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           setIsEmployeeModalOpen(false);
           setEmpSubmitError('');
         }}
-        title={
-          currentEmployee 
-            ? (isHRDept ? 'Edit HR Profile' : 'Edit Employee Profile') 
-            : (isHRDept ? 'Register HR' : (activeSubDept ? `Register Employee under ${activeSubDept.name}` : `Register Employee under ${department.name}`))
-        }
+        title={currentEmployee ? `Edit Employee Profile` : (activeSubDept ? `Register Employee under ${activeSubDept.name}` : `Register Employee under ${department.name}`)}
         footer={
           <>
             <button className="btn btn-secondary" onClick={() => { setIsEmployeeModalOpen(false); setCurrentEmployee(null); }}>
               Cancel
             </button>
             <button className="btn btn-primary" onClick={handleEmployeeSubmit}>
-              {currentEmployee ? 'Save Changes' : (isHRDept ? 'Register HR' : 'Register Employee')}
+              {currentEmployee ? 'Save Changes' : 'Register Employee'}
             </button>
           </>
         }
@@ -1240,22 +1232,22 @@ const DepartmentDetail = ({ deptId, onBack }) => {
             </div>
           )}
 
-          {!isHRDept && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <div className="form-group">
-                <label className="form-label">Parent Department</label>
-                <input type="text" className="form-control" value={department.name} disabled style={{ backgroundColor: '#f1f5f9' }} />
-              </div>
-              <FormSelect
-                label="Sub-department Assignment (Optional)"
-                name="sub_department_id"
-                value={empForm.sub_department_id}
-                onChange={(e) => setEmpForm(prev => ({ ...prev, sub_department_id: e.target.value }))}
-                options={subDepartments.map(sd => ({ value: sd.id, label: `${sd.name} (${sd.code})` }))}
-                emptyOptionLabel="None (Direct Department Employee)"
-              />
+
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <div className="form-group">
+              <label className="form-label">Parent Department</label>
+              <input type="text" className="form-control" value={department.name} disabled style={{ backgroundColor: '#f1f5f9' }} />
             </div>
-          )}
+            <FormSelect
+              label="Sub-department Assignment (Optional)"
+              name="sub_department_id"
+              value={empForm.sub_department_id}
+              onChange={(e) => setEmpForm(prev => ({ ...prev, sub_department_id: e.target.value }))}
+              options={subDepartments.map(sd => ({ value: sd.id, label: `${sd.name} (${sd.code})` }))}
+              emptyOptionLabel="None (Direct Department Employee)"
+            />
+          </div>
 
           <FormInput
             label="Full Name"
@@ -1319,63 +1311,37 @@ const DepartmentDetail = ({ deptId, onBack }) => {
             />
           </div>
 
-          {!isHRDept ? (
-            <>
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-                <FormSelect
-                  label="Reporting Manager (Optional)"
-                  name="reporting_manager_id"
-                  value={empForm.reporting_manager_id}
-                  onChange={(e) => setEmpForm(prev => ({ ...prev, reporting_manager_id: e.target.value }))}
-                  options={managerOptions}
-                  error={empErrors.reporting_manager_id}
-                  emptyOptionLabel="No Reporting Manager (Independent)"
-                />
-                <FormInput
-                  label="Joining Date"
-                  name="joining_date"
-                  type="date"
-                  value={empForm.joining_date}
-                  onChange={(e) => setEmpForm(prev => ({ ...prev, joining_date: e.target.value }))}
-                  required
-                />
-              </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+            <FormSelect
+              label="Reporting Manager (Optional)"
+              name="reporting_manager_id"
+              value={empForm.reporting_manager_id}
+              onChange={(e) => setEmpForm(prev => ({ ...prev, reporting_manager_id: e.target.value }))}
+              options={managerOptions}
+              error={empErrors.reporting_manager_id}
+              emptyOptionLabel="No Reporting Manager (Independent)"
+            />
+            <FormInput
+              label="Joining Date"
+              name="joining_date"
+              type="date"
+              value={empForm.joining_date}
+              onChange={(e) => setEmpForm(prev => ({ ...prev, joining_date: e.target.value }))}
+              required
+            />
+          </div>
 
-              <FormSelect
-                label="Status"
-                name="status"
-                value={empForm.status}
-                onChange={(e) => setEmpForm(prev => ({ ...prev, status: e.target.value }))}
-                options={[
-                  { value: 'active', label: 'Active' },
-                  { value: 'inactive', label: 'Inactive' }
-                ]}
-                required
-              />
-            </>
-          ) : (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
-              <FormInput
-                label="Joining Date"
-                name="joining_date"
-                type="date"
-                value={empForm.joining_date}
-                onChange={(e) => setEmpForm(prev => ({ ...prev, joining_date: e.target.value }))}
-                required
-              />
-              <FormSelect
-                label="Status"
-                name="status"
-                value={empForm.status}
-                onChange={(e) => setEmpForm(prev => ({ ...prev, status: e.target.value }))}
-                options={[
-                  { value: 'active', label: 'Active' },
-                  { value: 'inactive', label: 'Inactive' }
-                ]}
-                required
-              />
-            </div>
-          )}
+          <FormSelect
+            label="Status"
+            name="status"
+            value={empForm.status}
+            onChange={(e) => setEmpForm(prev => ({ ...prev, status: e.target.value }))}
+            options={[
+              { value: 'active', label: 'Active' },
+              { value: 'inactive', label: 'Inactive' }
+            ]}
+            required
+          />
         </form>
       </Modal>
 

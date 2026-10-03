@@ -29,6 +29,8 @@ const ManagerEfficiency = ({ isTab }) => {
   const [efficiencyData, setEfficiencyData] = useState([]);
   const [deliverables, setDeliverables] = useState([]);
   const [jobWorks, setJobWorks] = useState([]);
+  const [contentSubmissions, setContentSubmissions] = useState([]);
+  const [calendarItems, setCalendarItems] = useState([]);
   const [subDepartments, setSubDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -55,7 +57,7 @@ const ManagerEfficiency = ({ isTab }) => {
     setLoading(true);
     try {
       const params = {
-        limit: 500,
+        limit: 10000,
         page: 1
       };
 
@@ -76,12 +78,14 @@ const ManagerEfficiency = ({ isTab }) => {
         departmentFilter: deptId
       };
 
-      const [empRes, delivsRes, jobsRes, subDeptRes, effRes] = await Promise.all([
+      const [empRes, delivsRes, jobsRes, subDeptRes, effRes, contentRes, calRes] = await Promise.all([
         api.get('/users/employees', { params: { departmentFilter: deptId, limit: 500 } }),
         api.get('/deliverables', { params }),
         api.get('/deliverables/job-work/manager'),
         api.get(`/departments/${deptId}/sub-departments`),
-        api.get('/users/efficiency', { params: effParams })
+        api.get('/users/efficiency', { params: effParams }),
+        api.get('/content-work/submissions').catch(() => ({ data: { success: false, data: [] } })),
+        api.get('/calendar', { params: { month: selectedMonth } }).catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       if (empRes.data.success) {
@@ -98,6 +102,12 @@ const ManagerEfficiency = ({ isTab }) => {
       }
       if (effRes.data.success) {
         setEfficiencyData(effRes.data.data || []);
+      }
+      if (contentRes && contentRes.data && contentRes.data.success) {
+        setContentSubmissions(contentRes.data.data || []);
+      }
+      if (calRes && calRes.data && calRes.data.success) {
+        setCalendarItems(calRes.data.data || []);
       }
     } catch (err) {
       console.error('Error fetching efficiency data:', err.message);
@@ -166,54 +176,167 @@ const ManagerEfficiency = ({ isTab }) => {
   const workloadData = efficiencyData.map(emp => {
     const empId = Number(emp.id);
 
-    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 3 || (emp.sub_department_name || '').toLowerCase().includes('content');
-    // Deliverables filter: include tasks where employee is assigned_employee_id or content_writer_id
-    const empDeliverables = deliverables.filter(d => Number(d.assigned_employee_id) === empId || Number(d.content_writer_id) === empId);
-    // Job Works filter
-    const empJobWorks = jobWorks.filter(jw => Number(jw.assigned_employee_id) === empId || Number(jw.content_writer_id) === empId);
+    const isWriter = emp.sub_department_code === 'CW-RS' || Number(emp.sub_department_id) === 1 || (emp.sub_department_name || '').toLowerCase().includes('content');
+    
+    let empDeliverables = [];
+    let empJobWorks = [];
+    let empContentTasks = [];
+
+    if (isWriter) {
+      // Content writers: workload comes from Content Calendar topics & Writer Job Works
+      const writerDeliverables = deliverables.filter(d => {
+        const status = (d.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return Number(d.content_writer_id) === empId || Number(d.writer_id) === empId;
+      });
+
+      // Deduplicate multiple sub-deliverables (Post, Story, Reel) that share the same content calendar topic
+      const seenTopics = new Set();
+      empDeliverables = writerDeliverables.filter(d => {
+        const key = d.content_calendar_id || d.calendar_id || d.topic || (d.deliverable ? `${d.deliverable}_${d.date || d.due_date || d.month}` : d.id);
+        if (seenTopics.has(key)) return false;
+        seenTopics.add(key);
+        return true;
+      });
+
+      // Include calendar items if any exist that were not in deliverables
+      calendarItems.forEach(c => {
+        const status = (c.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return;
+        const isAssigned = Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+        if (!isAssigned) return;
+        const key = c.id || c.content_calendar_id;
+        if (!seenTopics.has(key)) {
+          seenTopics.add(key);
+          empDeliverables.push(c);
+        }
+      });
+
+      empJobWorks = jobWorks.filter(jw => {
+        const status = (jw.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return Number(jw.content_writer_id) === empId;
+      });
+
+      empContentTasks = contentSubmissions.filter(c => {
+        const status = (c.submission_status || c.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        const isAssigned = Number(c.content_writer_id) === empId || Number(c.writer_id) === empId;
+        if (!isAssigned) return false;
+        const key = c.content_calendar_id || c.calendar_id || c.id;
+        return !seenTopics.has(key);
+      });
+    } else {
+      // Designers, Editors, SMM: workload comes from active assigned Deliverables & Job Works
+      const activeDesignStatuses = [
+        'assigned',
+        'assigned_employee',
+        'in_progress',
+        'reassigned',
+        'client_rework',
+        'submitted',
+        'sent_to_client',
+        'approved',
+        'client_approved',
+        'completed',
+        'posted'
+      ];
+
+      empDeliverables = deliverables.filter(d => {
+        const status = (d.status || '').toLowerCase();
+        if (!activeDesignStatuses.includes(status)) return false;
+        return (
+          Number(d.assigned_employee_id) === empId || 
+          Number(d.smm_employee_id) === empId
+        );
+      });
+      
+      empJobWorks = jobWorks.filter(jw => {
+        const status = (jw.status || '').toLowerCase();
+        if (status === 'cancelled' || status === 'deleted') return false;
+        return (
+          Number(jw.assigned_employee_id) === empId || 
+          Number(jw.smm_employee_id) === empId
+        );
+      });
+    }
 
     let filteredDelivs = [];
     let filteredJobs = [];
+    let filteredContent = [];
 
-    const getTaskDateStr = (t) => {
-      let raw = t.due_date || t.deadline || t.date || t.created_at || '';
-      if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) {
-        raw = t.created_at || t.updated_at || '';
-      }
+    const matchesMonth = (itemMonth, targetMonth) => {
+      if (!itemMonth) return false;
+      const str = String(itemMonth).replace(/,/g, '').trim().toLowerCase();
+      const targetStr = String(targetMonth).trim().toLowerCase();
+      if (str === targetStr || str.substring(0, 7) === targetStr) return true;
+      
+      const parts = targetMonth.split('-');
+      if (parts.length < 2) return false;
+      const targetYear = parts[0];
+      const targetMm = parts[1];
+      
+      const dateObj = new Date(Number(targetYear), Number(targetMm) - 1, 1);
+      if (isNaN(dateObj.getTime())) return false;
+      
+      const shortMonth = dateObj.toLocaleDateString('en-US', { month: 'short', year: 'numeric' }).toLowerCase();
+      const longMonth = dateObj.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }).toLowerCase();
+      
+      return str === shortMonth || str === longMonth || str.includes(longMonth) || str.includes(shortMonth);
+    };
+
+    const getTaskDueDateStr = (t) => {
+      let raw = t.due_date || t.deadline || t.date || '';
       if (!raw || String(raw).startsWith('0000') || String(raw).startsWith('1970')) return '';
       return String(raw).split(/[T ]/)[0];
     };
 
     if (activeTab === 'today') {
       filteredDelivs = empDeliverables.filter(d => {
-        const taskDate = getTaskDateStr(d);
-        return taskDate === selectedDate || (!taskDate && (d.created_at || '').split(/[T ]/)[0] === selectedDate);
+        const dueStr = getTaskDueDateStr(d);
+        return dueStr === selectedDate;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const taskDate = getTaskDateStr(jw);
-        return taskDate === selectedDate || (!taskDate && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
+        const dueStr = getTaskDueDateStr(jw);
+        return dueStr === selectedDate || (!dueStr && (jw.created_at || '').split(/[T ]/)[0] === selectedDate);
+      });
+      filteredContent = empContentTasks.filter(c => {
+        const dueStr = getTaskDueDateStr(c);
+        return dueStr === selectedDate || (!dueStr && (c.date || c.created_at || '').split(/[T ]/)[0] === selectedDate);
       });
     } else {
       filteredDelivs = empDeliverables.filter(d => {
-        const taskMonth = getTaskDateStr(d).substring(0, 7);
-        return taskMonth === selectedMonth || (!taskMonth && (d.created_at || '').substring(0, 7) === selectedMonth);
+        const dueStr = getTaskDueDateStr(d);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === selectedMonth) return true;
+        if (d.month && matchesMonth(d.month, selectedMonth)) return true;
+        return false;
       });
       filteredJobs = empJobWorks.filter(jw => {
-        const taskMonth = getTaskDateStr(jw).substring(0, 7);
-        return taskMonth === selectedMonth || (!taskMonth && (jw.created_at || '').substring(0, 7) === selectedMonth);
+        const dueStr = getTaskDueDateStr(jw);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === selectedMonth) return true;
+        if (jw.month && matchesMonth(jw.month, selectedMonth)) return true;
+        return false;
+      });
+      filteredContent = empContentTasks.filter(c => {
+        const dueStr = getTaskDueDateStr(c);
+        const dueMonth = dueStr ? dueStr.substring(0, 7) : '';
+        if (dueMonth && dueMonth === selectedMonth) return true;
+        if (c.month && matchesMonth(c.month, selectedMonth)) return true;
+        return false;
       });
     }
 
-    const allPeriodTasks = [...filteredDelivs, ...filteredJobs];
-    const fallbackTasks = [...empDeliverables, ...empJobWorks];
-    const finalTasks = allPeriodTasks.length > 0 ? allPeriodTasks : fallbackTasks;
+    const allPeriodTasks = [...filteredDelivs, ...filteredJobs, ...filteredContent];
 
-    const taskDetails = finalTasks.map(task => {
-      const isJobWork = task.is_job_work === undefined;
-      const rawDue = isJobWork ? task.deadline : task.due_date;
+    const taskDetails = allPeriodTasks.map(task => {
+      const isJobWork = task.is_job_work === undefined && !task.category;
+      const rawDue = isJobWork ? task.deadline : (task.due_date || task.date);
       const dueStr = rawDue ? String(rawDue).split(/[T ]/)[0] : '';
 
-      const isCompleted = ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((task.status || '').toLowerCase());
+      const statusVal = (task.submission_status || task.status || '').toLowerCase();
+      const isCompleted = ['submitted', 'script_submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes(statusVal);
       const completionDate = task.updated_at ? String(task.updated_at).split(/[T ]/)[0] : '';
 
       let timingStatus = 'On Time';
@@ -242,11 +365,13 @@ const ManagerEfficiency = ({ isTab }) => {
       };
     });
 
-    const computedTotal = taskDetails.length > 0 ? taskDetails.length : Math.max(emp.total_tasks || 0, fallbackTasks.length);
-    const computedCompleted = taskDetails.length > 0 
-      ? taskDetails.filter(t => ['On Time', 'Completed Late'].includes(t.timingStatus) || ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length 
-      : Math.max(emp.completed_tasks || 0, fallbackTasks.filter(t => ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())).length);
-    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : (emp.efficiency || 0);
+    const computedTotal = taskDetails.length;
+    const computedCompleted = taskDetails.filter(t => 
+      ['On Time', 'Completed Late'].includes(t.timingStatus) || 
+      ['submitted', 'completed', 'approved', 'client_approved', 'posted', 'sent_to_client'].includes((t.status || '').toLowerCase())
+    ).length;
+    
+    const computedEfficiency = computedTotal > 0 ? Math.round((computedCompleted / computedTotal) * 100) : 0;
 
     return {
       ...emp,

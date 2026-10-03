@@ -186,24 +186,6 @@ const WorkUpdates = () => {
         gradient: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
         shadowColor: 'rgba(59, 130, 246, 0.35)'
       };
-    } else if (formatted === 'CMP-RS') {
-      return {
-        icon: <Megaphone size={28} />,
-        gradient: 'linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%)',
-        shadowColor: 'rgba(139, 92, 246, 0.35)'
-      };
-    } else if (formatted === 'BD-RS') {
-      return {
-        icon: <Compass size={28} />,
-        gradient: 'linear-gradient(135deg, #06b6d4 0%, #0891b2 100%)',
-        shadowColor: 'rgba(6, 182, 212, 0.35)'
-      };
-    } else if (formatted === 'HR-RS') {
-      return {
-        icon: <User size={28} />,
-        gradient: 'linear-gradient(135deg, #ec4899 0%, #be185d 100%)',
-        shadowColor: 'rgba(236, 72, 153, 0.35)'
-      };
     }
     return {
       icon: <Building2 size={28} />,
@@ -975,14 +957,46 @@ const WorkUpdates = () => {
 
       {/* HEADER SECTION */}
       <div style={{ marginBottom: '35px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '20px' }}>
+        {selectedDept ? (
+          <button 
+            onClick={() => {
+              setSelectedDept(null);
+              setSearch('');
+              setEmployeeFilter('');
+              setSelectedItem(null);
+            }}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'none',
+              border: 'none',
+              color: 'var(--primary)',
+              fontWeight: 700,
+              fontSize: '14px',
+              cursor: 'pointer',
+              padding: '6px 0',
+              marginBottom: '16px',
+              transition: 'transform 0.2s ease'
+            }}
+            onMouseEnter={(e) => e.currentTarget.style.transform = 'translateX(-4px)'}
+            onMouseLeave={(e) => e.currentTarget.style.transform = 'translateX(0)'}
+          >
+            <ArrowLeft size={16} /> Back to Departments
+          </button>
+        ) : null}
+
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
           <div>
             <h1 style={{ fontSize: '28px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '12px', margin: 0 }}>
               <Grid size={32} style={{ color: 'var(--primary)' }} />
-              Creatives Work Updates
+              {selectedDept ? `${selectedDept.name} Work Updates` : 'Department Work Updates'}
             </h1>
             <p style={{ margin: '8px 0 0 0', color: 'var(--text-muted)', fontSize: '15px' }}>
-              Track and monitor daily deliverables, job works, and stage progress for the Creatives department.
+              {selectedDept 
+                ? `Track and monitor progress reports and stage milestones for the ${selectedDept.name} department.`
+                 : 'Select a department below to view its today or monthly work updates and deliverables.'
+              }
             </p>
           </div>
         </div>
@@ -1100,34 +1114,27 @@ const WorkUpdates = () => {
             flexWrap: 'wrap',
             gap: '20px'
           }}>
-            {/* Main Tabs (Daily Deliverables vs Job Work) - EXCLUSIVELY FOR CREATIVES DEPARTMENT (CD-RS) */}
-            {selectedDept?.code === 'CD-RS' ? (
-              <div className="tab-segment">
-                <button
-                  className={`segment-btn ${mainTab === 'deliverable' ? 'active' : ''}`}
-                  onClick={() => {
-                    setMainTab('deliverable');
-                    setPage(1);
-                  }}
-                >
-                  Daily Deliverables
-                </button>
-                <button
-                  className={`segment-btn ${mainTab === 'job_work' ? 'active' : ''}`}
-                  onClick={() => {
-                    setMainTab('job_work');
-                    setPage(1);
-                  }}
-                >
-                  Job Work
-                </button>
-              </div>
-            ) : (
-              <div style={{ fontSize: '15px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Building2 size={20} style={{ color: 'var(--primary)' }} />
-                <span>{selectedDept?.name || 'Department'} Work Deliverables &amp; Tasks</span>
-              </div>
-            )}
+            {/* Main Tabs (Daily Deliverables vs Job Work) */}
+            <div className="tab-segment">
+              <button
+                className={`segment-btn ${mainTab === 'deliverable' ? 'active' : ''}`}
+                onClick={() => {
+                  setMainTab('deliverable');
+                  setPage(1);
+                }}
+              >
+                Daily Deliverables
+              </button>
+              <button
+                className={`segment-btn ${mainTab === 'job_work' ? 'active' : ''}`}
+                onClick={() => {
+                  setMainTab('job_work');
+                  setPage(1);
+                }}
+              >
+                Job Work
+              </button>
+            </div>
 
             {/* Global Month Filter */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>

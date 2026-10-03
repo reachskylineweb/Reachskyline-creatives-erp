@@ -71,8 +71,8 @@ const EVENT_TYPES = {
 const EmployeeAssignedWork = () => {
   const { user } = useAuth();
   const location = useLocation();
-  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 3 || 
-                          Number(user?.sub_department_id) === 3 ||
+  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 1 || 
+                          Number(user?.sub_department_id) === 1 ||
                           user?.employeeProfile?.sub_department_code === 'CW-RS' ||
                           user?.sub_department_code === 'CW-RS' ||
                           (user?.employeeProfile?.sub_department_name || '').toLowerCase().includes('content') ||

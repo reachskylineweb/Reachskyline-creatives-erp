@@ -37,8 +37,6 @@ const Sidebar = () => {
       { label: 'Managers', path: '/admin/managers', icon: <Award size={20} /> },
       { label: 'Employees', path: '/admin/employees', icon: <Users size={20} /> },
       { label: 'Content Calendar', path: '/admin/projects', icon: <FolderGit size={20} /> },
-      { label: 'Blog Calendar', path: '/admin/blog-calendar', icon: <FileText size={20} /> },
-      { label: 'Blog Assignments', path: '/admin/blog-assignments', icon: <UserCheck size={20} /> },
       { label: 'Event Day Calendar', path: '/admin/event-calendar', icon: <CalendarClock size={20} /> },
       { label: 'Deliverables', path: '/admin/deliverables', icon: <CalendarClock size={20} /> },
       { label: 'Reports', path: '/admin/reports', icon: <BarChart3 size={20} /> },
@@ -92,27 +90,13 @@ const Sidebar = () => {
           { label: 'Posted History', path: '/manager/posted', icon: <CheckCircle2 size={20} /> }
         ];
       }
-
-      if (user?.managerProfile?.department_code === 'SEO-RS') {
-        return [
-          { label: 'Dashboard', path: '/manager/dashboard', icon: <LayoutDashboard size={20} /> },
-          { label: 'Clients for Blog', path: '/manager/clients', icon: <Building2 size={20} /> },
-          { label: 'Blog Calendar', path: '/manager/blog-calendar', icon: <FolderGit size={20} /> },
-          { label: 'Assign Task', path: '/manager/assign-task', icon: <Users size={20} /> },
-          { label: 'Completed Works', path: '/manager/completed-works', icon: <CheckCircle2 size={20} /> },
-          { label: 'Employees', path: '/manager/employees', icon: <Users size={20} /> },
-          { label: 'Employee Efficiency', path: '/manager/efficiency', icon: <BarChart3 size={20} /> },
-          { label: 'Approval works', path: '/manager/submissions-review', icon: <FileSpreadsheet size={20} /> }
-        ];
-      }
-
       return [
         { label: 'Dashboard', path: '/manager/dashboard', icon: <LayoutDashboard size={20} /> },
         { label: 'Daily To-Do', path: '/manager/daily-todo', icon: <ListTodo size={20} /> },
         { label: 'Completed Works', path: '/manager/completed-works', icon: <CheckCircle2 size={20} /> },
         { label: 'Content Calendar', path: '/manager/calendar', icon: <Calendar size={20} /> },
         { label: 'Event Day Calendar', path: '/manager/event-calendar', icon: <CalendarClock size={20} /> },
-        { label: 'Assign Task', path: '/manager/assign-task', icon: <Users size={20} /> },
+        { label: 'Content Writers Work Assignment', path: '/manager/writers-assignment', icon: <Users size={20} /> },
         { label: 'Sub-departments', path: '/manager/sub-departments', icon: <Layers size={20} /> },
         { label: 'Employees', path: '/manager/employees', icon: <Users size={20} /> },
         { label: 'Employee Efficiency', path: '/manager/efficiency', icon: <BarChart3 size={20} /> },
@@ -130,7 +114,12 @@ const Sidebar = () => {
           { label: 'Posted History', path: '/employee/posted', icon: <CheckCircle2 size={20} /> }
         ];
       }
-      if (user?.employeeProfile?.sub_department_id === 3) {
+      const subDeptId = Number(user?.employeeProfile?.sub_department_id);
+      const subDeptCode = user?.employeeProfile?.sub_department_code;
+      const subDeptName = (user?.employeeProfile?.sub_department_name || '').toLowerCase();
+      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('writer') || subDeptName.includes('content');
+
+      if (isContentWriter) {
         return [
           { label: 'Dashboard', path: '/employee/dashboard', icon: <LayoutDashboard size={20} /> },
           { label: 'Event Day Calendar', path: '/employee/event-calendar', icon: <CalendarClock size={20} /> },
@@ -144,7 +133,7 @@ const Sidebar = () => {
         { label: 'Content Calendar', path: '/employee/calendar', icon: <Calendar size={20} /> },
         { label: 'Assigned Work', path: '/employee/assigned-work', icon: <ListTodo size={20} /> },
         { label: 'Reassigned Work', path: '/employee/reassigned-work', icon: <RefreshCw size={20} /> },
-        { label: 'Completed Work', path: '/employee/completed-work', icon: <CheckCircle2 size={20} /> }
+        { label: 'Approved Work', path: '/employee/approved-work', icon: <CheckCircle2 size={20} /> }
       ];
     }
 

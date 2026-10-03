@@ -171,6 +171,39 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
     }
   }, [fetchClients, user?.role]);
 
+  const [employees, setEmployees] = useState([]);
+
+  const fetchEmployees = useCallback(async () => {
+    try {
+      const res = await api.get('/users/employees', { params: { limit: 1000 } });
+      if (res.data.success && res.data.data) {
+        const raw = res.data.data;
+        const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.employees) ? raw.employees : []);
+        setEmployees(list);
+      }
+    } catch (err) {
+      console.error('Error fetching employees:', err.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchEmployees();
+  }, [fetchEmployees]);
+
+  const getAssignedEmployeeName = (item) => {
+    if (!item) return 'the assigned employee';
+    if (item.assigned_employee_name) return item.assigned_employee_name;
+    if (item.content_writer_name) return item.content_writer_name;
+    if (item.employee_name) return item.employee_name;
+    if (item.writer_name) return item.writer_name;
+    const empId = Number(item.assigned_employee_id || item.content_writer_id || item.writer_id || 0);
+    if (empId > 0 && Array.isArray(employees)) {
+      const emp = employees.find(e => Number(e.id) === empId || Number(e.employee_id) === empId);
+      if (emp) return emp.full_name || emp.name;
+    }
+    return 'the assigned employee';
+  };
+
   useEffect(() => {
     if (user?.role === 'admin' || user?.role === 'manager') {
       fetchActivityTypes();
@@ -431,6 +464,12 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
       setAlreadyApprovedModalOpen(true);
       return;
     }
+    const empId = Number(item.assigned_employee_id || item.content_writer_id || item.writer_id || 0);
+    if (empId > 0) {
+      const empName = getAssignedEmployeeName(item);
+      alert(`Work is assigned to ${empName}`);
+      return;
+    }
     setCurrentItem(item);
     setEditFormData({
       date: getLocalDateString(item.date),
@@ -475,8 +514,10 @@ const ContentCalendarView = ({ activityTypeFilter = null }) => {
       setAlreadyApprovedModalOpen(true);
       return;
     }
-    if (currentItem && currentItem.assigned_employee_id !== null) {
-      alert('Work is assigned to the content writer');
+    const empId = currentItem ? Number(currentItem.assigned_employee_id || currentItem.content_writer_id || currentItem.writer_id || 0) : 0;
+    if (empId > 0) {
+      const empName = getAssignedEmployeeName(currentItem);
+      alert(`Work is assigned to ${empName}`);
       return;
     }
     if (!(await window.confirm('Delete this scheduled item?'))) return;

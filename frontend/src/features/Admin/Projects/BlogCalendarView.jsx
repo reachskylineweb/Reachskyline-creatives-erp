@@ -63,8 +63,7 @@ const BlogCalendarView = () => {
     title: '',
     description: '',
     status: 'draft',
-    type: 'blog',
-    featured_image: 'YES'
+    type: 'blog'
   });
   
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
@@ -74,8 +73,7 @@ const BlogCalendarView = () => {
     title: '',
     description: '',
     status: 'draft',
-    type: 'blog',
-    featured_image: 'YES'
+    type: 'blog'
   });
 
   const [isSendConfirmModalOpen, setIsSendConfirmModalOpen] = useState(false);
@@ -148,8 +146,7 @@ const BlogCalendarView = () => {
       title: '',
       description: '',
       status: 'draft',
-      type: 'blog',
-      featured_image: 'YES'
+      type: 'blog'
     });
     setIsAddModalOpen(true);
   };
@@ -217,19 +214,20 @@ const BlogCalendarView = () => {
 
   // Edit Item Click
   const handleOpenEditModal = (item) => {
+    const empId = Number(item.assigned_employee_id || item.content_writer_id || item.writer_id || 0);
+    if (empId > 0) {
+      const empName = getAssignedEmployeeName(item);
+      alert(`Work is assigned to ${empName}`);
+      return;
+    }
     setCurrentItem(item);
     setFormErrors({});
-    const empId = item.assigned_employee_id || item.content_writer_id || item.writer_id || '';
     setEditFormData({
       date: getLocalDateString(item.date),
       title: item.title,
       description: item.description || '',
       status: item.status,
-      type: item.type || 'blog',
-      featured_image: item.featured_image || item.has_featured_image || 'YES',
-      assigned_employee_id: empId ? String(empId) : '',
-      content_link: item.content_link || '',
-      google_drive_link: item.google_drive_link || ''
+      type: item.type || 'blog'
     });
     setIsEditModalOpen(true);
   };
@@ -258,6 +256,12 @@ const BlogCalendarView = () => {
   };
 
   const handleDeleteItem = async () => {
+    const empId = currentItem ? Number(currentItem.assigned_employee_id || currentItem.content_writer_id || currentItem.writer_id || 0) : 0;
+    if (empId > 0) {
+      const empName = getAssignedEmployeeName(currentItem);
+      alert(`Work is assigned to ${empName}`);
+      return;
+    }
     if (!(await window.confirm(`Are you sure you want to delete this SEO item: "${currentItem.title}"?`))) return;
     try {
       let res;
@@ -384,7 +388,7 @@ const BlogCalendarView = () => {
         <div key={`day-${day}`} className="calendar-day-cell">
           <div className="day-cell-header">
             <span className="day-number">{day}</span>
-            {user?.role === 'manager' && !isLocked && (
+            {user?.role === 'admin' && (
               <button 
                 onClick={() => handleOpenAddModal(dateStr)}
                 className="btn-add-day-item"
@@ -418,7 +422,7 @@ const BlogCalendarView = () => {
     return cells;
   };
 
-  const isLocked = calendarItems.length > 0 && calendarItems.some(item => item.status === 'sent_to_admin' || item.status === 'approved');
+  const isApproved = calendarItems.length > 0 && calendarItems.every(item => item.status === 'approved' || item.status === 'sent_to_employees');
 
   const renderPagination = (isTop = false) => {
     if (calendarItems.length <= 10) return null;
@@ -443,20 +447,54 @@ const BlogCalendarView = () => {
         <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
           Showing <strong>{((listPage - 1) * 10) + 1}</strong> to <strong>{Math.min(listPage * 10, calendarItems.length)}</strong> of <strong>{calendarItems.length}</strong> items
         </span>
-        <div style={{ display: 'flex', gap: '8px' }}>
-          <button 
-            className="btn btn-secondary btn-sm"
+        
+        <div style={{ display: 'flex', gap: '6px' }}>
+          <button
+            className="pagination-btn"
             disabled={listPage === 1}
-            onClick={() => setListPage(p => Math.max(1, p - 1))}
+            onClick={() => setListPage(p => p - 1)}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '32px', height: '32px', padding: '0 6px', border: '1px solid var(--border-color)', borderRadius: '4px', backgroundColor: '#fff', cursor: listPage === 1 ? 'not-allowed' : 'pointer', opacity: listPage === 1 ? 0.5 : 1 }}
           >
-            Previous
+            <ChevronLeft size={16} />
           </button>
-          <button 
-            className="btn btn-secondary btn-sm"
+          
+          {Array.from({ length: Math.ceil(calendarItems.length / 10) }, (_, i) => i + 1)
+            .filter(p => p === 1 || p === Math.ceil(calendarItems.length / 10) || Math.abs(p - listPage) <= 1)
+            .map((p, idx, arr) => {
+              const prev = arr[idx - 1];
+              const showEllipsis = prev && p - prev > 1;
+              return (
+                <React.Fragment key={p}>
+                  {showEllipsis && <span style={{ display: 'flex', alignItems: 'center', padding: '0 4px', color: 'var(--text-light)' }}>...</span>}
+                  <button
+                    className="pagination-btn"
+                    style={{
+                      minWidth: '32px',
+                      height: '32px',
+                      border: '1px solid ' + (listPage === p ? 'var(--primary)' : 'var(--border-color)'),
+                      borderRadius: '4px',
+                      backgroundColor: listPage === p ? 'var(--primary)' : 'white',
+                      color: listPage === p ? 'white' : 'var(--text-main)',
+                      fontWeight: 700,
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      padding: '0 8px'
+                    }}
+                    onClick={() => setListPage(p)}
+                  >
+                    {p}
+                  </button>
+                </React.Fragment>
+              );
+            })}
+
+          <button
+            className="pagination-btn"
             disabled={listPage * 10 >= calendarItems.length}
             onClick={() => setListPage(p => p + 1)}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minWidth: '32px', height: '32px', padding: '0 6px', border: '1px solid var(--border-color)', borderRadius: '4px', backgroundColor: '#fff', cursor: listPage * 10 >= calendarItems.length ? 'not-allowed' : 'pointer', opacity: listPage * 10 >= calendarItems.length ? 0.5 : 1 }}
           >
-            Next
+            <ChevronRight size={16} />
           </button>
         </div>
       </div>
@@ -524,27 +562,33 @@ const BlogCalendarView = () => {
                 </button>
               </div>
 
-              {user?.role === 'manager' && (
-                !isLocked ? (
-                  <>
+              {user?.role === 'admin' && (
+                <>
+                  {!isApproved ? (
                     <button className="btn btn-success" onClick={handleSendToSeoTeam} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-                      <Send size={16} /> Send to Admin
+                      <Send size={16} /> Send to SEO Team
                     </button>
-                    <button className="btn btn-danger" onClick={handleClearMonth} title="Delete this month's draft calendar">
-                      <Trash2 size={16} style={{ marginRight: '6px' }} /> Delete Calendar
-                    </button>
-                  </>
-                ) : (
-                  <span className="badge badge-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px', fontWeight: 700 }}>
-                    <CheckCircle size={14} /> Fixed Calendar (Sent to Admin)
-                  </span>
-                )
+                  ) : (
+                    <span className="badge badge-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px', fontWeight: 700 }}>
+                      <CheckCircle size={14} /> Sent to SEO Team
+                    </span>
+                  )}
+                  <button className="btn btn-danger" onClick={handleClearMonth} title="Clear this month's draft SEO tasks">
+                    <Trash2 size={16} style={{ marginRight: '6px' }} /> Delete Calendar
+                  </button>
+                </>
               )}
 
-              {(user?.role === 'admin' || user?.role === 'super_admin') && (
-                <span className="badge badge-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px', fontWeight: 700, backgroundColor: isLocked ? '#dcfce7' : '#fef3c7', color: isLocked ? '#15803d' : '#b45309' }}>
-                  <CheckCircle size={14} /> {isLocked ? 'Fixed Calendar (Received from SEO Manager)' : 'Draft Blog Calendar'}
-                </span>
+              {user?.role === 'manager' && (
+                isApproved ? (
+                  <span className="badge badge-active" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px', fontWeight: 700 }}>
+                    <CheckCircle size={14} /> Active SEO Calendar
+                  </span>
+                ) : (
+                  <span className="badge badge-pending" style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', padding: '8px 14px', fontSize: '13px', fontWeight: 700, backgroundColor: '#fef3c7', color: '#b45309', border: '1px solid #fde68a' }}>
+                    <AlertCircle size={14} /> Pending Admin Release
+                  </span>
+                )
               )}
             </>
           )}
@@ -634,7 +678,6 @@ const BlogCalendarView = () => {
                     <th>Client Name</th>
                     <th>Type</th>
                     <th>Title</th>
-                    <th style={{ textAlign: 'center' }}>Featured Image</th>
                     <th>Status</th>
                     <th>Actions</th>
                   </tr>
@@ -642,53 +685,35 @@ const BlogCalendarView = () => {
                 <tbody>
                   {calendarItems
                     .slice((listPage - 1) * 10, listPage * 10)
-                    .map(item => {
-                      const isFeatImg = item.featured_image === 'YES' || item.has_featured_image === 'YES' || item.featured_image === true || item.has_featured_image === 1;
-
-                      return (
-                        <tr key={item.id} style={{ verticalAlign: 'middle' }}>
-                          <td style={{ fontWeight: 700 }}>{(() => {
-                            const date = parseLocalDate(item.date);
-                            return date ? date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
-                          })()}</td>
-                          <td>{item.client_name}</td>
-                          <td>
-                            <span className="badge" style={{ backgroundColor: item.type === 'gmb' ? '#ecfdf5' : item.type === 'backlink' ? '#f5f3ff' : 'var(--primary-light)', color: item.type === 'gmb' ? '#047857' : item.type === 'backlink' ? '#6d28d9' : 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '10px' }}>
-                              {item.type || 'blog'}
-                            </span>
-                          </td>
-                          <td style={{ fontWeight: 500 }}>{item.title}</td>
-                          <td style={{ textAlign: 'center' }}>
-                            <span style={{
-                              backgroundColor: isFeatImg ? '#eefdf2' : '#f1f5f9',
-                              color: isFeatImg ? '#15803d' : '#64748b',
-                              border: isFeatImg ? '1px solid #c2e7cc' : '1px solid #cbd5e1',
-                              padding: '3px 10px',
-                              borderRadius: '12px',
-                              fontWeight: 800,
-                              fontSize: '11px',
-                              display: 'inline-block'
-                            }}>
-                              {isFeatImg ? 'YES' : 'NO'}
-                            </span>
-                          </td>
-                          <td>
-                            <span className={`badge ${item.status === 'approved' ? 'badge-active' : item.status === 'sent_to_employees' ? 'badge-active' : 'badge-pending'}`}>
-                              {item.status}
-                            </span>
-                          </td>
-                          <td>
-                            <button 
-                              className="btn btn-secondary btn-sm" 
-                              onClick={() => handleOpenEditModal(item)}
-                              title="Edit Scheduled Task"
-                            >
-                              <Edit2 size={12} />
-                            </button>
-                          </td>
-                        </tr>
-                      );
-                    })}
+                    .map(item => (
+                      <tr key={item.id} style={{ verticalAlign: 'middle' }}>
+                        <td style={{ fontWeight: 700 }}>{(() => {
+                          const date = parseLocalDate(item.date);
+                          return date ? date.toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : '';
+                        })()}</td>
+                        <td>{item.client_name}</td>
+                        <td>
+                          <span className="badge" style={{ backgroundColor: item.type === 'gmb' ? '#ecfdf5' : item.type === 'backlink' ? '#f5f3ff' : 'var(--primary-light)', color: item.type === 'gmb' ? '#047857' : item.type === 'backlink' ? '#6d28d9' : 'var(--primary)', fontWeight: 700, textTransform: 'uppercase', fontSize: '10px' }}>
+                            {item.type || 'blog'}
+                          </span>
+                        </td>
+                        <td style={{ fontWeight: 500 }}>{item.title}</td>
+                        <td>
+                          <span className={`badge ${item.status === 'approved' ? 'badge-active' : item.status === 'sent_to_employees' ? 'badge-active' : 'badge-pending'}`}>
+                            {item.status}
+                          </span>
+                        </td>
+                        <td>
+                          <button 
+                            className="btn btn-secondary btn-sm" 
+                            onClick={() => handleOpenEditModal(item)}
+                            title="Edit Scheduled Task"
+                          >
+                            <Edit2 size={12} />
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>
@@ -744,33 +769,6 @@ const BlogCalendarView = () => {
             placeholder="Outline keywords, posting requirements, references..."
             rows={4}
           />
-          <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-label" style={{ fontWeight: 700, fontSize: '13px', marginBottom: '8px', display: 'block' }}>
-              Featured Image Option:
-            </label>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: '#15803d' }}>
-                <input
-                  type="radio"
-                  name="addFeaturedImage"
-                  value="YES"
-                  checked={addFormData.featured_image === 'YES'}
-                  onChange={() => setAddFormData(prev => ({ ...prev, featured_image: 'YES' }))}
-                />
-                With Featured Image (YES)
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: '#64748b' }}>
-                <input
-                  type="radio"
-                  name="addFeaturedImage"
-                  value="NO"
-                  checked={addFormData.featured_image === 'NO'}
-                  onChange={() => setAddFormData(prev => ({ ...prev, featured_image: 'NO' }))}
-                />
-                Without Featured Image (NO)
-              </label>
-            </div>
-          </div>
           <FormSelect
             label="Scheduling Status"
             value={addFormData.status}
@@ -791,10 +789,12 @@ const BlogCalendarView = () => {
         title="Edit SEO Task"
         footer={
           <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-            <button className="btn btn-secondary" style={{ color: 'var(--danger)', borderColor: 'rgba(239,68,68,0.2)' }} onClick={handleDeleteItem} type="button">
-              <Trash2 size={16} style={{ marginRight: '6px' }} />
-              Delete Item
-            </button>
+            {currentItem && currentItem.assigned_employee_id === null ? (
+              <button className="btn btn-secondary" style={{ color: 'var(--danger)', borderColor: 'rgba(239,68,68,0.2)' }} onClick={handleDeleteItem} type="button">
+                <Trash2 size={16} style={{ marginRight: '6px' }} />
+                Delete Item
+              </button>
+            ) : <div />}
             <div style={{ display: 'flex', gap: '12px' }}>
               <button className="btn btn-secondary" onClick={() => setIsEditModalOpen(false)} type="button">Cancel</button>
               <button className="btn btn-primary" onClick={handleEditSubmit} type="button">Save Changes</button>
@@ -844,68 +844,11 @@ const BlogCalendarView = () => {
           />
 
           <FormSelect
-            label="Assign Employee / Writer"
-            value={editFormData.assigned_employee_id}
-            onChange={(e) => setEditFormData(prev => ({ ...prev, assigned_employee_id: e.target.value }))}
-            options={[
-              { value: '', label: '-- Unassigned --' },
-              ...employees.map(emp => ({
-                value: String(emp.id || emp.employee_id),
-                label: `${emp.full_name || emp.name} (${emp.employee_id_code || 'Employee'})`
-              }))
-            ]}
-          />
-
-          <FormInput
-            label="Content / Live Link"
-            placeholder="https://..."
-            value={editFormData.content_link || ''}
-            onChange={(e) => setEditFormData(prev => ({ ...prev, content_link: e.target.value }))}
-          />
-
-          <FormInput
-            label="Google Drive / Asset Link"
-            placeholder="https://drive.google.com/..."
-            value={editFormData.google_drive_link || ''}
-            onChange={(e) => setEditFormData(prev => ({ ...prev, google_drive_link: e.target.value }))}
-          />
-
-          <div style={{ padding: '12px', backgroundColor: '#f8fafc', borderRadius: '6px', border: '1px solid var(--border-color)' }}>
-            <label className="form-label" style={{ fontWeight: 700, fontSize: '13px', marginBottom: '8px', display: 'block' }}>
-              Featured Image Option:
-            </label>
-            <div style={{ display: 'flex', gap: '20px', alignItems: 'center' }}>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: '#15803d' }}>
-                <input
-                  type="radio"
-                  name="editFeaturedImage"
-                  value="YES"
-                  checked={editFormData.featured_image === 'YES'}
-                  onChange={() => setEditFormData(prev => ({ ...prev, featured_image: 'YES' }))}
-                />
-                With Featured Image (YES)
-              </label>
-              <label style={{ display: 'flex', alignItems: 'center', gap: '6px', cursor: 'pointer', fontWeight: 700, fontSize: '13px', color: '#64748b' }}>
-                <input
-                  type="radio"
-                  name="editFeaturedImage"
-                  value="NO"
-                  checked={editFormData.featured_image === 'NO'}
-                  onChange={() => setEditFormData(prev => ({ ...prev, featured_image: 'NO' }))}
-                />
-                Without Featured Image (NO)
-              </label>
-            </div>
-          </div>
-
-          <FormSelect
-            label="Scheduling / Work Status"
+            label="Scheduling Status"
             value={editFormData.status}
             onChange={(e) => setEditFormData(prev => ({ ...prev, status: e.target.value }))}
             options={[
               { value: 'draft', label: 'Draft' },
-              { value: 'assigned', label: 'Assigned' },
-              { value: 'submitted', label: 'Work Submitted' },
               { value: 'approved', label: 'Approved (Ready to publish)' },
               { value: 'sent_to_employees', label: 'Released' }
             ]}

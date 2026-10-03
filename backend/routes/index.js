@@ -21,9 +21,11 @@ const eventDayRoutes = require('./eventDayRoutes');
 const contentWorkRoutes = require('./contentWorkRoutes');
 const blogAssignmentRoutes = require('./blogAssignmentRoutes');
 const blogCalendarRoutes = require('./blogCalendarRoutes');
+const uploadRoutes = require('./uploadRoutes');
 
 // 1. Mount Auth (contains both public and private endpoints)
 router.use('/auth', authRoutes);
+router.use('/upload', uploadRoutes);
 router.use('/client-portal', clientPortalRoutes);
 router.use('/super-admin', superAdminRoutes);
 

@@ -156,7 +156,7 @@ const WritersAssignment = () => {
         const res = await api.get('/users/employees/dropdown');
         if (res.data.success && res.data.data?.employees) {
           currentWriters = res.data.data.employees.filter(
-            emp => Number(emp.sub_department_id) === 3
+            emp => Number(emp.sub_department_id) === 1 || emp.sub_department_code === 'CW-RS' || (emp.sub_department_name || '').toLowerCase().includes('content') || (emp.sub_department_name || '').toLowerCase().includes('writer')
           );
           setFallbackWriters(currentWriters);
         }

@@ -58,11 +58,7 @@ const ManagerEfficiency = safeLazy(() => import('./features/Manager/ManagerEffic
 const SMMTodayPosting = safeLazy(() => import('./features/Manager/SMMTodayPosting'));
 const SMMMonthlyPosting = safeLazy(() => import('./features/Manager/SMMMonthlyPosting'));
 const SMMPosted = safeLazy(() => import('./features/Manager/SMMPosted'));
-const BlogCalendarView = safeLazy(() => import('./features/Admin/Projects/BlogCalendarView'));
-const AdminBlogsAssignment = safeLazy(() => import('./features/Admin/Blogs/AdminBlogsAssignment'));
-const ManagerBlogClients = safeLazy(() => import('./features/Manager/Blogs/ManagerBlogClients'));
 const WritersAssignment = safeLazy(() => import('./features/Manager/WritersAssignment'));
-const SEOAssignTask = safeLazy(() => import('./features/Manager/SEOAssignTask'));
 
 // Employee features
 const EmployeeDashboard = safeLazy(() => import('./features/Employee/EmployeeDashboard'));
@@ -264,8 +260,6 @@ function App() {
                   <Route path="managers" element={<ManagerList />} />
                   <Route path="employees" element={<EmployeeList />} />
                   <Route path="projects" element={<ProjectList />} />
-                  <Route path="blog-calendar" element={<BlogCalendarView />} />
-                  <Route path="blog-assignments" element={<AdminBlogsAssignment />} />
                   <Route path="event-calendar" element={<ErrorBoundary><EmployeeEventCalendar /></ErrorBoundary>} />
                   <Route path="deliverables" element={<DeliverableList />} />
                   <Route path="reports" element={<ReportDashboard />} />
@@ -293,10 +287,7 @@ function App() {
                   <Route path="today-posting" element={<SMMTodayPosting />} />
                   <Route path="monthly-posting" element={<SMMMonthlyPosting />} />
                   <Route path="posted" element={<SMMPosted />} />
-                  <Route path="assign-task" element={<ErrorBoundary><SEOAssignTask /></ErrorBoundary>} />
-                  <Route path="clients" element={<ErrorBoundary><ManagerBlogClients /></ErrorBoundary>} />
-                  <Route path="blog-calendar" element={<BlogCalendarView />} />
-                  <Route path="writers-assignment" element={<ErrorBoundary><SEOAssignTask /></ErrorBoundary>} />
+                  <Route path="writers-assignment" element={<ErrorBoundary><WritersAssignment /></ErrorBoundary>} />
                   <Route index element={<Navigate to="dashboard" replace />} />
                 </Route>
 

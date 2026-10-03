@@ -19,7 +19,10 @@ const ensureExternalLink = (url) => {
 
 const EmployeeReassignedWork = () => {
   const { user } = useAuth();
-  const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+  const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+  const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+  const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+  const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
 
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const today = new Date();

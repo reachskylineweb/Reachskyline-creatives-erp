@@ -393,9 +393,9 @@ const ManagerJobWorks = () => {
                 // Pre-select first employee from SMM or Creatives
                 const isContentWriter = (emp) => 
                   emp.sub_department_id === 1 || 
-                  emp.sub_department_id === 3 || 
                   emp.sub_department_code === 'CW-RS' || 
-                  (emp.sub_department_name || '').toLowerCase().includes('content');
+                  (emp.sub_department_name || '').toLowerCase().includes('content') ||
+                  (emp.sub_department_name || '').toLowerCase().includes('writer');
 
                 const filteredEmps = isSMMManager
                   ? employees.filter(emp => emp.department_id === 3)
@@ -551,9 +551,9 @@ const ManagerJobWorks = () => {
         const isSMMManager = user?.managerProfile?.department_code === 'SMM-RS';
         const isContentWriter = (emp) => 
           emp.sub_department_id === 1 || 
-          emp.sub_department_id === 3 || 
           emp.sub_department_code === 'CW-RS' || 
-          (emp.sub_department_name || '').toLowerCase().includes('content');
+          (emp.sub_department_name || '').toLowerCase().includes('content') ||
+          (emp.sub_department_name || '').toLowerCase().includes('writer');
 
         const filteredEmployees = isSMMManager
           ? employees.filter(emp => emp.department_id === 3)
@@ -654,7 +654,7 @@ const ManagerJobWorks = () => {
               <div>
                 {user?.managerProfile?.department_code === 'SMM-RS' 
                   ? 'Assigned Employee: ' 
-                  : (reviewingJob.employee_sub_dept_id === 3 ? 'Assigned Writer: ' : 'Assigned Designer: ')}
+                  : (reviewingJob.employee_sub_dept_id === 1 ? 'Assigned Writer: ' : 'Assigned Designer: ')}
                 <strong>{reviewingJob.smm_employee_name || reviewingJob.employee_name || 'Employee'}</strong>
               </div>
             </div>
@@ -664,7 +664,7 @@ const ManagerJobWorks = () => {
               <label style={{ display: 'block', fontWeight: 700, fontSize: '13px', marginBottom: '6px', color: 'var(--text-color)' }}>
                 {user?.managerProfile?.department_code === 'SMM-RS' 
                   ? 'Employee Submission Link' 
-                  : (reviewingJob.employee_sub_dept_id === 3 ? 'Writer Submission Link' : 'Designer Submission Link')}
+                  : (reviewingJob.employee_sub_dept_id === 1 ? 'Writer Submission Link' : 'Designer Submission Link')}
               </label>
               {reviewingJob.google_drive_link ? (
                 <a 
@@ -740,7 +740,7 @@ const ManagerJobWorks = () => {
                 disabled={actionInProgress !== null}
                 style={{ fontWeight: 700 }}
               >
-                {reviewingJob.employee_sub_dept_id === 3 ? 'Approve Content' : 'Approve Design'}
+                {reviewingJob.employee_sub_dept_id === 1 ? 'Approve Content' : 'Approve Design'}
               </button>
             </div>
 

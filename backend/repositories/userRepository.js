@@ -8,19 +8,23 @@ class UserRepository {
 
   // General User Operations
   async findByUsername(username, conn) {
+    if (!username) return null;
+    const clean = String(username).trim();
     const db = this.getContext(conn);
     const [rows] = await db.query(
-      "SELECT * FROM users WHERE username = ? ORDER BY CASE WHEN role = 'super_admin' THEN 1 WHEN role = 'admin' THEN 2 WHEN role = 'manager' THEN 3 WHEN role = 'employee' THEN 4 WHEN role = 'hr' THEN 5 ELSE 6 END ASC LIMIT 1",
-      [username]
+      "SELECT * FROM users WHERE LOWER(TRIM(username)) = LOWER(?) ORDER BY CASE WHEN role = 'super_admin' THEN 1 WHEN role = 'admin' THEN 2 WHEN role = 'manager' THEN 3 WHEN role = 'employee' THEN 4 WHEN role = 'hr' THEN 5 ELSE 6 END ASC LIMIT 1",
+      [clean]
     );
     return rows[0];
   }
 
   async findByEmail(email, conn) {
+    if (!email) return null;
+    const clean = String(email).trim();
     const db = this.getContext(conn);
     const [rows] = await db.query(
-      "SELECT * FROM users WHERE email = ? ORDER BY CASE WHEN role = 'super_admin' THEN 1 WHEN role = 'admin' THEN 2 WHEN role = 'manager' THEN 3 WHEN role = 'employee' THEN 4 WHEN role = 'hr' THEN 5 ELSE 6 END ASC LIMIT 1",
-      [email]
+      "SELECT * FROM users WHERE LOWER(TRIM(email)) = LOWER(?) ORDER BY CASE WHEN role = 'super_admin' THEN 1 WHEN role = 'admin' THEN 2 WHEN role = 'manager' THEN 3 WHEN role = 'employee' THEN 4 WHEN role = 'hr' THEN 5 ELSE 6 END ASC LIMIT 1",
+      [clean]
     );
     return rows[0];
   }
@@ -218,6 +222,11 @@ class UserRepository {
        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [user_id, manager_id_code, full_name, phone, department_id, sub_department_id || null, branch, joining_date, status, created_by, profile_image || null]
     );
+    if (user_id && profile_image) {
+      try {
+        await db.query('UPDATE users SET profile_image = ?, avatar_url = ? WHERE id = ?', [profile_image, profile_image, user_id]);
+      } catch (_) {}
+    }
     return result.insertId;
   }
 
@@ -230,6 +239,12 @@ class UserRepository {
        WHERE id = ?`,
       [full_name, phone, department_id, sub_department_id || null, branch, joining_date, status, updated_by || null, profile_image || null, id]
     );
+    try {
+      const [mgr] = await db.query('SELECT user_id FROM managers WHERE id = ?', [id]);
+      if (mgr.length && mgr[0].user_id) {
+        await db.query('UPDATE users SET profile_image = ?, avatar_url = ? WHERE id = ?', [profile_image || null, profile_image || null, mgr[0].user_id]);
+      }
+    } catch (_) {}
   }
 
   // Employee Operations
@@ -365,24 +380,37 @@ class UserRepository {
 
   async createEmployeeProfile(profileData, conn) {
     const db = this.getContext(conn);
-    const { user_id, employee_id_code, full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, created_by, profile_image } = profileData;
+    const { user_id, employee_id_code, full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, created_by, profile_image, avatar_url } = profileData;
+    const finalPhoto = avatar_url || profile_image || null;
     const [result] = await db.query(
-      `INSERT INTO employees (user_id, employee_id_code, full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, created_by, profile_image) 
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [user_id, employee_id_code, full_name, phone, department_id, sub_department_id || null, reporting_manager_id || null, joining_date, status, created_by, profile_image || null]
+      `INSERT INTO employees (user_id, employee_id_code, full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, created_by, profile_image, avatar_url) 
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      [user_id, employee_id_code, full_name, phone, department_id, sub_department_id || null, reporting_manager_id || null, joining_date, status, created_by, finalPhoto, finalPhoto]
     );
+    if (user_id && finalPhoto) {
+      try {
+        await db.query('UPDATE users SET profile_image = ?, avatar_url = ? WHERE id = ?', [finalPhoto, finalPhoto, user_id]);
+      } catch (_) {}
+    }
     return result.insertId;
   }
 
   async updateEmployeeProfile(id, profileData, conn) {
     const db = this.getContext(conn);
-    const { full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, updated_by, profile_image } = profileData;
+    const { full_name, phone, department_id, sub_department_id, reporting_manager_id, joining_date, status, updated_by, profile_image, avatar_url } = profileData;
+    const finalPhoto = avatar_url !== undefined ? avatar_url : (profile_image !== undefined ? profile_image : null);
     await db.query(
       `UPDATE employees 
-       SET full_name = ?, phone = ?, department_id = ?, sub_department_id = ?, reporting_manager_id = ?, joining_date = ?, status = ?, updated_by = ?, profile_image = ? 
+       SET full_name = ?, phone = ?, department_id = ?, sub_department_id = ?, reporting_manager_id = ?, joining_date = ?, status = ?, updated_by = ?, profile_image = ?, avatar_url = ? 
        WHERE id = ?`,
-      [full_name, phone, department_id, sub_department_id || null, reporting_manager_id || null, reporting_manager_id || null, joining_date, status, updated_by || null, profile_image || null, id]
+      [full_name, phone, department_id, sub_department_id || null, reporting_manager_id || null, joining_date, status, updated_by || null, finalPhoto, finalPhoto, id]
     );
+    try {
+      const [emp] = await db.query('SELECT user_id FROM employees WHERE id = ?', [id]);
+      if (emp.length && emp[0].user_id) {
+        await db.query('UPDATE users SET profile_image = ?, avatar_url = ? WHERE id = ?', [finalPhoto, finalPhoto, emp[0].user_id]);
+      }
+    } catch (_) {}
   }
 
   // HR Operations

@@ -51,7 +51,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
 // Serve static assets
-app.use('/public', express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, 'public'), { maxAge: '7d' }));
 
 // 6. GET /health (Public Endpoint)
 app.get('/health', async (req, res) => {

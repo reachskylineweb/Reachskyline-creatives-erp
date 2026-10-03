@@ -212,7 +212,7 @@ const DepartmentList = () => {
           <button className="btn btn-secondary btn-sm" onClick={() => setSelectedDeptId(row.id)} title="View Details">
             <Eye size={14} className="text-primary" />
           </button>
-          <button className="btn btn-secondary btn-sm" onClick={() => handleOpenEdit(row)} title="Edit">
+          {/* <button className="btn btn-secondary btn-sm" onClick={() => handleOpenEdit(row)} title="Edit">
             <Edit2 size={14} />
           </button>
           <button 
@@ -224,18 +224,18 @@ const DepartmentList = () => {
           </button>
           <button className="btn btn-secondary btn-sm" onClick={() => handleDelete(row.id)} title="Delete">
             <Trash2 size={14} className="text-danger" />
-          </button>
+          </button> */}
         </div>
       )
     }
   ];
 
-  const bulkActions = {
-    actions: [
-      { label: 'Delete Selected', value: 'delete', className: 'btn-danger' }
-    ],
-    onExecute: handleBulkAction
-  };
+  // const bulkActions = {
+  //   actions: [
+  //     { label: 'Delete Selected', value: 'delete', className: 'btn-danger' }
+  //   ],
+  //   onExecute: handleBulkAction
+  // };
 
   if (selectedDeptId) {
     return (
@@ -257,9 +257,9 @@ const DepartmentList = () => {
           <h2>Departments</h2>
           <span className="page-subtitle">Configure corporate subdivisions and operational codes</span>
         </div>
-        <button className="btn btn-primary" onClick={handleOpenCreate}>
+        {/* <button className="btn btn-primary" onClick={handleOpenCreate}>
           <Plus size={18} /> Add Department
-        </button>
+        </button> */}
       </div>
 
       {/* Filter and Search Bar */}
@@ -315,7 +315,7 @@ const DepartmentList = () => {
         }}
         selectedIds={selectedIds}
         onSelectChange={setSelectedIds}
-        bulkActions={bulkActions}
+        // bulkActions={bulkActions}
       />
 
       {/* CREATE / EDIT DEPARTMENT MODAL */}

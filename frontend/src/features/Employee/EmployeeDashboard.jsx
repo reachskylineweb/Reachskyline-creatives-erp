@@ -17,8 +17,10 @@ const EmployeeDashboard = () => {
     return <SMMEmployeeDashboard />;
   }
 
-  const subDeptId = employeeProfile.sub_department_id;
-  const isContentWriter = subDeptId === 3 || employeeProfile.sub_department_code === 'CW-RS' || employeeProfile.sub_department_name?.toLowerCase().includes('writer');
+  const subDeptId = Number(employeeProfile.sub_department_id);
+  const subDeptCode = employeeProfile.sub_department_code;
+  const subDeptName = (employeeProfile.sub_department_name || '').toLowerCase();
+  const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('writer') || subDeptName.includes('content');
 
   if (isContentWriter) {
     return <ContentWriterDashboard />;

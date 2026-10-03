@@ -13,13 +13,38 @@ import {
 } from 'lucide-react';
 
 const getFilteredEmployees = (reqSubDeptId, employeesList) => {
-  if (!reqSubDeptId) return employeesList;
+  if (!employeesList || !Array.isArray(employeesList)) return [];
   const reqId = Number(reqSubDeptId);
+
   return employeesList.filter(emp => {
     const empSubDeptId = Number(emp.sub_department_id);
-    if (empSubDeptId === reqId) return true;
-    if (empSubDeptId === 4 && (reqId === 1 || reqId === 2)) return true;
-    return false;
+    const code = (emp.sub_department_code || '').toUpperCase();
+    const name = (emp.sub_department_name || '').toLowerCase();
+    const empName = (emp.full_name || '').toLowerCase();
+
+    const isContentWriter = 
+      empSubDeptId === 1 || 
+      code === 'CW-RS' || 
+      name.includes('content') || 
+      empName.includes('writer');
+
+    if (reqId === 1 || reqSubDeptId === 'CW-RS') {
+      return isContentWriter;
+    }
+
+    if (isContentWriter) return false;
+
+    if (reqId === 2) {
+      return empSubDeptId === 2 || empSubDeptId === 4 || code === 'GD-RS' || code === 'CD-RS' || name.includes('graphic') || name.includes('creative');
+    }
+    if (reqId === 3 || reqId === 5) {
+      return empSubDeptId === 3 || empSubDeptId === 5 || empSubDeptId === 4 || code === 'VE-RS' || code === 'VD-RS' || code === 'CD-RS' || name.includes('video') || name.includes('editor') || name.includes('creative');
+    }
+    if (reqId === 4) {
+      return empSubDeptId === 4 || code === 'CD-RS' || code === 'CRD-RS' || name.includes('creative') || [2, 3].includes(empSubDeptId);
+    }
+
+    return true;
   });
 };
 

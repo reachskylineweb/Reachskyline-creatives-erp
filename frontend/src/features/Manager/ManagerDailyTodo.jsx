@@ -666,8 +666,6 @@ const ManagerDailyTodo = () => {
     }
   };
 
-  const [seoFeaturedImage, setSeoFeaturedImage] = useState('YES');
-
   const handleSaveSeoAssignment = async (item, employeeId) => {
     try {
       const dateObj = new Date(item.date);
@@ -683,7 +681,6 @@ const ManagerDailyTodo = () => {
         status: 'assigned',
         type: item.type,
         assigned_employee_id: Number(employeeId) || null,
-        featured_image: seoFeaturedImage,
         content_link: item.content_link || null,
         google_drive_link: item.google_drive_link || null
       };
@@ -1126,84 +1123,59 @@ const ManagerDailyTodo = () => {
                     >
                       {assigningItemId === item.id ? (
                         /* Inline Assignment Dropdown */
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', width: '100%' }}>
-                            <select
-                              value={selectedDesigner}
-                              onChange={(e) => setSelectedDesigner(e.target.value)}
-                              style={{
-                                flex: 1,
-                                padding: '6px 8px',
-                                borderRadius: 'var(--radius-sm)',
-                                border: '1px solid var(--primary)',
-                                fontSize: '12px',
-                                outline: 'none',
-                                backgroundColor: '#ffffff'
-                              }}
-                            >
-                              <option value="">Select Employee</option>
-                              {employees.map(emp => (
-                                <option key={emp.id} value={emp.id}>{emp.full_name}</option>
-                              ))}
-                            </select>
-                            <button
-                              onClick={() => handleSaveSeoAssignment(item, selectedDesigner)}
-                              style={{
-                                padding: '6px 10px',
-                                backgroundColor: 'var(--success)',
-                                color: '#ffffff',
-                                border: 'none',
-                                borderRadius: 'var(--radius-sm)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}
-                              title="Save assignment"
-                            >
-                              <Check size={14} />
-                            </button>
-                            <button
-                              onClick={() => setAssigningItemId(null)}
-                              style={{
-                                padding: '6px 10px',
-                                backgroundColor: 'var(--bg-light)',
-                                color: 'var(--text-muted)',
-                                border: '1px solid var(--border-color)',
-                                borderRadius: 'var(--radius-sm)',
-                                cursor: 'pointer',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center'
-                              }}
-                              title="Cancel"
-                            >
-                              <X size={14} />
-                            </button>
-                          </div>
-                          <div style={{ display: 'flex', gap: '14px', alignItems: 'center', fontSize: '11px' }}>
-                            <span style={{ fontWeight: 700, color: 'var(--text-muted)' }}>Featured Image:</span>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', fontWeight: 700, color: '#15803d' }}>
-                              <input
-                                type="radio"
-                                name={`feat_img_${item.id}`}
-                                value="YES"
-                                checked={seoFeaturedImage === 'YES'}
-                                onChange={() => setSeoFeaturedImage('YES')}
-                              />
-                              With (YES)
-                            </label>
-                            <label style={{ display: 'flex', alignItems: 'center', gap: '4px', cursor: 'pointer', fontWeight: 700, color: '#64748b' }}>
-                              <input
-                                type="radio"
-                                name={`feat_img_${item.id}`}
-                                value="NO"
-                                checked={seoFeaturedImage === 'NO'}
-                                onChange={() => setSeoFeaturedImage('NO')}
-                              />
-                              Without (NO)
-                            </label>
-                          </div>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', width: '100%' }}>
+                          <select
+                            value={selectedDesigner}
+                            onChange={(e) => setSelectedDesigner(e.target.value)}
+                            style={{
+                              flex: 1,
+                              padding: '6px 8px',
+                              borderRadius: 'var(--radius-sm)',
+                              border: '1px solid var(--primary)',
+                              fontSize: '12px',
+                              outline: 'none',
+                              backgroundColor: '#ffffff'
+                            }}
+                          >
+                            <option value="">Select Employee</option>
+                            {employees.map(emp => (
+                              <option key={emp.id} value={emp.id}>{emp.full_name}</option>
+                            ))}
+                          </select>
+                          <button
+                            onClick={() => handleSaveSeoAssignment(item, selectedDesigner)}
+                            style={{
+                              padding: '6px',
+                              backgroundColor: 'var(--success)',
+                              color: '#ffffff',
+                              border: 'none',
+                              borderRadius: 'var(--radius-sm)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                            title="Save assignment"
+                          >
+                            <Check size={14} />
+                          </button>
+                          <button
+                            onClick={() => setAssigningItemId(null)}
+                            style={{
+                              padding: '6px',
+                              backgroundColor: 'var(--bg-light)',
+                              color: 'var(--text-muted)',
+                              border: '1px solid var(--border-color)',
+                              borderRadius: 'var(--radius-sm)',
+                              cursor: 'pointer',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center'
+                            }}
+                            title="Cancel"
+                          >
+                            <X size={14} />
+                          </button>
                         </div>
                       ) : (
                         <>

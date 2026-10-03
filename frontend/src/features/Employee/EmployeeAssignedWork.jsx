@@ -71,29 +71,15 @@ const EVENT_TYPES = {
 const EmployeeAssignedWork = () => {
   const { user } = useAuth();
   const location = useLocation();
-  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 3 || 
-                          Number(user?.sub_department_id) === 3 ||
+  const isContentWriter = Number(user?.employeeProfile?.sub_department_id) === 1 || 
+                          Number(user?.sub_department_id) === 1 ||
                           user?.employeeProfile?.sub_department_code === 'CW-RS' ||
                           user?.sub_department_code === 'CW-RS' ||
                           (user?.employeeProfile?.sub_department_name || '').toLowerCase().includes('content') ||
                           (user?.sub_department_name || '').toLowerCase().includes('content') ||
                           (user?.employeeProfile?.full_name || '').toLowerCase().includes('writer') ||
                           (user?.username || '').toLowerCase().includes('writer');
-  const isSEO = user?.employeeProfile?.department_code === 'SEO-RS' || 
-                user?.department_code === 'SEO-RS' ||
-                (user?.employeeProfile?.department_name || '').toLowerCase().includes('seo') ||
-                (user?.department_name || '').toLowerCase().includes('seo') ||
-                (user?.employeeProfile?.role || '').toLowerCase().includes('seo') ||
-                (user?.role || '').toLowerCase().includes('seo') ||
-                (user?.role_title || '').toLowerCase().includes('seo') ||
-                (user?.employeeProfile?.role_title || '').toLowerCase().includes('seo') ||
-                (user?.username || '').toLowerCase().includes('seo') ||
-                (user?.employeeProfile?.full_name || '').toLowerCase().includes('seo') ||
-                (user?.employeeProfile?.sub_department_name || '').toLowerCase().includes('seo') ||
-                (user?.sub_department_name || '').toLowerCase().includes('seo') ||
-                user?.employeeProfile?.department_id === 2 ||
-                user?.department_id === 2 ||
-                !isContentWriter;
+  const isSEO = false; // user?.employeeProfile?.department_code === 'SEO-RS';
 
   // -------------------------------------------------------------
   // SEO SPECIALIST STATES
@@ -177,18 +163,8 @@ const EmployeeAssignedWork = () => {
       });
       if (res.data.success) {
         const list = res.data.data || [];
-        const empIds = [
-          user?.id,
-          user?.employeeProfile?.id,
-          user?.employeeProfile?.employee_id,
-          user?.employee_id
-        ].filter(Boolean).map(Number);
-
         // Filter tasks assigned to current employee
-        const myTasks = list.filter(item => {
-          const assignedId = Number(item.assigned_employee_id);
-          return assignedId && empIds.includes(assignedId);
-        });
+        const myTasks = list.filter(item => Number(item.assigned_employee_id) === Number(user?.id));
         setSeoItems(myTasks);
 
         const initialLinks = {};
@@ -205,7 +181,7 @@ const EmployeeAssignedWork = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedSeoMonth, user]);
+  }, [selectedSeoMonth, user?.id]);
 
   const handlePrevSeoMonth = () => {
     const [year, month] = selectedSeoMonth.split('-').map(Number);
@@ -1269,7 +1245,7 @@ const EmployeeAssignedWork = () => {
                       {item.title}
                     </h3>
 
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
                       <span className="badge" style={{
                         backgroundColor: item.type === 'gmb' ? '#ecfdf5' : item.type === 'backlink' ? '#f5f3ff' : 'var(--primary-light)',
                         color: item.type === 'gmb' ? '#047857' : item.type === 'backlink' ? '#6d28d9' : 'var(--primary)',
@@ -1279,17 +1255,6 @@ const EmployeeAssignedWork = () => {
                         padding: '4px 8px'
                       }}>
                         {item.type || 'blog'}
-                      </span>
-                      <span className="badge" style={{
-                        backgroundColor: (item.featured_image === 'NO' || item.has_featured_image === 'NO' || item.featured_image === false) ? '#f1f5f9' : '#ecfdf5',
-                        color: (item.featured_image === 'NO' || item.has_featured_image === 'NO' || item.featured_image === false) ? '#475569' : '#15803d',
-                        border: (item.featured_image === 'NO' || item.has_featured_image === 'NO' || item.featured_image === false) ? '1px solid #cbd5e1' : '1px solid #a7f3d0',
-                        fontWeight: 800,
-                        fontSize: '10px',
-                        padding: '4px 8px',
-                        borderRadius: '4px'
-                      }}>
-                        FEATURED IMAGE: {(item.featured_image === 'NO' || item.has_featured_image === 'NO' || item.featured_image === false) ? 'NO' : 'YES'}
                       </span>
                       <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>
                         Due: {new Date(item.date).toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
@@ -1581,7 +1546,7 @@ const EmployeeAssignedWork = () => {
                 border: 'none',
                 background: 'none',
                 color: activeTab === t.id ? 'var(--primary)' : 'var(--text-muted)',
-                borderBottom: activeTab === t.id ? '2px solid var(--primary)' : '2px solid transparent',
+                borderBottom: activeTab === t.id ? '2px solid var(--primary)' : 'none',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
                 outline: 'none'
@@ -1593,7 +1558,7 @@ const EmployeeAssignedWork = () => {
         </div>
 
         {/* Toolbar / Month Selection & Filtration */}
-        <div className="table-toolbar" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px 20px', backgroundColor: '#fff', borderTop: '1px solid var(--border-color)', borderLeft: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
+        <div className="table-toolbar" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px 20px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', borderBottom: 'none' }}>
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>
             {!['today', 'pending'].includes(activeTab) ? (
@@ -1724,7 +1689,6 @@ const EmployeeAssignedWork = () => {
                       <th style={{ width: '180px' }}>Client</th>
                       <th style={{ width: '180px' }}>Type</th>
                       <th style={{ width: '120px' }}>Code</th>
-                      <th style={{ width: '130px', textAlign: 'center' }}>Featured Image</th>
                       <th style={{ width: '120px' }}>Est. Time</th>
                       <th>Script / Work Link Input</th>
                       <th style={{ width: '150px', textAlign: 'center' }}>Status</th>
@@ -1737,7 +1701,6 @@ const EmployeeAssignedWork = () => {
                       const hasLink = links[key] && links[key].trim();
                       const today = new Date();
                       const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                      const isFeatImgYes = item.featured_image === 'YES' || item.has_featured_image === 'YES' || item.featured_image === true || item.has_featured_image === 1;
                       
                       // Status Evaluation
                       const isCompleted = item.isJobWork
@@ -1814,20 +1777,6 @@ const EmployeeAssignedWork = () => {
                           <td>
                             <span style={{ fontFamily: 'monospace', fontWeight: 800, padding: '3px 6px', backgroundColor: 'var(--primary-light)', color: 'var(--primary)', borderRadius: '4px', fontSize: '11px' }}>
                               {displayCode}
-                            </span>
-                          </td>
-                          <td style={{ textAlign: 'center' }}>
-                            <span style={{
-                              backgroundColor: isFeatImgYes ? '#eefdf2' : '#f1f5f9',
-                              color: isFeatImgYes ? '#15803d' : '#64748b',
-                              border: isFeatImgYes ? '1px solid #c2e7cc' : '1px solid #cbd5e1',
-                              padding: '3px 10px',
-                              borderRadius: '12px',
-                              fontWeight: 800,
-                              fontSize: '11px',
-                              display: 'inline-block'
-                            }}>
-                              {isFeatImgYes ? 'YES' : 'NO'}
                             </span>
                           </td>
                           <td style={{ fontWeight: 600, fontSize: '13px' }}>
@@ -2040,7 +1989,7 @@ const EmployeeAssignedWork = () => {
               border: 'none',
               background: 'none',
               color: designerTab === t.id ? 'var(--primary)' : 'var(--text-muted)',
-              borderBottom: designerTab === t.id ? '2px solid var(--primary)' : '2px solid transparent',
+              borderBottom: designerTab === t.id ? '2px solid var(--primary)' : 'none',
               cursor: 'pointer',
               transition: 'all 0.2s',
               outline: 'none'
@@ -2052,7 +2001,7 @@ const EmployeeAssignedWork = () => {
       </div>
 
       {/* Toolbar: Month/Date Filters, Status Sub-tabs & Search */}
-      <div className="table-toolbar" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px 20px', backgroundColor: '#fff', borderTop: '1px solid var(--border-color)', borderLeft: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0' }}>
+      <div className="table-toolbar" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '16px 20px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', borderBottom: 'none' }}>
         
         {/* Row 1: Month & Date Filter Inputs */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px' }}>

@@ -23,7 +23,10 @@ const EmployeeOverallWork = () => {
   const fetchOverallData = useCallback(async () => {
     setLoading(true);
     try {
-      const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+      const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+      const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+      const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
       if (isContentWriter) {
         const [delivsRes, eventsRes, jobsRes] = await Promise.all([
           api.get(`/content-work/assigned-content-calendar?month=${selectedMonth}`),
@@ -42,38 +45,19 @@ const EmployeeOverallWork = () => {
           setJobWorks(filteredJobs);
         }
       } else {
-        const [delivsRes, jobsRes, blogRes] = await Promise.all([
-          api.get('/deliverables/employee/all').catch(() => ({ data: { success: false, data: [] } })),
-          api.get('/deliverables/job-work/employee').catch(() => ({ data: { success: false, data: [] } })),
-          api.get('/blog-calendar', { params: { month: selectedMonth } }).catch(() => ({ data: { success: false, data: [] } }))
+        const [delivsRes, jobsRes] = await Promise.all([
+          api.get('/deliverables/employee/all'),
+          api.get('/deliverables/job-work/employee')
         ]);
 
-        if (delivsRes.data?.success) {
-          const list = delivsRes.data.data?.deliverables || [];
+        if (delivsRes.data.success) {
+          const list = delivsRes.data.data.deliverables || [];
           setDeliverables(list);
         }
-        if (jobsRes.data?.success) {
+        if (jobsRes.data.success) {
           setJobWorks(jobsRes.data.data || []);
         }
-        if (blogRes.data?.success) {
-          const list = blogRes.data.data || [];
-          const empIds = [
-            user?.id,
-            user?.employeeProfile?.id,
-            user?.employeeProfile?.employee_id,
-            user?.employee_id
-          ].filter(Boolean).map(Number);
-          const myBlogTasks = list.filter(item => item.assigned_employee_id && empIds.includes(Number(item.assigned_employee_id)));
-          setEventDays(myBlogTasks.map(b => ({
-            ...b,
-            type: 'SEO Deliverable',
-            title: b.title,
-            due_date: b.date,
-            activity_code: b.type ? b.type.toUpperCase() : 'BLOG'
-          })));
-        } else {
-          setEventDays([]);
-        }
+        setEventDays([]);
       }
     } catch (err) {
       console.error('Error fetching overall work:', err.message);
@@ -100,7 +84,10 @@ const EmployeeOverallWork = () => {
 
   // Helper to categorize work items
   const processItems = () => {
-    const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+    const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+    const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+    const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+    const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
     
     let rawItems = [];
     if (isContentWriter) {
@@ -329,22 +316,19 @@ const EmployeeOverallWork = () => {
                   <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase' }}>Activity Brief</th>
                   <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase' }}>Code</th>
                   <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', width: '130px' }}>Due Date</th>
-                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', width: '140px', textAlign: 'center' }}>Featured Image</th>
                   <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', width: '140px', textAlign: 'center' }}>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {activeList.length === 0 ? (
                   <tr>
-                    <td colSpan={7} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: 600 }}>
+                    <td colSpan={6} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: 600 }}>
                       No items found in this category.
                     </td>
                   </tr>
                 ) : (
                   activeList.map(item => {
                     const statusStyle = getStatusLabelStyles(item.statusCat);
-                    const isFeatImg = item.featured_image === 'YES' || item.has_featured_image === 'YES' || item.featured_image === true || item.has_featured_image === 1;
-
                     return (
                       <tr key={`${item.type}_${item.id}`} className="tracker-row-interactive" style={{ borderBottom: '1px solid var(--border-color)' }}>
                         <td style={{ padding: '14px 18px', fontWeight: 700 }}>
@@ -363,20 +347,6 @@ const EmployeeOverallWork = () => {
                         </td>
                         <td style={{ padding: '14px 18px' }}>
                           {item.dateStr ? new Date(item.dateStr).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A'}
-                        </td>
-                        <td style={{ padding: '14px 18px', textAlign: 'center' }}>
-                          <span style={{
-                            backgroundColor: isFeatImg ? '#eefdf2' : '#f1f5f9',
-                            color: isFeatImg ? '#15803d' : '#64748b',
-                            border: isFeatImg ? '1px solid #c2e7cc' : '1px solid #cbd5e1',
-                            padding: '3px 10px',
-                            borderRadius: '12px',
-                            fontWeight: 800,
-                            fontSize: '11px',
-                            display: 'inline-block'
-                          }}>
-                            {isFeatImg ? 'YES' : 'NO'}
-                          </span>
                         </td>
                         <td style={{ padding: '14px 18px', textAlign: 'center' }}>
                           <span style={{ 

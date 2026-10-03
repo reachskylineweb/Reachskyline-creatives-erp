@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Building2, Calendar, FileSpreadsheet, Search, Printer, 
-  CheckCircle, AlertCircle, Clock, CalendarDays, FileText, ChevronRight, X, Layers
+  CheckCircle, AlertCircle, Clock, CalendarDays, FileText, ChevronRight, X
 } from 'lucide-react';
 import api from '../../../utils/api';
 import { useAuth } from '../../../context/AuthContext';
@@ -10,8 +10,7 @@ const ReportDashboard = () => {
   const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('daily'); // 'daily' | 'monthly'
   const [loading, setLoading] = useState(false);
-  const [reportData, setReportData] = useState({ clients: [], departments: [], eventDaysToday: [], eventDaysMonth: [] });
-  const [selectedDepartment, setSelectedDepartment] = useState('all');
+  const [reportData, setReportData] = useState({ clients: [], eventDaysToday: [], eventDaysMonth: [] });
   
   // Filters
   const [selectedDate, setSelectedDate] = useState(() => {
@@ -250,105 +249,6 @@ const ReportDashboard = () => {
           />
         </div>
       </div>
-
-      {/* Department Selector Cards */}
-      <div className="no-print" style={{ marginBottom: '24px' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0, textTransform: 'uppercase', letterSpacing: '0.5px', color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Layers size={18} style={{ color: 'var(--primary)' }} /> Select Department
-          </h3>
-          {selectedDepartment !== 'all' && (
-            <button 
-              onClick={() => setSelectedDepartment('all')}
-              className="btn btn-secondary btn-sm"
-              style={{ fontSize: '12px', fontWeight: 700 }}
-            >
-              Show All Departments
-            </button>
-          )}
-        </div>
-
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(210px, 1fr))', gap: '14px' }}>
-          {/* All Departments Card */}
-          <div
-            onClick={() => setSelectedDepartment('all')}
-            style={{
-              padding: '14px 18px',
-              borderRadius: 'var(--radius-md)',
-              border: selectedDepartment === 'all' ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-              backgroundColor: selectedDepartment === 'all' ? 'var(--primary-light)' : '#ffffff',
-              cursor: 'pointer',
-              boxShadow: selectedDepartment === 'all' ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-              transition: 'all 0.2s',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '4px'
-            }}
-          >
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <strong style={{ fontSize: '14px', color: selectedDepartment === 'all' ? 'var(--primary)' : 'var(--text-color)', fontWeight: 800 }}>
-                All Departments
-              </strong>
-              <span className="badge badge-active" style={{ fontSize: '10px' }}>OVERALL</span>
-            </div>
-            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
-              Overall client-wise report
-            </span>
-          </div>
-
-          {/* Department Specific Cards */}
-          {(reportData.departments || []).map(dept => {
-            const isSelected = selectedDepartment === dept.code || selectedDepartment === dept.name || selectedDepartment === String(dept.id);
-            return (
-              <div
-                key={dept.id}
-                onClick={() => setSelectedDepartment(dept.code)}
-                style={{
-                  padding: '14px 18px',
-                  borderRadius: 'var(--radius-md)',
-                  border: isSelected ? '2px solid var(--primary)' : '1px solid var(--border-color)',
-                  backgroundColor: isSelected ? 'var(--primary-light)' : '#ffffff',
-                  cursor: 'pointer',
-                  boxShadow: isSelected ? 'var(--shadow-md)' : 'var(--shadow-sm)',
-                  transition: 'all 0.2s',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '4px'
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <strong style={{ fontSize: '14px', color: isSelected ? 'var(--primary)' : 'var(--text-color)', fontWeight: 800 }}>
-                    {dept.name}
-                  </strong>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: 'var(--primary)', backgroundColor: 'var(--bg-light)', padding: '2px 6px', borderRadius: '4px' }}>
-                    {dept.code}
-                  </span>
-                </div>
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                  {dept.description || `${dept.name} Department Report`}
-                </span>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Selected Department Active Banner */}
-      {selectedDepartment !== 'all' && (
-        <div style={{ padding: '16px 20px', backgroundColor: 'var(--primary-light)', borderLeft: '4px solid var(--primary)', borderRadius: 'var(--radius-sm)', marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <div>
-            <h3 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: 'var(--primary)' }}>
-              {reportData.departments?.find(d => d.code === selectedDepartment || d.name === selectedDepartment)?.name || selectedDepartment} Department Report
-            </h3>
-            <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-              Client-wise operational report and metrics breakdown
-            </span>
-          </div>
-          <button className="btn btn-secondary btn-sm" onClick={() => setSelectedDepartment('all')} style={{ fontWeight: 700 }}>
-            Back to All Departments
-          </button>
-        </div>
-      )}
 
       {/* Main Print / Print-Ready Container */}
       <div id="print-area">

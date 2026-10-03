@@ -19,7 +19,10 @@ const ensureExternalLink = (url) => {
 
 const EmployeeReassignedWork = () => {
   const { user } = useAuth();
-  const isContentWriter = user?.employeeProfile?.sub_department_id === 3;
+  const subDeptId = Number(user?.employeeProfile?.sub_department_id || user?.sub_department_id);
+  const subDeptCode = user?.employeeProfile?.sub_department_code || user?.sub_department_code;
+  const subDeptName = (user?.employeeProfile?.sub_department_name || user?.sub_department_name || '').toLowerCase();
+  const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('content') || subDeptName.includes('writer');
 
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const today = new Date();
@@ -51,11 +54,10 @@ const EmployeeReassignedWork = () => {
   const fetchReworkQueue = useCallback(async () => {
     setLoading(true);
     try {
-      const [delivsRes, contentRes, jobWorksRes, blogRes] = await Promise.all([
+      const [delivsRes, contentRes, jobWorksRes] = await Promise.all([
         api.get('/deliverables/employee/all'),
         api.get('/content-work/reassigned').catch(() => ({ data: { success: false, data: [] } })),
-        api.get('/deliverables/job-work/employee').catch(() => ({ data: { success: false, data: [] } })),
-        api.get(`/blog-calendar?month=${selectedMonth}`).catch(() => ({ data: { success: false, data: [] } }))
+        api.get('/deliverables/job-work/employee').catch(() => ({ data: { success: false, data: [] } }))
       ]);
 
       let combined = [];
@@ -66,8 +68,7 @@ const EmployeeReassignedWork = () => {
         ).map(task => ({
           ...task,
           isContentWork: false,
-          isJobWork: false,
-          isBlogWork: false
+          isJobWork: false
         }));
         combined = [...combined, ...reworkTasks];
       }
@@ -77,7 +78,6 @@ const EmployeeReassignedWork = () => {
           ...task,
           isContentWork: true,
           isJobWork: false,
-          isBlogWork: false,
           due_date: task.date || null
         }));
         combined = [...combined, ...contentTasks];
@@ -91,25 +91,9 @@ const EmployeeReassignedWork = () => {
           id: task.id,
           isContentWork: false,
           isJobWork: true,
-          isBlogWork: false,
           due_date: task.deadline || null
         }));
         combined = [...combined, ...jobReworks];
-      }
-
-      if (blogRes.data.success) {
-        const blogReworks = (blogRes.data.data || []).filter(
-          item => (item.status === 'reassigned' || item.manager_feedback_text || item.remarks) &&
-                  (Number(item.assigned_employee_id) === Number(user?.id) || Number(item.assigned_employee_id) === Number(user?.employeeProfile?.id))
-        ).map(task => ({
-          ...task,
-          isContentWork: false,
-          isJobWork: false,
-          isBlogWork: true,
-          due_date: task.date ? task.date.split('T')[0] : null,
-          manager_feedback_text: task.manager_feedback_text || task.remarks
-        }));
-        combined = [...combined, ...blogReworks];
       }
 
       setItems(combined);
@@ -118,7 +102,7 @@ const EmployeeReassignedWork = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedMonth, user]);
+  }, []);
 
   useEffect(() => {
     fetchReworkQueue();
@@ -138,29 +122,7 @@ const EmployeeReassignedWork = () => {
     
     setSubmittingId(item.id);
     try {
-      if (item.isBlogWork) {
-        const dateStr = item.due_date || (item.date ? item.date.split('T')[0] : '');
-        const payload = {
-          date: dateStr,
-          title: item.title,
-          description: item.description,
-          status: 'submitted',
-          type: item.type || 'blog',
-          assigned_employee_id: item.assigned_employee_id,
-          content_link: link,
-          google_drive_link: link
-        };
-        const res = await api.put(`/blog-calendar/${item.id}`, payload);
-        if (res.data.success) {
-          alert('SEO Rework successfully submitted to manager.');
-          setDriveLinks(prev => {
-            const next = { ...prev };
-            delete next[item.id];
-            return next;
-          });
-          fetchReworkQueue();
-        }
-      } else if (item.isContentWork) {
+      if (item.isContentWork) {
         let endpoint = '';
         if (item.category === 'content_calendar') {
           endpoint = `/content-work/assigned-content-calendar/${item.id}/submit`;

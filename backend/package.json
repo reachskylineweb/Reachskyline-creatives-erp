@@ -19,7 +19,9 @@
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
+    "multer": "^2.4.0",
     "mysql2": "^3.9.7",
-    "nodemailer": "^9.0.5"
+    "nodemailer": "^9.0.5",
+    "sharp": "^0.35.5"
   }
 }

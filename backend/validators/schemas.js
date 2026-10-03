@@ -20,7 +20,9 @@ const schemas = {
     password: { required: false, label: 'Password' },
     industry: { required: true, label: 'Industry' },
     start_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Contract Start Date' },
-    status: { required: false, regex: /^(active|inactive)$/, label: 'Status' }
+    status: { required: false, regex: /^(active|inactive)$/, label: 'Status' },
+    profile_image: { required: false, label: 'Profile Image' },
+    logo_url: { required: false, label: 'Logo URL' }
   },
 
   department: {
@@ -39,7 +41,9 @@ const schemas = {
     sub_department_id: { required: false, isNumber: true, label: 'Sub-Department' },
     branch: { required: true, label: 'Branch' },
     joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Joining Date' },
-    status: { required: true, regex: /^(active|inactive)$/, label: 'Status' }
+    status: { required: true, regex: /^(active|inactive)$/, label: 'Status' },
+    profile_image: { required: false, label: 'Profile Image' },
+    avatar_url: { required: false, label: 'Avatar URL' }
   },
 
   employee: {
@@ -52,7 +56,8 @@ const schemas = {
     reporting_manager_id: { required: false, isNumber: true, label: 'Reporting Manager' },
     joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Joining Date' },
     status: { required: true, regex: /^(active|inactive)$/, label: 'Status' },
-    profile_image: { required: false, label: 'Profile Image' }
+    profile_image: { required: false, label: 'Profile Image' },
+    avatar_url: { required: false, label: 'Avatar URL' }
   },
 
   hr: {

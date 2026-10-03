@@ -6,10 +6,11 @@ const pool = require('../config/db');
 
 class AuthService {
   async login(username, password) {
-    const cleanUser = username ? username.trim().toLowerCase() : '';
+    const cleanUser = username ? String(username).trim() : '';
+    const cleanPassword = password !== undefined && password !== null ? String(password).trim() : '';
 
     // 1. Find user by username or email in users table
-    let user = await userRepository.findByUsername(username) || await userRepository.findByEmail(username);
+    let user = await userRepository.findByUsername(cleanUser) || await userRepository.findByEmail(cleanUser);
 
     // 2. If not found directly in users table, search clients table for client_name, company_name, email, or username
     if (!user) {
@@ -17,7 +18,7 @@ class AuthService {
         `SELECT c.*, u.id as linked_user_id
          FROM clients c
          LEFT JOIN users u ON c.user_id = u.id OR c.email = u.email
-         WHERE (LOWER(c.client_name) = ? OR LOWER(c.company_name) = ? OR LOWER(c.email) = ?) AND c.deleted_at IS NULL`,
+         WHERE (LOWER(TRIM(c.client_name)) = LOWER(?) OR LOWER(TRIM(c.company_name)) = LOWER(?) OR LOWER(TRIM(c.email)) = LOWER(?)) AND c.deleted_at IS NULL`,
         [cleanUser, cleanUser, cleanUser]
       );
 
@@ -26,11 +27,11 @@ class AuthService {
         if (client.linked_user_id) {
           user = await userRepository.findUserById(client.linked_user_id);
         } else {
-          const passwordHash = await bcrypt.hash(password, 12);
+          const passwordHash = await bcrypt.hash(cleanPassword || password, 12);
           const newUserId = await userRepository.createUser({
             username: client.client_name ? client.client_name.toLowerCase().replace(/\s+/g, '') : cleanUser,
             password: passwordHash,
-            plain_password: password,
+            plain_password: cleanPassword || password,
             email: client.email || `${cleanUser}@client.com`,
             role: 'client',
             status: 'active'
@@ -57,9 +58,17 @@ class AuthService {
     }
 
     // 4. Verify password (checks hashed password + raw plain_password fallback)
-    let isPasswordValid = await bcrypt.compare(password, user.password);
+    let isPasswordValid = await bcrypt.compare(cleanPassword, user.password);
+    if (!isPasswordValid && password) {
+      isPasswordValid = await bcrypt.compare(password, user.password);
+    }
     if (!isPasswordValid && user.plain_password) {
-      if (password === user.plain_password || password.toLowerCase() === user.plain_password.toLowerCase()) {
+      const storedPlain = String(user.plain_password).trim();
+      if (
+        cleanPassword === storedPlain ||
+        password === user.plain_password ||
+        cleanPassword.toLowerCase() === storedPlain.toLowerCase()
+      ) {
         isPasswordValid = true;
       }
     }
@@ -92,7 +101,7 @@ class AuthService {
 
     if (user.role === 'manager') {
       const [mgrRows] = await pool.query(
-        `SELECT m.id AS manager_id, m.full_name, m.department_id, d.code AS department_code, d.name AS department_name
+        `SELECT m.id AS manager_id, m.full_name, m.department_id, m.profile_image, d.code AS department_code, d.name AS department_name
          FROM managers m
          JOIN departments d ON m.department_id = d.id
          WHERE m.user_id = ? AND m.status = 'active'`,
@@ -100,10 +109,12 @@ class AuthService {
       );
       if (mgrRows.length > 0) {
         userPayload.managerProfile = mgrRows[0];
+        userPayload.profile_image = mgrRows[0].profile_image;
+        userPayload.avatar_url = mgrRows[0].profile_image;
       }
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
-        `SELECT e.id AS employee_id, e.full_name, e.department_id, 
+        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
                 CASE WHEN sd.code = 'CW-RS' THEN 3 ELSE e.sub_department_id END AS sub_department_id, 
                 d.code AS department_code, d.name AS department_name
          FROM employees e
@@ -114,6 +125,20 @@ class AuthService {
       );
       if (empRows.length > 0) {
         userPayload.employeeProfile = empRows[0];
+        userPayload.profile_image = empRows[0].profile_image || empRows[0].avatar_url;
+        userPayload.avatar_url = empRows[0].avatar_url || empRows[0].profile_image;
+      }
+    } else if (user.role === 'client') {
+      const [clientRows] = await pool.query(
+        `SELECT c.id AS client_id, c.company_name, c.client_name, c.profile_image, c.logo_url
+         FROM clients c
+         WHERE c.user_id = ? AND c.status = 'active'`,
+        [user.id]
+      );
+      if (clientRows.length > 0) {
+        userPayload.clientProfile = clientRows[0];
+        userPayload.profile_image = clientRows[0].profile_image || clientRows[0].logo_url;
+        userPayload.logo_url = clientRows[0].logo_url || clientRows[0].profile_image;
       }
     }
 
@@ -139,7 +164,7 @@ class AuthService {
 
     if (user.role === 'manager') {
       const [mgrRows] = await pool.query(
-        `SELECT m.id AS manager_id, m.full_name, m.department_id, d.code AS department_code, d.name AS department_name
+        `SELECT m.id AS manager_id, m.full_name, m.department_id, m.profile_image, d.code AS department_code, d.name AS department_name
          FROM managers m
          JOIN departments d ON m.department_id = d.id
          WHERE m.user_id = ? AND m.status = 'active'`,
@@ -147,10 +172,12 @@ class AuthService {
       );
       if (mgrRows.length > 0) {
         user.managerProfile = mgrRows[0];
+        user.profile_image = mgrRows[0].profile_image;
+        user.avatar_url = mgrRows[0].profile_image;
       }
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
-        `SELECT e.id AS employee_id, e.full_name, e.department_id, 
+        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
                 CASE WHEN sd.code = 'CW-RS' THEN 3 ELSE e.sub_department_id END AS sub_department_id, 
                 d.code AS department_code, d.name AS department_name
          FROM employees e
@@ -161,6 +188,20 @@ class AuthService {
       );
       if (empRows.length > 0) {
         user.employeeProfile = empRows[0];
+        user.profile_image = empRows[0].profile_image || empRows[0].avatar_url;
+        user.avatar_url = empRows[0].avatar_url || empRows[0].profile_image;
+      }
+    } else if (user.role === 'client') {
+      const [clientRows] = await pool.query(
+        `SELECT c.id AS client_id, c.company_name, c.client_name, c.profile_image, c.logo_url
+         FROM clients c
+         WHERE c.user_id = ? AND c.status = 'active'`,
+        [user.id]
+      );
+      if (clientRows.length > 0) {
+        user.clientProfile = clientRows[0];
+        user.profile_image = clientRows[0].profile_image || clientRows[0].logo_url;
+        user.logo_url = clientRows[0].logo_url || clientRows[0].profile_image;
       }
     }
 

@@ -114,7 +114,12 @@ const Sidebar = () => {
           { label: 'Posted History', path: '/employee/posted', icon: <CheckCircle2 size={20} /> }
         ];
       }
-      if (user?.employeeProfile?.sub_department_id === 3) {
+      const subDeptId = Number(user?.employeeProfile?.sub_department_id);
+      const subDeptCode = user?.employeeProfile?.sub_department_code;
+      const subDeptName = (user?.employeeProfile?.sub_department_name || '').toLowerCase();
+      const isContentWriter = subDeptId === 1 || subDeptCode === 'CW-RS' || subDeptName.includes('writer') || subDeptName.includes('content');
+
+      if (isContentWriter) {
         return [
           { label: 'Dashboard', path: '/employee/dashboard', icon: <LayoutDashboard size={20} /> },
           { label: 'Event Day Calendar', path: '/employee/event-calendar', icon: <CalendarClock size={20} /> },

@@ -1,536 +1,719 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Users, Calendar, RefreshCw, Send, CheckCircle2, 
-  Search, AlertCircle, Plus, Building2
-} from 'lucide-react';
+import { Calendar, ChevronLeft, ChevronRight, User, Users, CheckCircle2, AlertTriangle, AlertCircle, RefreshCw, Layers } from 'lucide-react';
 import api from '../../utils/api';
-import { useAuth } from '../../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
+import Modal from '../../components/Modal';
 
-const SEOAssignTask = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-
+const WritersAssignment = () => {
   const [selectedMonth, setSelectedMonth] = useState(() => {
     const today = new Date();
     return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
   });
 
+  const [activeMainTab, setActiveMainTab] = useState('content'); // 'content' | 'event' | 'ledger'
   const [loading, setLoading] = useState(false);
-  const [blogItems, setBlogItems] = useState([]);
-  const [employees, setEmployees] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [data, setData] = useState({ writers: [], contentCal: [], eventDays: [], counts: {} });
   
-  // Row state maps
-  const [selectedEmployees, setSelectedEmployees] = useState({}); // taskId -> empId
-  const [featuredImages, setFeaturedImages] = useState({});       // taskId -> 'YES' | 'NO'
-  const [sendingTaskId, setSendingTaskId] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // Modals & Form States
+  const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
+  const [isSingleModalOpen, setIsSingleModalOpen] = useState(false);
+  const [singleItem, setSingleItem] = useState(null);
+  const [bulkInputs, setBulkInputs] = useState({});
+  const [selectedWriterId, setSelectedWriterId] = useState('');
+  const [fallbackWriters, setFallbackWriters] = useState([]);
+  const [formError, setFormError] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
 
-  // Fetch calendar tasks and employee list
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    setSuccessMessage('');
-    setErrorMessage('');
+  // Event Day Client Config Modal State
+  const [isEventClientModalOpen, setIsEventClientModalOpen] = useState(false);
+  const [selectedEventDay, setSelectedEventDay] = useState(null);
+  const [allClients, setAllClients] = useState([]);
+  const [eventClientConfig, setEventClientConfig] = useState({}); // clientId -> { selected: bool, activity_type_code: string }
+  const [clientConfigLoading, setClientConfigLoading] = useState(false);
+
+  const fetchClients = async () => {
     try {
-      const [blogRes, empRes] = await Promise.all([
-        api.get('/blog-calendar', { params: { month: selectedMonth } }),
-        api.get('/users/employees/dropdown')
-      ]);
-
-      if (blogRes.data.success) {
-        const list = blogRes.data.data || [];
-        setBlogItems(list);
-
-        // Pre-fill row state from items
-        const empMap = {};
-        const featMap = {};
-        list.forEach(item => {
-          if (item.assigned_employee_id) {
-            empMap[item.id] = String(item.assigned_employee_id);
-          }
-          const featVal = item.featured_image || item.has_featured_image;
-          featMap[item.id] = (featVal === 'NO' || featVal === false || featVal === 0) ? 'NO' : 'YES';
-        });
-        setSelectedEmployees(empMap);
-        setFeaturedImages(featMap);
-      }
-
-      if (empRes.data.success && empRes.data.data) {
-        const raw = empRes.data.data;
-        const empList = Array.isArray(raw) ? raw : (Array.isArray(raw?.employees) ? raw.employees : []);
-        setEmployees(empList);
+      const res = await api.get('/clients?status=active');
+      if (res.data.success && res.data.data) {
+        const raw = res.data.data;
+        const list = Array.isArray(raw) ? raw : (Array.isArray(raw?.clients) ? raw.clients : []);
+        setAllClients(list);
+      } else {
+        setAllClients([]);
       }
     } catch (err) {
-      console.error('Error fetching SEO assign task data:', err.message);
-      setErrorMessage('Failed to load tasks data.');
+      console.error('Error fetching clients:', err.message);
+      setAllClients([]);
+    }
+  };
+
+  const handleOpenEventClientsModal = async (eventDay) => {
+    setSelectedEventDay(eventDay);
+    setIsEventClientModalOpen(true);
+    setClientConfigLoading(true);
+    fetchClients();
+
+    try {
+      const res = await api.get(`/event-days/${eventDay.id}/clients`);
+      const existing = res.data.success ? res.data.data : [];
+      const configMap = {};
+      existing.forEach(item => {
+        configMap[item.client_id] = { selected: true, activity_type_code: item.activity_type_code };
+      });
+      setEventClientConfig(configMap);
+    } catch (err) {
+      console.error('Error fetching event client deliverables:', err.message);
+    } finally {
+      setClientConfigLoading(false);
+    }
+  };
+
+  const handleSaveEventClients = async (e) => {
+    e.preventDefault();
+    if (!selectedEventDay) return;
+    setActionLoading(true);
+
+    const deliverables = [];
+    Object.entries(eventClientConfig).forEach(([clientId, cfg]) => {
+      if (cfg.selected && cfg.activity_type_code) {
+        deliverables.push({
+          client_id: Number(clientId),
+          activity_type_code: cfg.activity_type_code
+        });
+      }
+    });
+
+    try {
+      const res = await api.post(`/event-days/${selectedEventDay.id}/clients`, { deliverables });
+      if (res.data.success) {
+        alert('Event Day client deliverables configured successfully.');
+        setIsEventClientModalOpen(false);
+        fetchAssignmentData();
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to save event deliverables.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Pagination
+  const [page, setPage] = useState(1);
+  const itemsPerPage = 10;
+
+  const fetchAssignmentData = useCallback(async () => {
+    setLoading(true);
+    try {
+      const res = await api.get(`/content-work/unassigned-calendar?month=${selectedMonth}`);
+      if (res.data.success && res.data.data) {
+        const raw = res.data.data;
+        setData({
+          writers: Array.isArray(raw.writers) ? raw.writers : [],
+          contentCal: Array.isArray(raw.contentCal) ? raw.contentCal : [],
+          eventDays: Array.isArray(raw.eventDays) ? raw.eventDays : [],
+          counts: raw.counts || {}
+        });
+      }
+    } catch (err) {
+      console.error('Error fetching unassigned items:', err.message);
     } finally {
       setLoading(false);
     }
   }, [selectedMonth]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchAssignmentData();
+  }, [fetchAssignmentData]);
 
-  // Handle Send Assignment Click
-  const handleSendAssignment = async (item) => {
-    const empId = selectedEmployees[item.id];
-    const featOption = featuredImages[item.id] || 'YES';
-    setSendingTaskId(item.id);
-    setSuccessMessage('');
-    setErrorMessage('');
+  useEffect(() => {
+    setPage(1);
+  }, [activeMainTab, selectedMonth]);
 
+  // Month navigation
+  const handlePrevMonth = () => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const prevDate = new Date(year, month - 2, 1);
+    setSelectedMonth(`${prevDate.getFullYear()}-${String(prevDate.getMonth() + 1).padStart(2, '0')}`);
+  };
+
+  const handleNextMonth = () => {
+    const [year, month] = selectedMonth.split('-').map(Number);
+    const nextDate = new Date(year, month, 1);
+    setSelectedMonth(`${nextDate.getFullYear()}-${String(nextDate.getMonth() + 1).padStart(2, '0')}`);
+  };
+
+  const getWritersList = () => {
+    if (Array.isArray(data.writers) && data.writers.length > 0) {
+      return data.writers;
+    }
+    return fallbackWriters;
+  };
+
+  // Open Bulk Modal
+  const openBulkModal = async () => {
+    let currentWriters = getWritersList();
+    if (!currentWriters || currentWriters.length === 0) {
+      try {
+        const res = await api.get('/users/employees/dropdown');
+        if (res.data.success && res.data.data?.employees) {
+          currentWriters = res.data.data.employees.filter(
+            emp => Number(emp.sub_department_id) === 1 || emp.sub_department_code === 'CW-RS' || (emp.sub_department_name || '').toLowerCase().includes('content') || (emp.sub_department_name || '').toLowerCase().includes('writer')
+          );
+          setFallbackWriters(currentWriters);
+        }
+      } catch (err) {
+        console.error('Error fetching fallback writers:', err);
+      }
+    }
+
+    const initialInputs = {};
+    (currentWriters || []).forEach(w => {
+      initialInputs[w.id] = '';
+    });
+    setBulkInputs(initialInputs);
+    setFormError('');
+    setIsBulkModalOpen(true);
+  };
+
+  const getActiveTabUnassignedCount = () => {
+    const list = activeMainTab === 'content' 
+      ? (Array.isArray(data?.contentCal) ? data.contentCal : []) 
+      : (Array.isArray(data?.eventDays) ? data.eventDays : []);
+    
+    const unassignedInList = list.filter(item => !item.assigned_employee_id).length;
+    const backendCount = activeMainTab === 'content' 
+      ? data?.counts?.contentUnassigned 
+      : data?.counts?.eventUnassigned;
+
+    if (typeof backendCount === 'number' && backendCount > 0) {
+      return backendCount;
+    }
+    return unassignedInList;
+  };
+
+  // Submit Bulk Assignment
+  const handleBulkSubmit = async (e) => {
+    e.preventDefault();
+    setFormError('');
+    
+    const unassignedCount = getActiveTabUnassignedCount();
+
+    let totalRequested = 0;
+    const assignmentsMap = {};
+    
+    Object.entries(bulkInputs).forEach(([wId, val]) => {
+      const parsed = parseInt(val, 10);
+      if (!isNaN(parsed) && parsed > 0) {
+        totalRequested += parsed;
+        assignmentsMap[wId] = parsed;
+      }
+    });
+
+    if (totalRequested === 0) {
+      setFormError('Please enter a valid count of works for at least one writer.');
+      return;
+    }
+
+    if (unassignedCount > 0 && totalRequested > unassignedCount) {
+      setFormError(`You cannot assign ${totalRequested} works when only ${unassignedCount} are unassigned.`);
+      return;
+    }
+
+    setActionLoading(true);
     try {
-      const dateObj = new Date(item.date);
-      const yyyy = dateObj.getFullYear();
-      const mm = String(dateObj.getMonth() + 1).padStart(2, '0');
-      const dd = String(dateObj.getDate()).padStart(2, '0');
-      const dateStr = `${yyyy}-${mm}-${dd}`;
-
-      const payload = {
-        date: dateStr,
-        title: item.title,
-        description: item.description || '',
-        status: empId ? 'assigned' : 'draft',
-        type: item.type || 'blog',
-        assigned_employee_id: empId ? Number(empId) : null,
-        featured_image: featOption,
-        has_featured_image: featOption,
-        featured_image_required: featOption,
-        content_link: item.content_link || null,
-        google_drive_link: item.google_drive_link || null
-      };
-
-      const res = await api.put(`/blog-calendar/${item.id}`, payload);
+      const res = await api.post('/content-work/assign-writers', {
+        month: selectedMonth,
+        assignments: assignmentsMap,
+        isEventDay: activeMainTab === 'event'
+      });
       if (res.data.success) {
-        const empObj = employees.find(e => Number(e.id) === Number(empId)) || {};
-        const empName = empObj.full_name || 'employee';
-        
-        // Update local item state
-        setBlogItems(prev => prev.map(t => t.id === item.id ? { 
-          ...t, 
-          status: empId ? 'assigned' : 'draft', 
-          assigned_employee_id: empId ? Number(empId) : null,
-          assigned_employee_name: empId ? empName : null,
-          employee_name: empId ? empName : null,
-          featured_image: featOption,
-          has_featured_image: featOption
-        } : t));
-
-        setSuccessMessage(empId ? `Employee assigned successfully!` : `Task unassigned successfully!`);
-        
-        // Auto-dismiss success message after 5 seconds
-        setTimeout(() => setSuccessMessage(''), 5000);
+        setIsBulkModalOpen(false);
+        fetchAssignmentData();
       }
     } catch (err) {
-      console.error('Error assigning employee:', err);
-      setErrorMessage(err.response?.data?.message || 'Failed to update assignment.');
+      setFormError(err.response?.data?.message || 'Failed to assign writers.');
     } finally {
-      setSendingTaskId(null);
+      setActionLoading(false);
     }
   };
 
-  const [selectedClientFilter, setSelectedClientFilter] = useState('all');
-  const [clientPages, setClientPages] = useState({});
-
-  const handlePageChange = (clientName, newPage) => {
-    setClientPages(prev => ({
-      ...prev,
-      [clientName]: newPage
-    }));
+  // Click on Designer / Writer Cell
+  const handleWriterCellClick = (item) => {
+    setSingleItem(item);
+    setSelectedWriterId(item.assigned_employee_id || '');
+    setFormError('');
+    setIsSingleModalOpen(true);
   };
 
-  // Extract unique client names for client-wise filtration option
-  const uniqueClients = Array.from(new Set(blogItems.map(item => item.client_name).filter(Boolean))).sort();
-
-  // Filter items by client and search term
-  const filteredItems = blogItems.filter(item => {
-    if (selectedClientFilter !== 'all' && item.client_name !== selectedClientFilter) {
-      return false;
+  // Submit Single Assignment
+  const handleSingleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedWriterId) {
+      setFormError('Please select a content writer.');
+      return;
     }
-    if (searchTerm) {
-      const term = searchTerm.toLowerCase();
-      const client = (item.client_name || '').toLowerCase();
-      const title = (item.title || '').toLowerCase();
-      const code = (item.activity_code || item.type || '').toLowerCase();
-      return client.includes(term) || title.includes(term) || code.includes(term);
+    
+    setActionLoading(true);
+    try {
+      const res = await api.post('/content-work/assign-writers', {
+        month: selectedMonth,
+        deliverableId: singleItem.id,
+        writerId: Number(selectedWriterId),
+        isEventDay: activeMainTab === 'event'
+      });
+      if (res.data.success) {
+        setIsSingleModalOpen(false);
+        setSingleItem(null);
+        fetchAssignmentData();
+      }
+    } catch (err) {
+      setFormError(err.response?.data?.message || 'Failed to assign content writer.');
+    } finally {
+      setActionLoading(false);
     }
-    return true;
-  });
+  };
 
-  // Group filtered items by Client
-  const groupedByClient = filteredItems.reduce((acc, item) => {
-    const client = item.client_name || 'Unassigned Client';
-    if (!acc[client]) acc[client] = [];
-    acc[client].push(item);
-    return acc;
-  }, {});
 
-  const formatMonthDisplay = (monthStr) => {
-    const [y, m] = monthStr.split('-').map(Number);
-    const d = new Date(y, m - 1, 1);
-    return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+  const getFilteredList = () => {
+    const contentCal = Array.isArray(data?.contentCal) ? data.contentCal : [];
+    const eventDays = Array.isArray(data?.eventDays) ? data.eventDays : [];
+    if (activeMainTab === 'content') return contentCal;
+    if (activeMainTab === 'event') return eventDays;
+    return [...contentCal, ...eventDays].filter(item => item && item.assigned_employee_id);
+  };
+
+  const filteredList = getFilteredList();
+  const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+  const paginatedList = filteredList.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+  const renderPaginationControls = () => {
+    if (totalPages <= 1) return null;
+    
+    let startPage = Math.max(1, page - 2);
+    let endPage = Math.min(totalPages, startPage + 4);
+    if (endPage - startPage < 4) {
+      startPage = Math.max(1, endPage - 4);
+    }
+    const pageNumbers = [];
+    for (let i = startPage; i <= endPage; i++) {
+      if (i >= 1 && i <= totalPages) pageNumbers.push(i);
+    }
+
+    return (
+      <div style={{ display: 'flex', gap: '4px', alignItems: 'center', flexWrap: 'nowrap' }}>
+        <button
+          className="btn btn-secondary btn-sm"
+          disabled={page === 1}
+          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          style={{ minWidth: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <ChevronLeft size={16} />
+        </button>
+
+        {startPage > 1 && (
+          <>
+            <button
+              onClick={() => setPage(1)}
+              className="btn btn-sm btn-secondary"
+              style={{ minWidth: '32px', height: '32px', fontWeight: 700 }}
+            >
+              1
+            </button>
+            {startPage > 2 && <span style={{ padding: '0 4px', color: 'var(--text-muted)', fontSize: '12px' }}>...</span>}
+          </>
+        )}
+
+        {pageNumbers.map(p => (
+          <button
+            key={p}
+            onClick={() => setPage(p)}
+            className={`btn btn-sm ${page === p ? 'btn-primary' : 'btn-secondary'}`}
+            style={{
+              minWidth: '32px',
+              height: '32px',
+              fontWeight: 700,
+              backgroundColor: page === p ? 'var(--primary)' : '#fff',
+              color: page === p ? '#fff' : 'var(--text-main)',
+              border: '1px solid var(--border-color)',
+              cursor: 'pointer'
+            }}
+          >
+            {p}
+          </button>
+        ))}
+
+        {endPage < totalPages && (
+          <>
+            {endPage < totalPages - 1 && <span style={{ padding: '0 4px', color: 'var(--text-muted)', fontSize: '12px' }}>...</span>}
+            <button
+              onClick={() => setPage(totalPages)}
+              className="btn btn-sm btn-secondary"
+              style={{ minWidth: '32px', height: '32px', fontWeight: 700 }}
+            >
+              {totalPages}
+            </button>
+          </>
+        )}
+
+        <button
+          className="btn btn-secondary btn-sm"
+          disabled={page === totalPages || totalPages === 0}
+          onClick={() => setPage(prev => Math.min(prev + 1, totalPages))}
+          style={{ minWidth: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <ChevronRight size={16} />
+        </button>
+      </div>
+    );
   };
 
   return (
     <div style={{ padding: '30px', maxWidth: '1400px', margin: '0 auto' }}>
-      {/* Page Header */}
+      {/* Page Title & Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '16px' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: 800, color: 'var(--text-color)', display: 'flex', alignItems: 'center', gap: '10px', margin: 0 }}>
             <Users size={26} style={{ color: 'var(--primary)' }} />
-            Assign Work Tasks to Employees
+            Content Writers Work Assignment
           </h1>
           <p style={{ margin: '6px 0 0 0', color: 'var(--text-muted)', fontSize: '13px' }}>
-            Client-wise task allocation for blog posting, GMB, and SEO deliverables
+            Manually allocate calendar deliverables and confirmed event day briefs to content writers by count or individual assignment.
           </p>
         </div>
         
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
-          {/* Client Filter Option */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '6px 12px' }}>
-            <Building2 size={16} style={{ color: 'var(--primary)' }} />
-            <select 
-              value={selectedClientFilter}
-              onChange={(e) => setSelectedClientFilter(e.target.value)}
-              style={{ border: 'none', outline: 'none', fontWeight: 700, fontSize: '14px', backgroundColor: 'transparent', cursor: 'pointer' }}
+        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+          {activeMainTab !== 'ledger' && (
+            <button 
+              className="btn btn-primary"
+              onClick={openBulkModal}
+              disabled={loading}
+              style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
-              <option value="all">All Clients ({uniqueClients.length})</option>
-              {uniqueClients.map(clientName => (
-                <option key={clientName} value={clientName}>{clientName}</option>
-              ))}
-            </select>
-          </div>
-
-          {/* Month Filter Option */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', padding: '6px 12px' }}>
-            <Calendar size={16} style={{ color: 'var(--text-muted)' }} />
-            <input 
-              type="month" 
-              value={selectedMonth} 
-              onChange={(e) => setSelectedMonth(e.target.value)}
-              style={{ border: 'none', outline: 'none', fontWeight: 700, fontSize: '14px', backgroundColor: 'transparent' }}
-            />
-          </div>
-          
-          <button className="btn btn-secondary" onClick={fetchData} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
-            <RefreshCw size={14} className={loading ? 'animate-spin' : ''} /> Refresh
+              <Layers size={16} />
+              Bulk Assign Writers
+            </button>
+          )}
+          <button className="btn btn-secondary" onClick={fetchAssignmentData} disabled={loading} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+            <RefreshCw size={14} /> Refresh
           </button>
         </div>
       </div>
 
-      {/* Success Alert Banner */}
-      {successMessage && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 18px', backgroundColor: '#ecfdf5', border: '1px solid #a7f3d0', color: '#047857', borderRadius: '8px', marginBottom: '20px', fontWeight: 700, fontSize: '14px' }}>
-          <CheckCircle2 size={20} />
-          <span>{successMessage}</span>
-        </div>
-      )}
-
-      {/* Error Alert Banner */}
-      {errorMessage && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 18px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: '#dc2626', borderRadius: '8px', marginBottom: '20px', fontWeight: 700, fontSize: '14px' }}>
-          <AlertCircle size={20} />
-          <span>{errorMessage}</span>
-        </div>
-      )}
-
-      {/* Search Input Bar */}
-      <div className="card" style={{ padding: '16px 20px', marginBottom: '24px', display: 'flex', alignItems: 'center', gap: '12px' }}>
-        <Search size={18} style={{ color: 'var(--text-muted)' }} />
-        <input
-          type="text"
-          placeholder="Search by client, blog title, or type..."
-          className="form-control"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{ width: '100%', border: 'none', outline: 'none', fontSize: '14px', boxShadow: 'none' }}
-        />
+      {/* Main Tabs Layout */}
+      <div style={{ 
+        display: 'flex', 
+        gap: '4px', 
+        marginBottom: '24px', 
+        borderBottom: '1px solid var(--border-color)', 
+        paddingBottom: '0' 
+      }}>
+        {[
+          { id: 'content', label: 'Content Calendar (Normal)' },
+          { id: 'event', label: 'Event Calendar (Normal)' },
+          { id: 'ledger', label: 'Assigned Works Ledger' }
+        ].map(t => (
+          <button 
+            key={t.id}
+            onClick={() => setActiveMainTab(t.id)}
+            style={{
+              padding: '10px 20px',
+              fontWeight: 700,
+              fontSize: '14px',
+              border: 'none',
+              background: 'none',
+              color: activeMainTab === t.id ? 'var(--primary)' : 'var(--text-muted)',
+              borderBottom: activeMainTab === t.id ? '2px solid var(--primary)' : 'none',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              outline: 'none'
+            }}
+          >
+            {t.label}
+          </button>
+        ))}
       </div>
 
-      {/* Client-wise Cards & Task Tables */}
-      {loading ? (
-        <div style={{ padding: '80px', textAlign: 'center', color: 'var(--text-muted)' }}>
-          <div className="spinner" style={{ margin: '0 auto 12px auto' }}></div>
-          <span>Loading scheduled tasks...</span>
+      {/* Month Toolbar */}
+      <div className="table-toolbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 20px', backgroundColor: '#fff', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md) var(--radius-md) 0 0', borderBottom: 'none', flexWrap: 'wrap', gap: '16px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div className="pagination-controls" style={{ margin: 0 }}>
+            <button className="btn btn-secondary btn-sm" onClick={handlePrevMonth}>
+              <ChevronLeft size={16} />
+            </button>
+            <span style={{ fontWeight: 700, fontSize: '16px', color: 'var(--text-main)', minWidth: '130px', textAlign: 'center', display: 'inline-block' }}>
+              {(() => {
+                const parts = selectedMonth.split('-');
+                const d = new Date(parts[0], parts[1] - 1, 1);
+                return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+              })()}
+            </span>
+            <button className="btn btn-secondary btn-sm" onClick={handleNextMonth}>
+              <ChevronRight size={16} />
+            </button>
+          </div>
+          
+          <input 
+            type="month" 
+            value={selectedMonth} 
+            onChange={(e) => setSelectedMonth(e.target.value)}
+            style={{ padding: '6px 12px', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', outline: 'none' }}
+          />
         </div>
-      ) : Object.keys(groupedByClient).length === 0 ? (
-        <div className="card" style={{ padding: '60px', textAlign: 'center', color: 'var(--text-muted)' }}>
-          <Building2 size={40} style={{ margin: '0 auto 12px auto', opacity: 0.5 }} />
-          <h3 style={{ margin: 0, fontWeight: 700 }}>No tasks found</h3>
-          <p style={{ margin: '6px 0 0 0', fontSize: '13px' }}>
-            No blog or SEO calendar tasks match your search for {formatMonthDisplay(selectedMonth)}.
-          </p>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {totalPages > 1 && renderPaginationControls()}
+          {activeMainTab !== 'ledger' && (
+            <button 
+              className="btn btn-primary"
+              onClick={openBulkModal}
+              disabled={loading}
+              style={{ fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+            >
+              <Layers size={16} />
+              Bulk Assign Writers
+            </button>
+          )}
         </div>
-      ) : (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-          {Object.entries(groupedByClient).map(([clientName, items]) => {
-            const pageSize = 10;
-            const totalPages = Math.ceil(items.length / pageSize) || 1;
-            const currentPage = Math.min(Math.max(1, clientPages[clientName] || 1), totalPages);
-            const startIndex = (currentPage - 1) * pageSize;
-            const endIndex = Math.min(startIndex + pageSize, items.length);
-            const currentItems = items.slice(startIndex, endIndex);
+      </div>
 
-            return (
-              <div key={clientName} className="card" style={{ padding: 0, borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
-                {/* Client Group Header */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '16px 24px', backgroundColor: '#fafafa', borderBottom: '1px solid var(--border-color)', flexWrap: 'wrap', gap: '12px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                    <Building2 size={20} style={{ color: 'var(--primary)' }} />
-                    <h3 style={{ margin: 0, fontSize: '16px', fontWeight: 800, color: 'var(--text-color)' }}>{clientName}</h3>
-                    <span className="badge" style={{ backgroundColor: '#ecfdf5', color: '#047857', border: '1px solid #a7f3d0', padding: '4px 12px', borderRadius: '99px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase' }}>
-                      {items.length} {items.length === 1 ? 'TASK SCHEDULED' : 'TASKS SCHEDULED'}
-                    </span>
-                  </div>
+      {/* Summary Banner Stats */}
+      {activeMainTab !== 'ledger' && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '16px', padding: '16px 20px', backgroundColor: 'var(--bg-light)', borderLeft: '1px solid var(--border-color)', borderRight: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)' }}>
+          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+            <Calendar size={24} style={{ color: 'var(--primary)' }} />
+            <div>
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>TOTAL DELIVERABLES</span>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800 }}>
+                {activeMainTab === 'content' ? (data?.counts?.contentTotal || 0) : (data?.counts?.eventTotal || 0)}
+              </h3>
+            </div>
+          </div>
+          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+            <AlertTriangle size={24} style={{ color: '#da851b' }} />
+            <div>
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>UNASSIGNED WORKS</span>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800 }}>
+                {activeMainTab === 'content' ? (data?.counts?.contentUnassigned || 0) : (data?.counts?.eventUnassigned || 0)}
+              </h3>
+            </div>
+          </div>
+          <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '12px 16px', border: '1px solid var(--border-color)', borderRadius: '8px' }}>
+            <CheckCircle2 size={24} style={{ color: '#15803d' }} />
+            <div>
+              <span style={{ fontSize: '12px', color: 'var(--text-muted)', fontWeight: 600 }}>ASSIGNED WORKS</span>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 800 }}>
+                {activeMainTab === 'content' 
+                  ? ((data?.counts?.contentTotal || 0) - (data?.counts?.contentUnassigned || 0))
+                  : ((data?.counts?.eventTotal || 0) - (data?.counts?.eventUnassigned || 0))}
+              </h3>
+            </div>
+          </div>
+        </div>
+      )}
 
-                  {/* Top Pagination Controls */}
-                  {totalPages > 1 && (
-                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                      <span style={{ fontSize: '12px', fontWeight: 600, color: 'var(--text-muted)', marginRight: '6px' }}>
-                        Showing {startIndex + 1}-{endIndex} of {items.length}
-                      </span>
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        disabled={currentPage === 1}
-                        onClick={() => handlePageChange(clientName, currentPage - 1)}
-                        style={{ padding: '3px 8px', fontSize: '12px' }}
-                      >
-                        Previous
-                      </button>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => (
-                        <button
-                          key={pageNum}
-                          onClick={() => handlePageChange(clientName, pageNum)}
-                          className={`btn btn-sm ${pageNum === currentPage ? 'btn-primary' : 'btn-secondary'}`}
-                          style={{
-                            padding: '3px 8px',
-                            fontSize: '12px',
-                            fontWeight: pageNum === currentPage ? 800 : 600,
-                            minWidth: '28px'
-                          }}
-                        >
-                          {pageNum}
-                        </button>
-                      ))}
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        disabled={currentPage === totalPages}
-                        onClick={() => handlePageChange(clientName, currentPage + 1)}
-                        style={{ padding: '3px 8px', fontSize: '12px' }}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  )}
-                </div>
-
-                {/* Client Tasks Table */}
-                <div className="table-responsive">
-                  <table className="tracker-enterprise-table" style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                      <tr style={{ backgroundColor: '#fff', borderBottom: '2px solid var(--border-color)' }}>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '120px' }}>DATE</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)' }}>TASK TITLE</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '100px' }}>TYPE</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '120px' }}>STATUS</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '200px' }}>ASSIGN EMPLOYEE</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '220px' }}>FEATURE IMAGE</th>
-                        <th style={{ padding: '12px 18px', fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', color: 'var(--text-muted)', width: '110px', textAlign: 'center' }}>ACTION</th>
+      {/* Main Grid Lists */}
+      <div className="card" style={{ padding: 0, borderRadius: totalPages > 1 ? '0' : '0 0 var(--radius-md) var(--radius-md)', overflow: 'hidden' }}>
+        {loading ? (
+          <div style={{ padding: '80px', textAlign: 'center', color: 'var(--text-muted)' }}>
+            <div className="spinner" style={{ margin: '0 auto 12px auto' }}></div>
+            <span>Loading updates...</span>
+          </div>
+        ) : (
+          <div className="table-responsive">
+            <table className="tracker-enterprise-table" style={{ width: '100%' }}>
+              <thead>
+                <tr>
+                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase' }}>Client</th>
+                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase' }}>Deliverable / Activity</th>
+                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase' }}>Code</th>
+                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', width: '130px' }}>Due Date</th>
+                  <th style={{ padding: '14px 18px', fontSize: '12px', fontWeight: 800, textTransform: 'uppercase', width: '180px' }}>Content Writer</th>
+                </tr>
+              </thead>
+              <tbody>
+                {(() => {
+                  if (paginatedList.length === 0) {
+                    return (
+                      <tr>
+                        <td colSpan={5} style={{ padding: '40px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '14px', fontWeight: 600 }}>
+                          No deliverables found for this month view.
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {currentItems.map(item => {
-                        const isAssigned = item.status === 'assigned' || !!item.assigned_employee_id;
-                        const dateDisplay = item.date 
-                          ? new Date(item.date).toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' })
-                          : 'N/A';
+                    );
+                  }
 
-                        return (
-                          <tr key={item.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                            {/* DATE */}
-                            <td style={{ padding: '14px 18px', fontWeight: 700, color: '#d97706', fontSize: '13px', whiteSpace: 'nowrap' }}>
-                              📅 {dateDisplay}
-                            </td>
+                  return paginatedList.map(item => {
+                    const isAssigned = !!item.assigned_employee_id;
+                    const displayClient = item.client_name || 'Event Calendar Day';
+                    const displayCode = item.activity_code || `EVT-${item.id}`;
+                    const displayTitle = item.activity_name || item.title || 'Event Day Day';
 
-                            {/* TASK TITLE */}
-                            <td style={{ padding: '14px 18px', fontWeight: 700, fontSize: '14px', color: 'var(--text-color)' }}>
-                              {item.title}
-                              {item.description && (
-                                <span style={{ display: 'block', fontSize: '12px', fontWeight: 400, color: 'var(--text-muted)', marginTop: '2px' }}>
-                                  {item.description}
-                                </span>
-                              )}
-                            </td>
+                    return (
+                      <tr key={`${item.month}_${item.id}_${item.activity_code}`} className="tracker-row-interactive" style={{ borderBottom: '1px solid var(--border-color)' }}>
+                        <td style={{ padding: '14px 18px', fontWeight: 700 }}>{displayClient}</td>
+                        <td style={{ padding: '14px 18px', fontWeight: 600 }}>
+                          {displayTitle}
+                          {(item.is_event_day === 1 || activeMainTab === 'event') && (
+                            <span style={{ backgroundColor: '#e0e7ff', color: '#4338ca', fontSize: '10px', fontWeight: 800, padding: '2px 8px', borderRadius: '99px', marginLeft: '8px', textTransform: 'uppercase' }}>
+                              EVENT DAY
+                            </span>
+                          )}
+                        </td>
+                        <td style={{ padding: '14px 18px', fontFamily: 'monospace', fontWeight: 700 }}>{displayCode}</td>
+                        <td style={{ padding: '14px 18px' }}>
+                          {item.date ? new Date(item.date).toLocaleDateString('en-US', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) : (item.due_date ? new Date(item.due_date).toLocaleDateString('en-US', { timeZone: 'UTC', day: 'numeric', month: 'short', year: 'numeric' }) : 'N/A')}
+                        </td>
+                        <td style={{ padding: '14px 18px', display: 'flex', gap: '8px', alignItems: 'center' }}>
+                          <button
+                            onClick={() => handleWriterCellClick(item)}
+                            style={{
+                              padding: '5px 12px',
+                              borderRadius: '99px',
+                              fontSize: '12px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              border: isAssigned ? '1px solid #c2e7cc' : '1px solid #da851b',
+                              backgroundColor: isAssigned ? '#eefdf2' : '#fffbeb',
+                              color: isAssigned ? '#15803d' : '#da851b',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '6px',
+                              outline: 'none'
+                            }}
+                          >
+                            <User size={12} />
+                            {isAssigned ? item.content_writer_name : 'Unassigned'}
+                          </button>
 
-                            {/* TYPE */}
-                            <td style={{ padding: '14px 18px' }}>
-                              <span className="badge" style={{
-                                backgroundColor: item.type === 'gmb' ? '#ecfdf5' : item.type === 'backlink' ? '#f5f3ff' : '#eff6ff',
-                                color: item.type === 'gmb' ? '#047857' : item.type === 'backlink' ? '#6d28d9' : '#1d4ed8',
-                                border: item.type === 'gmb' ? '1px solid #a7f3d0' : item.type === 'backlink' ? '1px solid #ddd6fe' : '1px solid #bfdbfe',
-                                fontWeight: 800,
-                                textTransform: 'uppercase',
-                                fontSize: '10px',
-                                padding: '3px 8px',
-                                borderRadius: '4px'
-                              }}>
-                                {item.type || 'BLOG'}
-                              </span>
-                            </td>
+                        </td>
+                      </tr>
+                    );
+                  });
+                })()}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
 
-                            {/* STATUS */}
-                            <td style={{ padding: '14px 18px' }}>
-                              <span style={{
-                                backgroundColor: isAssigned ? '#ecfdf5' : '#fef2f2',
-                                color: isAssigned ? '#047857' : '#dc2626',
-                                border: isAssigned ? '1px solid #a7f3d0' : '1px solid #fecaca',
-                                padding: '3px 10px',
-                                borderRadius: '12px',
-                                fontSize: '10px',
-                                fontWeight: 800,
-                                textTransform: 'uppercase',
-                                display: 'inline-block'
-                              }}>
-                                {isAssigned ? (item.status === 'sent_to_employees' ? 'RELEASED' : 'ASSIGNED') : 'UNASSIGNED'}
-                              </span>
-                            </td>
-
-                            {/* ASSIGN EMPLOYEE */}
-                            <td style={{ padding: '14px 18px' }}>
-                              <select
-                                className="form-control"
-                                value={selectedEmployees[item.id] || ''}
-                                onChange={(e) => setSelectedEmployees(prev => ({ ...prev, [item.id]: e.target.value }))}
-                                style={{
-                                  padding: '6px 12px',
-                                  borderRadius: '6px',
-                                  border: '1px solid ' + (selectedEmployees[item.id] ? '#10b981' : 'var(--border-color)'),
-                                  fontSize: '13px',
-                                  fontWeight: 600,
-                                  outline: 'none',
-                                  width: '100%',
-                                  backgroundColor: '#fff'
-                                }}
-                              >
-                                <option value="">-- Select Employee --</option>
-                                {employees.map(emp => (
-                                  <option key={emp.id} value={emp.id}>{emp.full_name}</option>
-                                ))}
-                              </select>
-                            </td>
-
-                            {/* FEATURE IMAGE DROPDOWN */}
-                            <td style={{ padding: '14px 18px' }}>
-                              <select
-                                className="form-control"
-                                value={featuredImages[item.id] || 'YES'}
-                                onChange={(e) => setFeaturedImages(prev => ({ ...prev, [item.id]: e.target.value }))}
-                                style={{
-                                  padding: '6px 12px',
-                                  borderRadius: '6px',
-                                  border: '1px solid ' + (featuredImages[item.id] === 'YES' ? '#10b981' : '#64748b'),
-                                  fontSize: '13px',
-                                  fontWeight: 700,
-                                  color: featuredImages[item.id] === 'YES' ? '#15803d' : '#475569',
-                                  backgroundColor: featuredImages[item.id] === 'YES' ? '#f0fdf4' : '#f8fafc',
-                                  outline: 'none',
-                                  width: '100%'
-                                }}
-                              >
-                                <option value="YES">With feature image</option>
-                                <option value="NO">Without feature image</option>
-                              </select>
-                            </td>
-
-                            {/* ACTION / SEND BUTTON */}
-                            <td style={{ padding: '14px 18px', textAlign: 'center' }}>
-                              <button
-                                onClick={() => handleSendAssignment(item)}
-                                disabled={sendingTaskId === item.id}
-                                className="btn btn-primary btn-sm"
-                                style={{
-                                  display: 'inline-flex',
-                                  alignItems: 'center',
-                                  gap: '6px',
-                                  fontWeight: 700,
-                                  padding: '6px 14px',
-                                  fontSize: '12px',
-                                  borderRadius: '6px',
-                                  cursor: 'pointer'
-                                }}
-                              >
-                                <Send size={14} />
-                                {sendingTaskId === item.id ? 'Sending...' : 'Send'}
-                              </button>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Client Card Pagination Controls */}
-                {totalPages > 1 && (
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    padding: '12px 24px',
-                    backgroundColor: '#fafafa',
-                    borderTop: '1px solid var(--border-color)',
-                    fontSize: '13px',
-                    fontWeight: 600,
-                    color: 'var(--text-muted)'
-                  }}>
-                    <div>
-                      Showing <strong style={{ color: 'var(--text-color)' }}>{startIndex + 1}</strong> to <strong style={{ color: 'var(--text-color)' }}>{endIndex}</strong> of <strong style={{ color: 'var(--text-color)' }}>{items.length}</strong> tasks
-                    </div>
-                    <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        disabled={currentPage === 1}
-                        onClick={() => handlePageChange(clientName, currentPage - 1)}
-                        style={{ padding: '4px 10px', fontSize: '12px' }}
-                      >
-                        Previous
-                      </button>
-                      {Array.from({ length: totalPages }, (_, i) => i + 1).map(pageNum => (
-                        <button
-                          key={pageNum}
-                          onClick={() => handlePageChange(clientName, pageNum)}
-                          className={`btn btn-sm ${pageNum === currentPage ? 'btn-primary' : 'btn-secondary'}`}
-                          style={{
-                            padding: '4px 10px',
-                            fontSize: '12px',
-                            fontWeight: pageNum === currentPage ? 800 : 600,
-                            minWidth: '30px'
-                          }}
-                        >
-                          {pageNum}
-                        </button>
-                      ))}
-                      <button
-                        className="btn btn-secondary btn-sm"
-                        disabled={currentPage === totalPages}
-                        onClick={() => handlePageChange(clientName, currentPage + 1)}
-                        style={{ padding: '4px 10px', fontSize: '12px' }}
-                      >
-                        Next
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })}
+      {totalPages > 1 && (
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between', 
+          alignItems: 'center', 
+          padding: '20px', 
+          backgroundColor: '#fff', 
+          border: '1px solid var(--border-color)', 
+          borderTop: 'none', 
+          borderRadius: '0 0 var(--radius-md) var(--radius-md)',
+          flexWrap: 'wrap',
+          gap: '12px'
+        }}>
+          <span style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 600 }}>
+            Showing <strong>{((page - 1) * itemsPerPage) + 1}</strong> to <strong>{Math.min(page * itemsPerPage, filteredList.length)}</strong> of <strong>{filteredList.length}</strong> items
+          </span>
+          {renderPaginationControls()}
         </div>
+      )}
+
+      {/* 1. Bulk Assignment Modal */}
+      {isBulkModalOpen && (
+        <Modal
+          isOpen={isBulkModalOpen}
+          onClose={() => setIsBulkModalOpen(false)}
+          title={`Bulk Assign ${activeMainTab === 'content' ? 'Normal Deliverables' : 'Event Calendar Days'}`}
+        >
+          <form onSubmit={handleBulkSubmit} style={{ padding: '20px' }}>
+            <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: 'var(--text-muted)' }}>
+              Enter the count of unassigned deliverables to assign to each content writer. 
+              <br />
+              <strong style={{ color: 'var(--primary)' }}>
+                Total Unassigned: {getActiveTabUnassignedCount()}
+              </strong>
+            </p>
+
+            {formError && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: 'var(--danger)', borderRadius: '4px', marginBottom: '16px', fontSize: '13px' }}>
+                <AlertCircle size={16} />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', maxHeight: '300px', overflowY: 'auto', paddingRight: '4px' }}>
+              {(getWritersList() || []).map(w => (
+                <div key={w.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px' }}>
+                  <span style={{ fontWeight: 700, fontSize: '14px' }}>{w.full_name}</span>
+                  <input
+                    type="number"
+                    min="0"
+                    placeholder="Count"
+                    className="form-control"
+                    value={bulkInputs[w.id] || ''}
+                    onChange={(e) => setBulkInputs(prev => ({ ...prev, [w.id]: e.target.value }))}
+                    style={{ width: '100px', textAlign: 'center' }}
+                  />
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+              <button type="button" className="btn btn-secondary" onClick={() => setIsBulkModalOpen(false)} disabled={actionLoading}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" style={{ fontWeight: 700 }} disabled={actionLoading}>
+                {actionLoading ? 'Assigning...' : 'Assign & Send'}
+              </button>
+            </div>
+          </form>
+        </Modal>
+      )}
+
+      {/* 2. Single Assignment Modal */}
+      {isSingleModalOpen && (
+        <Modal
+          isOpen={isSingleModalOpen}
+          onClose={() => setIsSingleModalOpen(false)}
+          title="Assign Content Writer"
+        >
+          <form onSubmit={handleSingleSubmit} style={{ padding: '20px' }}>
+            <p style={{ margin: '0 0 16px 0', fontSize: '13px', color: 'var(--text-muted)' }}>
+              Assign a writer for: <strong>{singleItem?.activity_name || singleItem?.title}</strong>
+            </p>
+
+            {formError && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 12px', backgroundColor: '#fef2f2', border: '1px solid #fecaca', color: 'var(--danger)', borderRadius: '4px', marginBottom: '16px', fontSize: '13px' }}>
+                <AlertCircle size={16} />
+                <span>{formError}</span>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label className="form-label" style={{ fontWeight: 700 }}>Select Content Writer</label>
+              <select
+                className="form-control"
+                value={selectedWriterId}
+                onChange={(e) => setSelectedWriterId(e.target.value)}
+                required
+              >
+                <option value="">-- Choose Writer --</option>
+                {(getWritersList() || []).map(w => (
+                  <option key={w.id} value={w.id}>{w.full_name}</option>
+                ))}
+              </select>
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '24px' }}>
+              <button type="button" className="btn btn-secondary" onClick={() => setIsSingleModalOpen(false)} disabled={actionLoading}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-primary" style={{ fontWeight: 700 }} disabled={actionLoading}>
+                {actionLoading ? 'Assigning...' : 'Confirm Assignment'}
+              </button>
+            </div>
+          </form>
+        </Modal>
       )}
     </div>
   );
 };
 
-export default SEOAssignTask;
+export default WritersAssignment;

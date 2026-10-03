@@ -76,21 +76,22 @@ class ClientRepository {
     const { 
       client_id_code, company_name, client_name, phone, email, address, 
       website, gst_number, contact_person, contact_phone, industry, 
-      start_date, status, notes, created_by, user_id, profile_image 
+      start_date, status, notes, created_by, user_id, profile_image, logo_url 
     } = clientData;
 
     const cleanEmail = (email && String(email).trim() !== '') ? String(email).trim() : null;
+    const finalLogo = logo_url || profile_image || null;
 
     const [result] = await db.query(
       `INSERT INTO clients (
         client_id_code, company_name, client_name, phone, email, address, 
         website, gst_number, contact_person, contact_phone, industry, 
-        start_date, status, notes, created_by, user_id, profile_image
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        start_date, status, notes, created_by, user_id, profile_image, logo_url
+      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         client_id_code, company_name, client_name, phone, cleanEmail, address, 
         website, gst_number, contact_person || '', contact_phone || '', industry, 
-        start_date, status, notes, created_by, user_id || null, profile_image || null
+        start_date, status, notes, created_by, user_id || null, finalLogo, finalLogo
       ]
     );
     return result.insertId;
@@ -101,19 +102,20 @@ class ClientRepository {
     const { 
       company_name, client_name, phone, email, address, website, 
       gst_number, contact_person, contact_phone, industry, 
-      start_date, status, notes, updated_by, profile_image 
+      start_date, status, notes, updated_by, profile_image, logo_url 
     } = clientData;
 
     const cleanEmail = (email && String(email).trim() !== '') ? String(email).trim() : null;
+    const finalLogo = logo_url !== undefined ? logo_url : (profile_image !== undefined ? profile_image : null);
 
     await db.query(
       `UPDATE clients 
-       SET company_name = ?, client_name = ?, phone = ?, email = ?, address = ?, website = ?, gst_number = ?, contact_person = ?, contact_phone = ?, industry = ?, start_date = ?, status = ?, notes = ?, updated_by = ?, profile_image = ? 
+       SET company_name = ?, client_name = ?, phone = ?, email = ?, address = ?, website = ?, gst_number = ?, contact_person = ?, contact_phone = ?, industry = ?, start_date = ?, status = ?, notes = ?, updated_by = ?, profile_image = ?, logo_url = ? 
        WHERE id = ?`,
       [
         company_name, client_name, phone, cleanEmail, address, website, 
         gst_number, contact_person || '', contact_phone || '', industry, 
-        start_date, status, notes, updated_by, profile_image || null, id
+        start_date, status, notes, updated_by, finalLogo, finalLogo, id
       ]
     );
   }
