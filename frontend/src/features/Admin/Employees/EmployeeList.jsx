@@ -300,7 +300,7 @@ const EmployeeList = () => {
       department_id: emp.department_id,
       sub_department_id: emp.sub_department_id || '',
       reporting_manager_id: emp.reporting_manager_id || '',
-      joining_date: emp.joining_date,
+      joining_date: emp.joining_date ? String(emp.joining_date).split('T')[0] : '',
       status: emp.status,
       profile_image: emp.profile_image || null
     });

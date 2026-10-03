@@ -457,7 +457,7 @@ class UserService {
         department_id: data.department_id,
         sub_department_id: data.sub_department_id || null,
         reporting_manager_id: data.reporting_manager_id,
-        joining_date: data.joining_date,
+        joining_date: data.joining_date ? String(data.joining_date).split('T')[0] : employee.joining_date,
         status: data.status,
         updated_by: adminUserId,
         profile_image: data.profile_image !== undefined ? data.profile_image : data.avatar_url,

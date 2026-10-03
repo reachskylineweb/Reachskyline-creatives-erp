@@ -98825,3 +98825,104 @@
 [2026-10-03T06:23:01.283Z] [INFO] ERP Admin Backend Server is running in development mode.
 [2026-10-03T06:23:01.284Z] [INFO] Local Access URL: http://localhost:5050
 [2026-10-03T06:23:01.284Z] [INFO] ==================================================
+[2026-10-03T07:01:47.892Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:01:47.908Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:01:47.921Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:01:47.927Z] [ERROR] DB_USER: root
+[2026-10-03T07:01:47.933Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:01:47.942Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:01:47.962Z] [ERROR] ==============================
+[2026-10-03T07:01:48.107Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:01:48.145Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:01:48.170Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:01:48.217Z] [ERROR] DB_USER: root
+[2026-10-03T07:01:48.227Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:01:48.288Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:01:48.324Z] [ERROR] ==============================
+[2026-10-03T07:01:49.952Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:01:50.198Z] [INFO] Database connection established successfully.
+[2026-10-03T07:01:50.218Z] [INFO] ==================================================
+[2026-10-03T07:01:50.238Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:01:50.240Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:01:50.262Z] [INFO] ==================================================
+[2026-10-03T07:01:50.844Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:01:51.013Z] [INFO] Database connection established successfully.
+[2026-10-03T07:01:51.099Z] [WARN] Port 5050 is currently in use.
+[2026-10-03T07:01:51.101Z] [INFO] [Development Mode] Clearing stale process on port 5050 and retrying...
+[2026-10-03T07:01:53.837Z] [INFO] [AutoKillPort] Terminated stale process PID 30112 occupying port 5050
+[2026-10-03T07:01:55.690Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:01:55.712Z] [INFO] Database connection established successfully.
+[2026-10-03T07:01:55.721Z] [INFO] ==================================================
+[2026-10-03T07:01:55.727Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:01:55.735Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:01:55.749Z] [INFO] ==================================================
+[2026-10-03T07:19:33.803Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:19:33.812Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:19:33.815Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:19:33.834Z] [ERROR] DB_USER: root
+[2026-10-03T07:19:33.850Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:19:33.876Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:19:33.892Z] [ERROR] ==============================
+[2026-10-03T07:19:34.080Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:19:34.129Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:19:34.165Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:19:34.184Z] [ERROR] DB_USER: root
+[2026-10-03T07:19:34.197Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:19:34.213Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:19:34.220Z] [ERROR] ==============================
+[2026-10-03T07:19:35.152Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:19:35.235Z] [INFO] Database connection established successfully.
+[2026-10-03T07:19:35.242Z] [INFO] ==================================================
+[2026-10-03T07:19:35.244Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:19:35.248Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:19:35.248Z] [INFO] ==================================================
+[2026-10-03T07:19:35.303Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:19:35.362Z] [INFO] Database connection established successfully.
+[2026-10-03T07:19:35.366Z] [WARN] Port 5050 is currently in use.
+[2026-10-03T07:19:35.366Z] [INFO] [Development Mode] Clearing stale process on port 5050 and retrying...
+[2026-10-03T07:19:35.843Z] [INFO] [AutoKillPort] Terminated stale process PID 3672 occupying port 5050
+[2026-10-03T07:19:37.091Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:19:37.093Z] [INFO] Database connection established successfully.
+[2026-10-03T07:19:37.097Z] [INFO] ==================================================
+[2026-10-03T07:19:37.099Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:19:37.103Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:19:37.107Z] [INFO] ==================================================
+[2026-10-03T07:25:24.230Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:25:24.234Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:25:24.235Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:25:24.237Z] [ERROR] DB_USER: root
+[2026-10-03T07:25:24.239Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:25:24.242Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:25:24.243Z] [ERROR] ==============================
+[2026-10-03T07:25:24.959Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:25:25.017Z] [INFO] Database connection established successfully.
+[2026-10-03T07:25:25.022Z] [INFO] ==================================================
+[2026-10-03T07:25:25.023Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:25:25.024Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:25:25.025Z] [INFO] ==================================================
+[2026-10-03T07:25:26.054Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:25:26.058Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:25:26.061Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:25:26.063Z] [ERROR] DB_USER: root
+[2026-10-03T07:25:26.064Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:25:26.065Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:25:26.068Z] [ERROR] ==============================
+[2026-10-03T07:25:26.772Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:25:26.833Z] [INFO] Database connection established successfully.
+[2026-10-03T07:25:26.838Z] [INFO] ==================================================
+[2026-10-03T07:25:26.839Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:25:26.840Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:25:26.841Z] [INFO] ==================================================
+[2026-10-03T07:25:41.177Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T07:25:41.182Z] [ERROR] DB_HOST: localhost
+[2026-10-03T07:25:41.184Z] [ERROR] DB_PORT: 3306
+[2026-10-03T07:25:41.186Z] [ERROR] DB_USER: root
+[2026-10-03T07:25:41.187Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T07:25:41.189Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T07:25:41.190Z] [ERROR] ==============================
+[2026-10-03T07:25:42.330Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T07:25:42.439Z] [INFO] Database connection established successfully.
+[2026-10-03T07:25:42.446Z] [INFO] ==================================================
+[2026-10-03T07:25:42.452Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T07:25:42.455Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T07:25:42.456Z] [INFO] ==================================================

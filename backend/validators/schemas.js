@@ -40,7 +40,7 @@ const schemas = {
     department_id: { required: true, isNumber: true, label: 'Department' },
     sub_department_id: { required: false, isNumber: true, label: 'Sub-Department' },
     branch: { required: true, label: 'Branch' },
-    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Joining Date' },
+    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}T.*)$/, label: 'Joining Date' },
     status: { required: true, regex: /^(active|inactive)$/, label: 'Status' },
     profile_image: { required: false, label: 'Profile Image' },
     avatar_url: { required: false, label: 'Avatar URL' }
@@ -54,7 +54,7 @@ const schemas = {
     department_id: { required: true, isNumber: true, label: 'Department' },
     sub_department_id: { required: false, isNumber: true, label: 'Sub-Department' },
     reporting_manager_id: { required: false, isNumber: true, label: 'Reporting Manager' },
-    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Joining Date' },
+    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}T.*)$/, label: 'Joining Date' },
     status: { required: true, regex: /^(active|inactive)$/, label: 'Status' },
     profile_image: { required: false, label: 'Profile Image' },
     avatar_url: { required: false, label: 'Avatar URL' }
@@ -65,7 +65,7 @@ const schemas = {
     username: { required: true, minLength: 3, maxLength: 50, label: 'Username' },
     email: { required: true, isEmail: true, label: 'Email' },
     phone: { required: true, regex: /^\+?[0-9\s\-()]{10,20}$/, label: 'Phone' },
-    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4})$/, label: 'Joining Date' },
+    joining_date: { required: true, regex: /^(?:\d{4}-\d{2}-\d{2}|\d{2}-\d{2}-\d{4}|\d{4}-\d{2}-\d{2}T.*)$/, label: 'Joining Date' },
     status: { required: true, regex: /^(active|inactive)$/, label: 'Status' }
   },
 

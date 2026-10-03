@@ -230,7 +230,7 @@ const ManagerList = () => {
       department_id: mgr.department_id,
       sub_department_id: mgr.sub_department_id || '',
       branch: mgr.branch,
-      joining_date: mgr.joining_date,
+      joining_date: mgr.joining_date ? String(mgr.joining_date).split('T')[0] : '',
       status: mgr.status,
       profile_image: mgr.profile_image || null
     });
