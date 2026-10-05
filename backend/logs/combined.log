@@ -98991,3 +98991,1304 @@
 [2026-10-03T09:58:34.855Z] [INFO] ERP Admin Backend Server is running in development mode.
 [2026-10-03T09:58:34.855Z] [INFO] Local Access URL: http://localhost:5050
 [2026-10-03T09:58:34.856Z] [INFO] ==================================================
+[2026-10-03T11:34:54.411Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T11:34:54.415Z] [ERROR] DB_HOST: localhost
+[2026-10-03T11:34:54.416Z] [ERROR] DB_PORT: 3306
+[2026-10-03T11:34:54.417Z] [ERROR] DB_USER: root
+[2026-10-03T11:34:54.418Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T11:34:54.420Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T11:34:54.422Z] [ERROR] ==============================
+[2026-10-03T11:34:55.268Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T11:34:55.377Z] [INFO] Database connection established successfully.
+[2026-10-03T11:34:55.383Z] [INFO] ==================================================
+[2026-10-03T11:34:55.385Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T11:34:55.393Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T11:34:55.399Z] [INFO] ==================================================
+[2026-10-03T11:34:56.258Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T11:34:56.262Z] [ERROR] DB_HOST: localhost
+[2026-10-03T11:34:56.263Z] [ERROR] DB_PORT: 3306
+[2026-10-03T11:34:56.264Z] [ERROR] DB_USER: root
+[2026-10-03T11:34:56.266Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T11:34:56.267Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T11:34:56.269Z] [ERROR] ==============================
+[2026-10-03T11:34:56.959Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T11:34:57.028Z] [INFO] Database connection established successfully.
+[2026-10-03T11:34:57.032Z] [INFO] ==================================================
+[2026-10-03T11:34:57.033Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T11:34:57.034Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T11:34:57.037Z] [INFO] ==================================================
+[2026-10-03T12:37:49.437Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T12:37:49.440Z] [ERROR] DB_HOST: localhost
+[2026-10-03T12:37:49.441Z] [ERROR] DB_PORT: 3306
+[2026-10-03T12:37:49.442Z] [ERROR] DB_USER: root
+[2026-10-03T12:37:49.443Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T12:37:49.444Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T12:37:49.445Z] [ERROR] ==============================
+[2026-10-03T12:37:50.224Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T12:37:50.313Z] [INFO] Database connection established successfully.
+[2026-10-03T12:37:50.319Z] [INFO] ==================================================
+[2026-10-03T12:37:50.319Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T12:37:50.322Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T12:37:50.323Z] [INFO] ==================================================
+[2026-10-03T12:37:51.012Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T12:37:51.015Z] [ERROR] DB_HOST: localhost
+[2026-10-03T12:37:51.016Z] [ERROR] DB_PORT: 3306
+[2026-10-03T12:37:51.017Z] [ERROR] DB_USER: root
+[2026-10-03T12:37:51.018Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T12:37:51.020Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T12:37:51.022Z] [ERROR] ==============================
+[2026-10-03T12:37:51.621Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-03T12:37:51.671Z] [INFO] Database connection established successfully.
+[2026-10-03T12:37:51.675Z] [INFO] ==================================================
+[2026-10-03T12:37:51.676Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-03T12:37:51.677Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-03T12:37:51.678Z] [INFO] ==================================================
+[2026-10-05T06:02:25.851Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:02:25.858Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:02:25.863Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:02:25.881Z] [ERROR] DB_USER: root
+[2026-10-05T06:02:25.903Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:02:25.908Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:02:25.909Z] [ERROR] ==============================
+[2026-10-05T06:02:27.292Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T06:02:27.396Z] [INFO] Database connection established successfully.
+[2026-10-05T06:02:27.404Z] [INFO] ==================================================
+[2026-10-05T06:02:27.408Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T06:02:27.410Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T06:02:27.412Z] [INFO] ==================================================
+[2026-10-05T06:02:28.319Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:02:28.325Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:02:28.326Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:02:28.328Z] [ERROR] DB_USER: root
+[2026-10-05T06:02:28.329Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:02:28.331Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:02:28.332Z] [ERROR] ==============================
+[2026-10-05T06:02:29.034Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T06:02:29.097Z] [INFO] Database connection established successfully.
+[2026-10-05T06:02:29.107Z] [INFO] ==================================================
+[2026-10-05T06:02:29.110Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T06:02:29.111Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T06:02:29.113Z] [INFO] ==================================================
+[2026-10-05T06:17:34.919Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:17:34.924Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:17:34.926Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:17:34.926Z] [ERROR] DB_USER: root
+[2026-10-05T06:17:34.927Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:17:34.927Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:17:34.928Z] [ERROR] ==============================
+[2026-10-05T06:18:02.006Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 548.519 ms
+[2026-10-05T06:19:31.048Z] [ERROR] API Error on [POST /api/api/auth/login]: Cannot find requested route /api/api/auth/login on this server. | Meta: {"statusCode":404,"errors":[],"stack":"Error: Cannot find requested route /api/api/auth/login on this server.\n    at D:\\Reachskyline - ERP\\backend\\server.js:246:15\n    at Layer.handle [as handle_request] (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:646:15\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:265:14)\n    at router.handle (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)"}
+[2026-10-05T06:19:31.052Z] [INFO] HTTP Request: POST /api/api/auth/login 404 117 - 5.344 ms
+[2026-10-05T06:29:59.429Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 358.796 ms
+[2026-10-05T06:29:59.445Z] [ERROR] API Error on [POST /api/api/auth/login]: Cannot find requested route /api/api/auth/login on this server. | Meta: {"statusCode":404,"errors":[],"stack":"Error: Cannot find requested route /api/api/auth/login on this server.\n    at D:\\Reachskyline - ERP\\backend\\server.js:246:15\n    at Layer.handle [as handle_request] (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:646:15\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:265:14)\n    at router.handle (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)"}
+[2026-10-05T06:29:59.450Z] [INFO] HTTP Request: POST /api/api/auth/login 404 117 - 4.225 ms
+[2026-10-05T06:38:18.457Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:38:18.461Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:38:18.462Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:38:18.463Z] [ERROR] DB_USER: root
+[2026-10-05T06:38:18.463Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:38:18.464Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:38:18.464Z] [ERROR] ==============================
+[2026-10-05T07:10:25.424Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:10:25.427Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:10:25.428Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:10:25.432Z] [ERROR] DB_USER: root
+[2026-10-05T07:10:25.433Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:10:25.434Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:10:25.435Z] [ERROR] ==============================
+[2026-10-05T07:10:26.193Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:10:26.260Z] [INFO] Database connection established successfully.
+[2026-10-05T07:10:26.266Z] [INFO] ==================================================
+[2026-10-05T07:10:26.267Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:10:26.269Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:10:26.271Z] [INFO] ==================================================
+[2026-10-05T07:10:27.719Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:10:27.723Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:10:27.726Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:10:27.727Z] [ERROR] DB_USER: root
+[2026-10-05T07:10:27.730Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:10:27.734Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:10:27.735Z] [ERROR] ==============================
+[2026-10-05T07:10:28.472Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:10:28.535Z] [INFO] Database connection established successfully.
+[2026-10-05T07:10:28.541Z] [INFO] ==================================================
+[2026-10-05T07:10:28.541Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:10:28.546Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:10:28.547Z] [INFO] ==================================================
+[2026-10-05T07:16:10.462Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:16:10.464Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:16:10.466Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:16:10.466Z] [ERROR] DB_USER: root
+[2026-10-05T07:16:10.467Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:16:10.468Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:16:10.469Z] [ERROR] ==============================
+[2026-10-05T07:16:11.461Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:16:11.557Z] [INFO] Database connection established successfully.
+[2026-10-05T07:16:11.567Z] [INFO] ==================================================
+[2026-10-05T07:16:11.568Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:16:11.571Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:16:11.576Z] [INFO] ==================================================
+[2026-10-05T07:20:31.933Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 382.957 ms
+[2026-10-05T07:22:09.537Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:22:09.557Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:22:09.559Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:22:09.600Z] [ERROR] DB_USER: root
+[2026-10-05T07:22:09.618Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:22:09.674Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:22:09.678Z] [ERROR] ==============================
+[2026-10-05T07:22:11.482Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:22:11.601Z] [INFO] Database connection established successfully.
+[2026-10-05T07:22:11.610Z] [INFO] ==================================================
+[2026-10-05T07:22:11.613Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:22:11.618Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:22:11.622Z] [INFO] ==================================================
+[2026-10-05T07:22:14.222Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:22:14.228Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:22:14.230Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:22:14.233Z] [ERROR] DB_USER: root
+[2026-10-05T07:22:14.233Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:22:14.234Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:22:14.239Z] [ERROR] ==============================
+[2026-10-05T07:22:15.501Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:22:15.577Z] [INFO] Database connection established successfully.
+[2026-10-05T07:22:15.583Z] [INFO] ==================================================
+[2026-10-05T07:22:15.584Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:22:15.587Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:22:15.589Z] [INFO] ==================================================
+[2026-10-05T07:23:15.192Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 372.711 ms
+[2026-10-05T07:23:26.985Z] [ERROR] API Error on [POST /api/auth/login]: Invalid username or password. | Meta: {"statusCode":401,"errors":[],"stack":"Error: Invalid username or password.\n    at AuthService.login (D:\\Reachskyline - ERP\\backend\\services\\authService.js:77:21)\n    at async login (D:\\Reachskyline - ERP\\backend\\controllers\\authController.js:7:20)"}
+[2026-10-05T07:23:26.988Z] [INFO] HTTP Request: POST /api/auth/login 401 83 - 661.998 ms
+[2026-10-05T07:23:27.363Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 360.770 ms
+[2026-10-05T07:23:27.378Z] [INFO] HTTP Request: GET /api/auth/session 200 168 - 5.897 ms
+[2026-10-05T07:25:32.965Z] [INFO] HTTP Request: POST /api/auth/login 200 388 - 374.853 ms
+[2026-10-05T07:25:33.050Z] [INFO] HTTP Request: GET /api/notifications 200 - - 35.071 ms
+[2026-10-05T07:25:33.361Z] [INFO] HTTP Request: GET /api/auth/session 200 168 - 3.900 ms
+[2026-10-05T07:25:33.371Z] [INFO] HTTP Request: GET /api/notifications 304 - - 12.531 ms
+[2026-10-05T07:25:33.381Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 3.566 ms
+[2026-10-05T07:25:33.412Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.404 ms
+[2026-10-05T07:25:33.512Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 200 - - 39.842 ms
+[2026-10-05T07:25:33.540Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 17.944 ms
+[2026-10-05T07:25:40.189Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 3.898 ms
+[2026-10-05T07:25:40.196Z] [INFO] HTTP Request: GET /api/departments?page=1&limit=10&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 2.970 ms
+[2026-10-05T07:26:03.329Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.666 ms
+[2026-10-05T07:26:33.346Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.424 ms
+[2026-10-05T07:27:03.352Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.253 ms
+[2026-10-05T07:27:33.352Z] [INFO] HTTP Request: GET /api/notifications 304 - - 10.204 ms
+[2026-10-05T07:28:03.337Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.037 ms
+[2026-10-05T07:28:33.326Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.838 ms
+[2026-10-05T07:29:03.352Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.123 ms
+[2026-10-05T07:29:33.337Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.381 ms
+[2026-10-05T07:30:03.340Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.596 ms
+[2026-10-05T07:30:33.332Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.883 ms
+[2026-10-05T07:31:03.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.810 ms
+[2026-10-05T07:31:33.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.540 ms
+[2026-10-05T07:32:06.651Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.717 ms
+[2026-10-05T07:32:10.991Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:32:11.001Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:32:11.001Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:32:11.002Z] [ERROR] DB_USER: root
+[2026-10-05T07:32:11.003Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:32:11.007Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:32:11.008Z] [ERROR] ==============================
+[2026-10-05T07:32:20.906Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:32:20.910Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:32:20.910Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:32:20.911Z] [ERROR] DB_USER: root
+[2026-10-05T07:32:20.912Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:32:20.912Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:32:20.917Z] [ERROR] ==============================
+[2026-10-05T07:32:33.797Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.557 ms
+[2026-10-05T07:33:03.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.397 ms
+[2026-10-05T07:33:33.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.929 ms
+[2026-10-05T07:34:15.025Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.023 ms
+[2026-10-05T07:34:45.127Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:34:45.131Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:34:45.132Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:34:45.133Z] [ERROR] DB_USER: root
+[2026-10-05T07:34:45.133Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:34:45.134Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:34:45.135Z] [ERROR] ==============================
+[2026-10-05T07:34:59.622Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:34:59.626Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:34:59.627Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:34:59.628Z] [ERROR] DB_USER: root
+[2026-10-05T07:34:59.628Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:34:59.629Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:34:59.629Z] [ERROR] ==============================
+[2026-10-05T07:35:13.797Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.751 ms
+[2026-10-05T07:35:26.228Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:35:26.232Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:35:26.233Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:35:26.235Z] [ERROR] DB_USER: root
+[2026-10-05T07:35:26.236Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:35:26.236Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:35:26.237Z] [ERROR] ==============================
+[2026-10-05T07:35:47.253Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:35:47.259Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:35:47.265Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:35:47.268Z] [ERROR] DB_USER: root
+[2026-10-05T07:35:47.272Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:35:47.276Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:35:47.284Z] [ERROR] ==============================
+[2026-10-05T07:35:48.463Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:35:48.517Z] [INFO] Database connection established successfully.
+[2026-10-05T07:35:48.524Z] [INFO] ==================================================
+[2026-10-05T07:35:48.532Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:35:48.533Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:35:48.536Z] [INFO] ==================================================
+[2026-10-05T07:36:13.821Z] [INFO] HTTP Request: GET /api/notifications 304 - - 32.326 ms
+[2026-10-05T07:36:26.248Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:26.251Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:26.252Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:26.254Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:26.255Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:26.258Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:26.260Z] [ERROR] ==============================
+[2026-10-05T07:36:27.091Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:36:27.145Z] [INFO] Database connection established successfully.
+[2026-10-05T07:36:27.150Z] [INFO] ==================================================
+[2026-10-05T07:36:27.151Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:36:27.152Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:36:27.152Z] [INFO] ==================================================
+[2026-10-05T07:36:36.030Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:36.034Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:36.034Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:36.035Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:36.036Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:36.036Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:36.037Z] [ERROR] ==============================
+[2026-10-05T07:36:44.019Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:44.029Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:44.030Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:44.030Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:44.031Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:44.031Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:44.032Z] [ERROR] ==============================
+[2026-10-05T07:36:54.564Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:54.575Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:54.577Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:54.578Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:54.579Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:54.580Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:54.581Z] [ERROR] ==============================
+[2026-10-05T07:36:55.975Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:36:56.060Z] [INFO] Database connection established successfully.
+[2026-10-05T07:36:56.066Z] [INFO] ==================================================
+[2026-10-05T07:36:56.066Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:36:56.074Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:36:56.075Z] [INFO] ==================================================
+[2026-10-05T07:37:07.306Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:37:07.310Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:37:07.311Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:37:07.312Z] [ERROR] DB_USER: root
+[2026-10-05T07:37:07.312Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:37:07.313Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:37:07.313Z] [ERROR] ==============================
+[2026-10-05T07:37:13.851Z] [INFO] HTTP Request: GET /api/notifications 304 - - 31.688 ms
+[2026-10-05T07:37:20.011Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:37:20.022Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:37:20.023Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:37:20.023Z] [ERROR] DB_USER: root
+[2026-10-05T07:37:20.024Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:37:20.025Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:37:20.025Z] [ERROR] ==============================
+[2026-10-05T07:38:13.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.949 ms
+[2026-10-05T07:39:13.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.615 ms
+[2026-10-05T07:40:05.879Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 31.764 ms
+[2026-10-05T07:40:05.896Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 11.052 ms
+[2026-10-05T07:40:13.790Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.018 ms
+[2026-10-05T07:41:13.807Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.519 ms
+[2026-10-05T07:42:13.807Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.236 ms
+[2026-10-05T07:43:13.776Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.653 ms
+[2026-10-05T07:44:13.820Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.636 ms
+[2026-10-05T07:44:16.537Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:16.541Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:16.541Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:16.542Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:16.543Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:16.543Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:16.544Z] [ERROR] ==============================
+[2026-10-05T07:44:36.848Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:36.859Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:36.874Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:36.902Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:36.907Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:36.909Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:36.913Z] [ERROR] ==============================
+[2026-10-05T07:44:38.371Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:44:38.415Z] [INFO] Database connection established successfully.
+[2026-10-05T07:44:38.419Z] [INFO] ==================================================
+[2026-10-05T07:44:38.420Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:44:38.422Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:44:38.424Z] [INFO] ==================================================
+[2026-10-05T07:44:44.797Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:44.802Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:44.803Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:44.803Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:44.804Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:44.805Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:44.805Z] [ERROR] ==============================
+[2026-10-05T07:44:59.054Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:59.059Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:59.060Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:59.060Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:59.061Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:59.061Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:59.062Z] [ERROR] ==============================
+[2026-10-05T07:45:07.903Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:45:07.908Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:45:07.908Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:45:07.909Z] [ERROR] DB_USER: root
+[2026-10-05T07:45:07.909Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:45:07.910Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:45:07.911Z] [ERROR] ==============================
+[2026-10-05T07:45:13.811Z] [INFO] HTTP Request: GET /api/notifications 304 - - 24.491 ms
+[2026-10-05T07:46:13.811Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.227 ms
+[2026-10-05T07:47:13.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.037 ms
+[2026-10-05T07:48:13.818Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.421 ms
+[2026-10-05T07:49:13.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.987 ms
+[2026-10-05T07:49:33.328Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.719 ms
+[2026-10-05T07:50:03.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.864 ms
+[2026-10-05T07:50:33.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.764 ms
+[2026-10-05T07:50:52.828Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:50:52.834Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:50:52.835Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:50:52.836Z] [ERROR] DB_USER: root
+[2026-10-05T07:50:52.836Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:50:52.838Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:50:52.839Z] [ERROR] ==============================
+[2026-10-05T07:51:04.518Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:04.521Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:04.522Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:04.523Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:04.523Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:04.524Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:04.524Z] [ERROR] ==============================
+[2026-10-05T07:51:08.049Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.272 ms
+[2026-10-05T07:51:31.092Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:31.096Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:31.096Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:31.097Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:31.098Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:31.099Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:31.099Z] [ERROR] ==============================
+[2026-10-05T07:51:33.788Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.563 ms
+[2026-10-05T07:51:42.634Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:42.643Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:42.643Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:42.644Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:42.644Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:42.645Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:42.645Z] [ERROR] ==============================
+[2026-10-05T07:51:49.569Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:49.574Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:49.575Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:49.576Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:49.576Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:49.576Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:49.577Z] [ERROR] ==============================
+[2026-10-05T07:52:03.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.726 ms
+[2026-10-05T07:52:33.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.740 ms
+[2026-10-05T07:53:03.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.284 ms
+[2026-10-05T07:53:20.045Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:53:20.049Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:53:20.050Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:53:20.051Z] [ERROR] DB_USER: root
+[2026-10-05T07:53:20.051Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:53:20.052Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:53:20.052Z] [ERROR] ==============================
+[2026-10-05T07:53:33.905Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.151 ms
+[2026-10-05T07:53:35.292Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:53:35.297Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:53:35.299Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:53:35.299Z] [ERROR] DB_USER: root
+[2026-10-05T07:53:35.300Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:53:35.300Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:53:35.301Z] [ERROR] ==============================
+[2026-10-05T07:54:13.790Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.038 ms
+[2026-10-05T07:54:34.653Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.174 ms
+[2026-10-05T07:55:03.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.902 ms
+[2026-10-05T07:55:33.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.151 ms
+[2026-10-05T07:56:13.779Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.457 ms
+[2026-10-05T07:57:05.012Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:05.015Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:05.016Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:05.017Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:05.017Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:05.018Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:05.019Z] [ERROR] ==============================
+[2026-10-05T07:57:05.845Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:57:05.900Z] [INFO] Database connection established successfully.
+[2026-10-05T07:57:05.909Z] [INFO] ==================================================
+[2026-10-05T07:57:05.910Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:57:05.911Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:57:05.912Z] [INFO] ==================================================
+[2026-10-05T07:57:13.807Z] [INFO] HTTP Request: GET /api/notifications 304 - - 20.872 ms
+[2026-10-05T07:57:25.148Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:25.152Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:25.153Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:25.154Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:25.156Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:25.157Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:25.157Z] [ERROR] ==============================
+[2026-10-05T07:57:26.311Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:57:26.536Z] [INFO] Database connection established successfully.
+[2026-10-05T07:57:26.555Z] [INFO] ==================================================
+[2026-10-05T07:57:26.565Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:57:26.582Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:57:26.589Z] [INFO] ==================================================
+[2026-10-05T07:57:33.847Z] [INFO] HTTP Request: GET /api/notifications 304 - - 23.329 ms
+[2026-10-05T07:57:41.427Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:41.446Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:41.457Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:41.460Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:41.461Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:41.463Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:41.467Z] [ERROR] ==============================
+[2026-10-05T07:57:42.692Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T07:57:42.737Z] [INFO] Database connection established successfully.
+[2026-10-05T07:57:42.741Z] [INFO] ==================================================
+[2026-10-05T07:57:42.742Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T07:57:42.746Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T07:57:42.748Z] [INFO] ==================================================
+[2026-10-05T07:57:52.276Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:52.281Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:52.281Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:52.282Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:52.283Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:52.283Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:52.284Z] [ERROR] ==============================
+[2026-10-05T07:58:04.003Z] [INFO] HTTP Request: GET /api/notifications 304 - - 40.968 ms
+[2026-10-05T07:58:13.044Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 12.821 ms
+[2026-10-05T07:58:33.779Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.296 ms
+[2026-10-05T07:59:03.773Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.407 ms
+[2026-10-05T08:00:05.627Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.877 ms
+[2026-10-05T08:01:05.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.999 ms
+[2026-10-05T08:02:06.792Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.559 ms
+[2026-10-05T08:03:07.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.749 ms
+[2026-10-05T08:04:08.798Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.853 ms
+[2026-10-05T08:05:09.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.730 ms
+[2026-10-05T08:06:10.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.506 ms
+[2026-10-05T08:07:11.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.058 ms
+[2026-10-05T08:08:12.786Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.977 ms
+[2026-10-05T08:09:13.812Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.866 ms
+[2026-10-05T08:10:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.705 ms
+[2026-10-05T08:11:13.808Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.726 ms
+[2026-10-05T08:12:13.803Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.205 ms
+[2026-10-05T08:13:13.808Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.378 ms
+[2026-10-05T08:14:13.810Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.754 ms
+[2026-10-05T08:15:13.810Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.646 ms
+[2026-10-05T08:16:13.818Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.763 ms
+[2026-10-05T08:17:13.799Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.351 ms
+[2026-10-05T08:18:13.817Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.925 ms
+[2026-10-05T08:19:13.812Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.648 ms
+[2026-10-05T08:20:13.809Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.845 ms
+[2026-10-05T08:21:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.438 ms
+[2026-10-05T08:22:13.806Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.693 ms
+[2026-10-05T09:12:07.370Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.086 ms
+[2026-10-05T09:12:09.497Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.135 ms
+[2026-10-05T09:12:09.551Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.017 ms
+[2026-10-05T09:12:09.561Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 12.528 ms
+[2026-10-05T09:12:09.598Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 2.572 ms
+[2026-10-05T09:12:09.642Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 24.665 ms
+[2026-10-05T09:12:09.665Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.780 ms
+[2026-10-05T09:12:39.753Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.721 ms
+[2026-10-05T09:13:02.064Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T09:13:02.067Z] [ERROR] DB_HOST: localhost
+[2026-10-05T09:13:02.068Z] [ERROR] DB_PORT: 3306
+[2026-10-05T09:13:02.069Z] [ERROR] DB_USER: root
+[2026-10-05T09:13:02.070Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T09:13:02.071Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T09:13:02.071Z] [ERROR] ==============================
+[2026-10-05T09:13:09.952Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T09:13:10.335Z] [INFO] Database connection established successfully.
+[2026-10-05T09:13:10.340Z] [INFO] ==================================================
+[2026-10-05T09:13:10.341Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T09:13:10.342Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T09:13:10.344Z] [INFO] ==================================================
+[2026-10-05T09:13:11.043Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T09:13:11.046Z] [ERROR] DB_HOST: localhost
+[2026-10-05T09:13:11.047Z] [ERROR] DB_PORT: 3306
+[2026-10-05T09:13:11.049Z] [ERROR] DB_USER: root
+[2026-10-05T09:13:11.050Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T09:13:11.051Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T09:13:11.052Z] [ERROR] ==============================
+[2026-10-05T09:13:11.772Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T09:13:11.837Z] [INFO] Database connection established successfully.
+[2026-10-05T09:13:11.841Z] [INFO] ==================================================
+[2026-10-05T09:13:11.842Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T09:13:11.844Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T09:13:11.845Z] [INFO] ==================================================
+[2026-10-05T09:13:14.798Z] [INFO] HTTP Request: GET /api/notifications 200 - - 21.059 ms
+[2026-10-05T09:13:39.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.359 ms
+[2026-10-05T09:14:09.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.112 ms
+[2026-10-05T09:14:39.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.351 ms
+[2026-10-05T09:15:09.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.830 ms
+[2026-10-05T09:15:39.830Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.705 ms
+[2026-10-05T09:16:13.793Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.176 ms
+[2026-10-05T09:17:13.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.621 ms
+[2026-10-05T09:18:13.793Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.844 ms
+[2026-10-05T09:19:13.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.187 ms
+[2026-10-05T09:20:13.802Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.760 ms
+[2026-10-05T09:21:13.805Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.975 ms
+[2026-10-05T09:22:07.201Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.372 ms
+[2026-10-05T09:22:09.616Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.068 ms
+[2026-10-05T09:22:39.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.952 ms
+[2026-10-05T09:23:09.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.994 ms
+[2026-10-05T09:24:10.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.287 ms
+[2026-10-05T09:24:56.077Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.305 ms
+[2026-10-05T09:25:09.517Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.843 ms
+[2026-10-05T09:25:14.710Z] [INFO] HTTP Request: GET /api/departments/1/details 200 - - 26.483 ms
+[2026-10-05T09:25:14.761Z] [INFO] HTTP Request: GET /api/departments/1/details 304 - - 11.713 ms
+[2026-10-05T09:25:39.506Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.858 ms
+[2026-10-05T09:25:43.452Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 12.780 ms
+[2026-10-05T09:26:09.498Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.564 ms
+[2026-10-05T09:26:39.519Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.103 ms
+[2026-10-05T09:27:09.504Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.258 ms
+[2026-10-05T09:27:40.001Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.668 ms
+[2026-10-05T09:28:09.757Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.924 ms
+[2026-10-05T09:28:39.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.546 ms
+[2026-10-05T09:29:09.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.450 ms
+[2026-10-05T09:29:39.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.442 ms
+[2026-10-05T09:30:09.790Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.310 ms
+[2026-10-05T09:31:10.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.958 ms
+[2026-10-05T09:32:11.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.666 ms
+[2026-10-05T09:33:12.762Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.597 ms
+[2026-10-05T09:34:13.889Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.467 ms
+[2026-10-05T09:34:45.944Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.447 ms
+[2026-10-05T09:35:09.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.934 ms
+[2026-10-05T09:35:39.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.411 ms
+[2026-10-05T09:36:09.798Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.958 ms
+[2026-10-05T09:36:39.776Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.459 ms
+[2026-10-05T09:37:09.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.361 ms
+[2026-10-05T09:37:39.755Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.900 ms
+[2026-10-05T09:38:09.788Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.710 ms
+[2026-10-05T09:38:39.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.170 ms
+[2026-10-05T09:39:09.501Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.453 ms
+[2026-10-05T09:39:39.492Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.679 ms
+[2026-10-05T09:40:09.496Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.123 ms
+[2026-10-05T09:40:39.759Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.524 ms
+[2026-10-05T09:41:09.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.934 ms
+[2026-10-05T09:42:10.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.446 ms
+[2026-10-05T09:43:11.775Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.476 ms
+[2026-10-05T09:44:12.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.959 ms
+[2026-10-05T09:45:13.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.375 ms
+[2026-10-05T09:45:33.842Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.156 ms
+[2026-10-05T09:45:33.851Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.726 ms
+[2026-10-05T09:45:33.872Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.915 ms
+[2026-10-05T09:45:33.888Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.980 ms
+[2026-10-05T09:46:04.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.961 ms
+[2026-10-05T09:46:34.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.005 ms
+[2026-10-05T09:47:04.762Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.960 ms
+[2026-10-05T09:47:34.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.508 ms
+[2026-10-05T09:48:04.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.886 ms
+[2026-10-05T09:49:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.795 ms
+[2026-10-05T09:50:13.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.907 ms
+[2026-10-05T09:51:08.543Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.311 ms
+[2026-10-05T09:51:33.832Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.635 ms
+[2026-10-05T09:52:03.832Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.424 ms
+[2026-10-05T09:52:16.960Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 35.568 ms
+[2026-10-05T09:52:17.010Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 19.681 ms
+[2026-10-05T09:52:33.846Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.379 ms
+[2026-10-05T09:53:03.850Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.873 ms
+[2026-10-05T09:53:34.786Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.096 ms
+[2026-10-05T09:54:04.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.396 ms
+[2026-10-05T09:55:10.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.840 ms
+[2026-10-05T09:56:11.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.717 ms
+[2026-10-05T09:57:12.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.614 ms
+[2026-10-05T09:58:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.451 ms
+[2026-10-05T09:59:13.790Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.046 ms
+[2026-10-05T09:59:55.136Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.893 ms
+[2026-10-05T10:00:03.857Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.755 ms
+[2026-10-05T10:00:33.858Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.550 ms
+[2026-10-05T10:00:52.999Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 21.625 ms
+[2026-10-05T10:00:53.023Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 16.261 ms
+[2026-10-05T10:01:03.853Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.933 ms
+[2026-10-05T10:01:33.835Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.511 ms
+[2026-10-05T10:02:03.850Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.701 ms
+[2026-10-05T10:02:33.854Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.485 ms
+[2026-10-05T10:03:04.134Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.787 ms
+[2026-10-05T10:03:33.848Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.140 ms
+[2026-10-05T10:04:03.840Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.884 ms
+[2026-10-05T10:04:33.843Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.611 ms
+[2026-10-05T10:05:03.835Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.435 ms
+[2026-10-05T10:05:33.841Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.344 ms
+[2026-10-05T10:06:03.841Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.593 ms
+[2026-10-05T10:06:33.863Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.171 ms
+[2026-10-05T10:07:03.866Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.074 ms
+[2026-10-05T10:07:33.840Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.517 ms
+[2026-10-05T10:08:03.860Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.337 ms
+[2026-10-05T10:08:33.865Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.646 ms
+[2026-10-05T10:09:03.834Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.936 ms
+[2026-10-05T10:09:33.842Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.420 ms
+[2026-10-05T10:10:04.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.071 ms
+[2026-10-05T10:10:34.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.774 ms
+[2026-10-05T10:11:13.802Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.019 ms
+[2026-10-05T10:11:58.402Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.904 ms
+[2026-10-05T10:12:04.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.864 ms
+[2026-10-05T10:12:34.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.518 ms
+[2026-10-05T10:13:04.759Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.543 ms
+[2026-10-05T10:13:34.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.797 ms
+[2026-10-05T10:14:04.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.756 ms
+[2026-10-05T10:14:34.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.678 ms
+[2026-10-05T10:15:07.363Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.115 ms
+[2026-10-05T10:15:34.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.668 ms
+[2026-10-05T10:16:03.852Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.531 ms
+[2026-10-05T10:16:34.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.035 ms
+[2026-10-05T10:17:03.852Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.879 ms
+[2026-10-05T10:17:34.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.654 ms
+[2026-10-05T10:18:04.787Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.363 ms
+[2026-10-05T10:18:34.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.824 ms
+[2026-10-05T10:19:03.846Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.310 ms
+[2026-10-05T10:19:33.861Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.144 ms
+[2026-10-05T10:20:03.855Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.865 ms
+[2026-10-05T10:20:33.871Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.042 ms
+[2026-10-05T10:21:03.854Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.799 ms
+[2026-10-05T10:21:26.995Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T10:21:26.998Z] [ERROR] DB_HOST: localhost
+[2026-10-05T10:21:26.999Z] [ERROR] DB_PORT: 3306
+[2026-10-05T10:21:27.000Z] [ERROR] DB_USER: root
+[2026-10-05T10:21:27.001Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T10:21:27.002Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T10:21:27.003Z] [ERROR] ==============================
+[2026-10-05T10:21:27.828Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T10:21:27.892Z] [INFO] Database connection established successfully.
+[2026-10-05T10:21:27.898Z] [INFO] ==================================================
+[2026-10-05T10:21:27.899Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T10:21:27.901Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T10:21:27.902Z] [INFO] ==================================================
+[2026-10-05T10:21:28.625Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T10:21:28.627Z] [ERROR] DB_HOST: localhost
+[2026-10-05T10:21:28.628Z] [ERROR] DB_PORT: 3306
+[2026-10-05T10:21:28.630Z] [ERROR] DB_USER: root
+[2026-10-05T10:21:28.631Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T10:21:28.632Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T10:21:28.633Z] [ERROR] ==============================
+[2026-10-05T10:21:29.251Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T10:21:29.301Z] [INFO] Database connection established successfully.
+[2026-10-05T10:21:29.305Z] [INFO] ==================================================
+[2026-10-05T10:21:29.306Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T10:21:29.308Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T10:21:29.308Z] [INFO] ==================================================
+[2026-10-05T10:21:33.875Z] [INFO] HTTP Request: GET /api/notifications 304 - - 26.099 ms
+[2026-10-05T10:22:03.841Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.563 ms
+[2026-10-05T10:22:33.845Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.872 ms
+[2026-10-05T10:22:54.400Z] [INFO] HTTP Request: GET /api/departments/dropdown 200 381 - 9.810 ms
+[2026-10-05T10:22:54.425Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 200 658 - 31.505 ms
+[2026-10-05T10:22:54.435Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 12.926 ms
+[2026-10-05T10:22:54.452Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 10.367 ms
+[2026-10-05T10:22:56.700Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 42.677 ms
+[2026-10-05T10:22:56.729Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 22.163 ms
+[2026-10-05T10:23:03.863Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.697 ms
+[2026-10-05T10:23:07.986Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 200 - - 5.698 ms
+[2026-10-05T10:23:07.996Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.401 ms
+[2026-10-05T10:23:09.235Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 2.304 ms
+[2026-10-05T10:23:09.252Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 3.656 ms
+[2026-10-05T10:23:09.255Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 8.583 ms
+[2026-10-05T10:23:09.281Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 9.393 ms
+[2026-10-05T10:23:10.874Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 19.098 ms
+[2026-10-05T10:23:10.906Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 19.871 ms
+[2026-10-05T10:23:34.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.218 ms
+[2026-10-05T10:24:04.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.899 ms
+[2026-10-05T10:25:02.382Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.358 ms
+[2026-10-05T10:25:34.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.451 ms
+[2026-10-05T10:26:04.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.403 ms
+[2026-10-05T10:26:34.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.028 ms
+[2026-10-05T10:27:04.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.623 ms
+[2026-10-05T10:27:33.849Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.875 ms
+[2026-10-05T10:28:04.615Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.225 ms
+[2026-10-05T10:28:34.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.609 ms
+[2026-10-05T10:29:04.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.923 ms
+[2026-10-05T10:29:34.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.658 ms
+[2026-10-05T10:30:04.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.467 ms
+[2026-10-05T10:30:34.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.715 ms
+[2026-10-05T10:31:04.804Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.577 ms
+[2026-10-05T10:31:34.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.082 ms
+[2026-10-05T10:32:04.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.440 ms
+[2026-10-05T10:32:34.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.050 ms
+[2026-10-05T10:33:04.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.159 ms
+[2026-10-05T10:33:34.754Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.595 ms
+[2026-10-05T10:34:04.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.427 ms
+[2026-10-05T10:34:23.486Z] [INFO] HTTP Request: GET /api/dashboard/reports-summary?date=2026-10-05&month=2026-10 200 - - 77.352 ms
+[2026-10-05T10:34:23.508Z] [INFO] HTTP Request: GET /api/dashboard/reports-summary?date=2026-10-05&month=2026-10 304 - - 15.871 ms
+[2026-10-05T10:34:34.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.215 ms
+[2026-10-05T10:35:04.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.231 ms
+[2026-10-05T10:35:34.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.655 ms
+[2026-10-05T10:36:13.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.112 ms
+[2026-10-05T10:37:13.775Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.748 ms
+[2026-10-05T10:38:13.846Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.300 ms
+[2026-10-05T10:38:34.034Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.161 ms
+[2026-10-05T10:39:04.792Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.195 ms
+[2026-10-05T10:39:34.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.614 ms
+[2026-10-05T10:40:04.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.701 ms
+[2026-10-05T10:40:34.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.447 ms
+[2026-10-05T10:41:04.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.440 ms
+[2026-10-05T10:41:34.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.022 ms
+[2026-10-05T10:42:04.759Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.390 ms
+[2026-10-05T10:42:34.819Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.965 ms
+[2026-10-05T10:43:04.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.433 ms
+[2026-10-05T10:43:34.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.448 ms
+[2026-10-05T10:44:13.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.305 ms
+[2026-10-05T10:44:47.905Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.562 ms
+[2026-10-05T10:45:04.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.506 ms
+[2026-10-05T10:45:34.762Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.613 ms
+[2026-10-05T10:46:13.799Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.624 ms
+[2026-10-05T10:47:13.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.165 ms
+[2026-10-05T10:47:40.469Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.805 ms
+[2026-10-05T10:48:04.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.894 ms
+[2026-10-05T10:48:34.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.084 ms
+[2026-10-05T10:49:13.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.890 ms
+[2026-10-05T10:50:13.795Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.615 ms
+[2026-10-05T10:51:13.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.938 ms
+[2026-10-05T10:52:13.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.733 ms
+[2026-10-05T10:53:13.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.038 ms
+[2026-10-05T10:54:13.784Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.197 ms
+[2026-10-05T10:55:13.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.851 ms
+[2026-10-05T10:56:13.822Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.974 ms
+[2026-10-05T10:57:13.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.206 ms
+[2026-10-05T10:58:13.811Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.634 ms
+[2026-10-05T10:59:13.792Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.212 ms
+[2026-10-05T11:00:13.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.265 ms
+[2026-10-05T11:01:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.218 ms
+[2026-10-05T11:02:13.877Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.877 ms
+[2026-10-05T11:03:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.369 ms
+[2026-10-05T11:04:13.805Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.864 ms
+[2026-10-05T11:05:13.793Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.126 ms
+[2026-10-05T11:06:13.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.936 ms
+[2026-10-05T11:07:13.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.868 ms
+[2026-10-05T11:08:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.861 ms
+[2026-10-05T11:09:13.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.622 ms
+[2026-10-05T11:09:33.831Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.846 ms
+[2026-10-05T11:09:35.722Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 16.793 ms
+[2026-10-05T11:09:35.740Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.301 ms
+[2026-10-05T11:10:04.799Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.922 ms
+[2026-10-05T11:10:34.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.667 ms
+[2026-10-05T11:11:04.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.134 ms
+[2026-10-05T11:11:26.649Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.378 ms
+[2026-10-05T11:11:26.656Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 10.191 ms
+[2026-10-05T11:11:26.691Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.027 ms
+[2026-10-05T11:11:26.712Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 22.058 ms
+[2026-10-05T11:11:26.745Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.227 ms
+[2026-10-05T11:11:26.759Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.097 ms
+[2026-10-05T11:11:30.724Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.325 ms
+[2026-10-05T11:11:30.732Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.237 ms
+[2026-10-05T11:11:31.992Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.272 ms
+[2026-10-05T11:11:32.005Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.561 ms
+[2026-10-05T11:11:33.223Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 2.910 ms
+[2026-10-05T11:11:33.236Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 14.618 ms
+[2026-10-05T11:11:33.247Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 12.454 ms
+[2026-10-05T11:11:33.254Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 3.407 ms
+[2026-10-05T11:11:34.635Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 200 191 - 4.324 ms
+[2026-10-05T11:11:34.641Z] [INFO] HTTP Request: GET /api/departments 200 - - 8.256 ms
+[2026-10-05T11:11:34.648Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 2.791 ms
+[2026-10-05T11:11:34.650Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 200 - - 12.508 ms
+[2026-10-05T11:11:34.668Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.807 ms
+[2026-10-05T11:11:34.672Z] [INFO] HTTP Request: GET /api/departments 304 - - 12.244 ms
+[2026-10-05T11:11:56.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.790 ms
+[2026-10-05T11:12:26.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.450 ms
+[2026-10-05T11:12:56.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.572 ms
+[2026-10-05T11:13:26.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.594 ms
+[2026-10-05T11:13:56.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.727 ms
+[2026-10-05T11:14:26.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.949 ms
+[2026-10-05T11:14:56.788Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.712 ms
+[2026-10-05T11:15:11.125Z] [INFO] HTTP Request: GET /api/deliverables?limit=10000&page=1 200 172 - 26.361 ms
+[2026-10-05T11:15:11.130Z] [INFO] HTTP Request: GET /api/deliverables/job-work/manager 200 96 - 25.923 ms
+[2026-10-05T11:15:11.157Z] [INFO] HTTP Request: GET /api/users/efficiency?filterType=daily&date=2026-10-05&month=2026-10&departmentFilter=all 200 670 - 63.452 ms
+[2026-10-05T11:15:11.175Z] [INFO] HTTP Request: GET /api/calendar?month=2026-10 200 91 - 62.443 ms
+[2026-10-05T11:15:11.177Z] [INFO] HTTP Request: GET /api/content-work/submissions 200 26 - 70.668 ms
+[2026-10-05T11:15:21.385Z] [INFO] HTTP Request: GET /api/deliverables/job-work/manager 304 - - 16.679 ms
+[2026-10-05T11:15:21.406Z] [INFO] HTTP Request: GET /api/content-work/submissions 304 - - 33.051 ms
+[2026-10-05T11:15:21.407Z] [INFO] HTTP Request: GET /api/deliverables?limit=10000&page=1 304 - - 52.177 ms
+[2026-10-05T11:15:21.411Z] [INFO] HTTP Request: GET /api/calendar?month=2026-10 304 - - 31.737 ms
+[2026-10-05T11:15:21.417Z] [INFO] HTTP Request: GET /api/users/efficiency?filterType=daily&date=2026-10-05&month=2026-10&departmentFilter=all 304 - - 63.327 ms
+[2026-10-05T11:15:25.921Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 21.142 ms
+[2026-10-05T11:15:25.947Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 20.605 ms
+[2026-10-05T11:15:26.647Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.373 ms
+[2026-10-05T11:15:56.876Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.066 ms
+[2026-10-05T11:16:26.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.624 ms
+[2026-10-05T11:16:56.651Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.601 ms
+[2026-10-05T11:17:26.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.390 ms
+[2026-10-05T11:17:29.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.830 ms
+[2026-10-05T11:17:29.762Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 2.885 ms
+[2026-10-05T11:17:29.806Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.892 ms
+[2026-10-05T11:17:29.832Z] [INFO] HTTP Request: GET /api/auth/session 304 - - 2.700 ms
+[2026-10-05T11:17:30.004Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 18.525 ms
+[2026-10-05T11:17:30.042Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 24.861 ms
+[2026-10-05T11:17:37.843Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 18.764 ms
+[2026-10-05T11:17:59.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.244 ms
+[2026-10-05T11:18:29.809Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.218 ms
+[2026-10-05T11:18:59.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.089 ms
+[2026-10-05T11:19:29.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.556 ms
+[2026-10-05T11:19:56.816Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 15.405 ms
+[2026-10-05T11:19:59.757Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.759 ms
+[2026-10-05T11:20:18.807Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 13.153 ms
+[2026-10-05T11:20:29.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.528 ms
+[2026-10-05T11:20:59.745Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.663 ms
+[2026-10-05T11:21:29.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.218 ms
+[2026-10-05T11:21:59.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.236 ms
+[2026-10-05T11:22:11.465Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:22:11.468Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:22:11.469Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:22:11.470Z] [ERROR] DB_USER: root
+[2026-10-05T11:22:11.471Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:22:11.472Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:22:11.474Z] [ERROR] ==============================
+[2026-10-05T11:22:12.138Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T11:22:12.200Z] [INFO] Database connection established successfully.
+[2026-10-05T11:22:12.205Z] [INFO] ==================================================
+[2026-10-05T11:22:12.206Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T11:22:12.206Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T11:22:12.208Z] [INFO] ==================================================
+[2026-10-05T11:22:12.963Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:22:12.966Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:22:12.968Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:22:12.969Z] [ERROR] DB_USER: root
+[2026-10-05T11:22:12.970Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:22:12.971Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:22:12.972Z] [ERROR] ==============================
+[2026-10-05T11:22:13.599Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T11:22:13.648Z] [INFO] Database connection established successfully.
+[2026-10-05T11:22:13.652Z] [INFO] ==================================================
+[2026-10-05T11:22:13.653Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T11:22:13.655Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T11:22:13.656Z] [INFO] ==================================================
+[2026-10-05T11:22:28.691Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 33.429 ms
+[2026-10-05T11:22:28.721Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 5.921 ms
+[2026-10-05T11:22:29.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 16.018 ms
+[2026-10-05T11:22:30.862Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 16.694 ms
+[2026-10-05T11:22:30.877Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.064 ms
+[2026-10-05T11:22:31.279Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 8.321 ms
+[2026-10-05T11:22:31.295Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 21.255 ms
+[2026-10-05T11:22:31.310Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 3.460 ms
+[2026-10-05T11:22:31.331Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 7.098 ms
+[2026-10-05T11:22:36.191Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 37.534 ms
+[2026-10-05T11:22:36.223Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 17.233 ms
+[2026-10-05T11:22:59.746Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.035 ms
+[2026-10-05T11:23:29.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.718 ms
+[2026-10-05T11:23:33.774Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 10.108 ms
+[2026-10-05T11:23:33.798Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.512 ms
+[2026-10-05T11:23:59.748Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.667 ms
+[2026-10-05T11:24:29.747Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.845 ms
+[2026-10-05T11:24:37.185Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.551 ms
+[2026-10-05T11:24:37.212Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.305 ms
+[2026-10-05T11:24:38.746Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 5.864 ms
+[2026-10-05T11:24:38.762Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 8.211 ms
+[2026-10-05T11:24:54.186Z] [INFO] HTTP Request: PATCH /api/departments/3/status 200 104 - 263.650 ms
+[2026-10-05T11:24:54.210Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 5.116 ms
+[2026-10-05T11:24:54.829Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:24:54.831Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:24:54.833Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:24:54.834Z] [ERROR] DB_USER: root
+[2026-10-05T11:24:54.835Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:24:54.837Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:24:54.841Z] [ERROR] ==============================
+[2026-10-05T11:24:55.434Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T11:24:55.479Z] [INFO] Database connection established successfully.
+[2026-10-05T11:24:55.483Z] [INFO] ==================================================
+[2026-10-05T11:24:55.484Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T11:24:55.486Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T11:24:55.488Z] [INFO] ==================================================
+[2026-10-05T11:24:57.597Z] [INFO] HTTP Request: PATCH /api/departments/3/status 200 102 - 50.293 ms
+[2026-10-05T11:24:57.629Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 15.732 ms
+[2026-10-05T11:24:59.750Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.055 ms
+[2026-10-05T11:25:29.754Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.305 ms
+[2026-10-05T11:25:59.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.899 ms
+[2026-10-05T11:26:29.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.953 ms
+[2026-10-05T11:27:13.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.673 ms
+[2026-10-05T11:27:52.507Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.725 ms
+[2026-10-05T11:27:59.759Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.138 ms
+[2026-10-05T11:28:29.775Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.733 ms
+[2026-10-05T11:29:13.817Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.515 ms
+[2026-10-05T11:30:13.803Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.561 ms
+[2026-10-05T11:31:13.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.424 ms
+[2026-10-05T11:32:02.580Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.543 ms
+[2026-10-05T11:32:29.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.916 ms
+[2026-10-05T11:32:34.286Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 8.173 ms
+[2026-10-05T11:32:34.306Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.213 ms
+[2026-10-05T11:32:35.814Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 7.146 ms
+[2026-10-05T11:32:35.830Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 8.043 ms
+[2026-10-05T11:32:37.228Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 7.763 ms
+[2026-10-05T11:32:37.241Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 17.417 ms
+[2026-10-05T11:32:37.263Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 5.740 ms
+[2026-10-05T11:32:37.270Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 10.995 ms
+[2026-10-05T11:32:38.465Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 6.406 ms
+[2026-10-05T11:32:38.479Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 18.900 ms
+[2026-10-05T11:32:38.488Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 11.394 ms
+[2026-10-05T11:32:38.490Z] [INFO] HTTP Request: GET /api/departments 200 - - 16.377 ms
+[2026-10-05T11:32:38.503Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.174 ms
+[2026-10-05T11:32:38.522Z] [INFO] HTTP Request: GET /api/departments 304 - - 4.908 ms
+[2026-10-05T11:32:40.214Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-10 200 88 - 7.948 ms
+[2026-10-05T11:32:40.218Z] [INFO] HTTP Request: GET /api/clients/dropdown 200 554 - 6.777 ms
+[2026-10-05T11:32:40.246Z] [INFO] HTTP Request: GET /api/activity-types 200 - - 9.240 ms
+[2026-10-05T11:32:40.253Z] [INFO] HTTP Request: GET /api/clients/dropdown 304 - - 11.649 ms
+[2026-10-05T11:32:40.257Z] [INFO] HTTP Request: GET /api/calendar?month=2026-10 304 - - 31.317 ms
+[2026-10-05T11:32:40.263Z] [INFO] HTTP Request: GET /api/calendar/skip-dates?month=2026-10 304 - - 27.806 ms
+[2026-10-05T11:32:40.269Z] [INFO] HTTP Request: GET /api/users/employees?limit=1000 200 - - 21.934 ms
+[2026-10-05T11:32:40.277Z] [INFO] HTTP Request: GET /api/activity-types 304 - - 9.746 ms
+[2026-10-05T11:32:40.284Z] [INFO] HTTP Request: GET /api/calendar?month=2026-10 304 - - 12.154 ms
+[2026-10-05T11:32:40.289Z] [INFO] HTTP Request: GET /api/users/employees?limit=1000 304 - - 7.186 ms
+[2026-10-05T11:32:47.573Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.516 ms
+[2026-10-05T11:32:47.592Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.196 ms
+[2026-10-05T11:32:59.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.777 ms
+[2026-10-05T11:33:29.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.535 ms
+[2026-10-05T11:33:59.906Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.848 ms
+[2026-10-05T11:35:00.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.313 ms
+[2026-10-05T11:36:03.056Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.951 ms
+[2026-10-05T11:37:03.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.605 ms
+[2026-10-05T11:38:04.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.065 ms
+[2026-10-05T11:39:05.779Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.508 ms
+[2026-10-05T11:40:06.779Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.196 ms
+[2026-10-05T11:40:40.674Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.969 ms
+[2026-10-05T11:40:50.108Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 200 - - 23.201 ms
+[2026-10-05T11:40:50.134Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 17.925 ms
+[2026-10-05T11:40:54.475Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.477 ms
+[2026-10-05T11:40:54.490Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.319 ms
+[2026-10-05T11:40:57.085Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 21.846 ms
+[2026-10-05T11:40:57.112Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 17.869 ms
+[2026-10-05T11:40:59.758Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.616 ms
+[2026-10-05T11:41:29.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.329 ms
+[2026-10-05T11:41:59.761Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.458 ms
+[2026-10-05T11:42:29.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.838 ms
+[2026-10-05T11:43:13.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.809 ms
+[2026-10-05T11:43:29.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.042 ms
+[2026-10-05T11:43:42.398Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 2.766 ms
+[2026-10-05T11:43:42.407Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.411 ms
+[2026-10-05T11:43:42.424Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 2.967 ms
+[2026-10-05T11:43:42.450Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 3.374 ms
+[2026-10-05T11:43:45.405Z] [INFO] HTTP Request: GET /api/departments 304 - - 6.647 ms
+[2026-10-05T11:43:45.414Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 3.603 ms
+[2026-10-05T11:43:45.429Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 16.345 ms
+[2026-10-05T11:43:45.440Z] [INFO] HTTP Request: GET /api/departments 304 - - 12.707 ms
+[2026-10-05T11:43:45.444Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 6.071 ms
+[2026-10-05T11:43:45.455Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.200 ms
+[2026-10-05T11:43:47.027Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 5.135 ms
+[2026-10-05T11:43:47.032Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 7.366 ms
+[2026-10-05T11:43:47.049Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 4.164 ms
+[2026-10-05T11:43:47.057Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 9.727 ms
+[2026-10-05T11:43:59.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.818 ms
+[2026-10-05T11:44:02.928Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 23.800 ms
+[2026-10-05T11:44:02.958Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 18.599 ms
+[2026-10-05T11:44:04.120Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.671 ms
+[2026-10-05T11:44:04.130Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.475 ms
+[2026-10-05T11:44:05.241Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 9.122 ms
+[2026-10-05T11:44:05.257Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 9.347 ms
+[2026-10-05T11:44:14.528Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 4.628 ms
+[2026-10-05T11:44:14.537Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 11.690 ms
+[2026-10-05T11:44:14.567Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 5.023 ms
+[2026-10-05T11:44:14.573Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 8.835 ms
+[2026-10-05T11:44:16.301Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 28.440 ms
+[2026-10-05T11:44:16.329Z] [INFO] HTTP Request: GET /api/dashboard/admin-metrics?date=2026-10-05&month=2026-10 304 - - 20.269 ms
+[2026-10-05T11:44:29.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.920 ms
+[2026-10-05T11:44:59.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.614 ms
+[2026-10-05T11:46:00.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.921 ms
+[2026-10-05T11:46:29.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.234 ms
+[2026-10-05T11:46:59.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.262 ms
+[2026-10-05T11:47:29.783Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.163 ms
+[2026-10-05T11:48:13.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.900 ms
+[2026-10-05T11:49:13.806Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.136 ms
+[2026-10-05T11:49:41.358Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.091 ms
+[2026-10-05T11:49:59.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.367 ms
+[2026-10-05T11:50:29.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.788 ms
+[2026-10-05T11:50:59.757Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.690 ms
+[2026-10-05T11:51:35.034Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.056 ms
+[2026-10-05T11:51:59.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.463 ms
+[2026-10-05T11:52:29.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.924 ms
+[2026-10-05T11:52:59.755Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.385 ms
+[2026-10-05T11:53:29.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.826 ms
+[2026-10-05T11:53:59.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.579 ms
+[2026-10-05T11:54:29.746Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.670 ms
+[2026-10-05T11:54:54.358Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.046 ms
+[2026-10-05T11:54:54.379Z] [INFO] HTTP Request: GET /api/clients?page=1&limit=10&sortColumn=client_id_code&sortOrder=asc&searchQuery=&statusFilter= 304 - - 3.327 ms
+[2026-10-05T11:54:55.353Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 6.324 ms
+[2026-10-05T11:54:55.369Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 5.840 ms
+[2026-10-05T11:54:59.754Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.876 ms
+[2026-10-05T11:55:29.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.062 ms
+[2026-10-05T11:55:59.754Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.868 ms
+[2026-10-05T11:56:05.403Z] [INFO] HTTP Request: GET /api/departments/4/details 200 653 - 15.396 ms
+[2026-10-05T11:56:05.566Z] [INFO] HTTP Request: GET /api/departments/4/details 304 - - 10.027 ms
+[2026-10-05T11:56:29.746Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.599 ms
+[2026-10-05T11:56:59.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.327 ms
+[2026-10-05T11:57:27.776Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 4.491 ms
+[2026-10-05T11:57:29.762Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.467 ms
+[2026-10-05T11:57:59.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.454 ms
+[2026-10-05T11:58:29.751Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.720 ms
+[2026-10-05T11:58:59.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.546 ms
+[2026-10-05T11:59:29.776Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.911 ms
+[2026-10-05T11:59:59.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.858 ms
+[2026-10-05T12:00:29.750Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.368 ms
+[2026-10-05T12:00:49.787Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:00:49.791Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:00:49.793Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:00:49.794Z] [ERROR] DB_USER: root
+[2026-10-05T12:00:49.796Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:00:49.802Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:00:49.807Z] [ERROR] ==============================
+[2026-10-05T12:00:50.491Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T12:00:50.532Z] [INFO] Database connection established successfully.
+[2026-10-05T12:00:50.537Z] [INFO] ==================================================
+[2026-10-05T12:00:50.538Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T12:00:50.539Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T12:00:50.540Z] [INFO] ==================================================
+[2026-10-05T12:00:59.806Z] [INFO] HTTP Request: GET /api/notifications 304 - - 43.772 ms
+[2026-10-05T12:01:08.213Z] [INFO] HTTP Request: GET /api/departments/4/details 200 649 - 25.183 ms
+[2026-10-05T12:01:20.825Z] [INFO] HTTP Request: GET /api/departments/4/details 304 - - 12.585 ms
+[2026-10-05T12:01:29.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.241 ms
+[2026-10-05T12:01:59.749Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.490 ms
+[2026-10-05T12:02:29.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.395 ms
+[2026-10-05T12:02:59.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.275 ms
+[2026-10-05T12:03:29.807Z] [INFO] HTTP Request: GET /api/notifications 304 - - 21.109 ms
+[2026-10-05T12:03:59.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 18.319 ms
+[2026-10-05T12:04:29.798Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.092 ms
+[2026-10-05T12:04:59.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.156 ms
+[2026-10-05T12:05:29.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.667 ms
+[2026-10-05T12:05:41.360Z] [ERROR] API Error on [POST /api/users/managers]: onesignalService is not defined | Meta: {"statusCode":500,"errors":[],"stack":"ReferenceError: onesignalService is not defined\n    at UserService.createManager (D:\\Reachskyline - ERP\\backend\\services\\userService.js:212:7)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async createManager (D:\\Reachskyline - ERP\\backend\\controllers\\userController.js:36:22)"}
+[2026-10-05T12:05:41.366Z] [INFO] HTTP Request: POST /api/users/managers 500 85 - 655.239 ms
+[2026-10-05T12:05:59.785Z] [INFO] HTTP Request: GET /api/notifications 200 - - 6.484 ms
+[2026-10-05T12:06:29.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.380 ms
+[2026-10-05T12:06:59.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.186 ms
+[2026-10-05T12:07:28.792Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:28.795Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:28.796Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:28.797Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:28.798Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:28.799Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:28.800Z] [ERROR] ==============================
+[2026-10-05T12:07:29.333Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T12:07:29.383Z] [INFO] Database connection established successfully.
+[2026-10-05T12:07:29.389Z] [INFO] ==================================================
+[2026-10-05T12:07:29.390Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T12:07:29.391Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T12:07:29.392Z] [INFO] ==================================================
+[2026-10-05T12:07:29.855Z] [INFO] HTTP Request: GET /api/notifications 304 - - 50.816 ms
+[2026-10-05T12:07:46.354Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:46.357Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:46.358Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:46.359Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:46.360Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:46.361Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:46.362Z] [ERROR] ==============================
+[2026-10-05T12:07:46.893Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T12:07:46.938Z] [INFO] Database connection established successfully.
+[2026-10-05T12:07:46.943Z] [INFO] ==================================================
+[2026-10-05T12:07:46.944Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T12:07:46.945Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T12:07:46.946Z] [INFO] ==================================================
+[2026-10-05T12:07:53.856Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:53.859Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:53.861Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:53.867Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:53.871Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:53.872Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:53.873Z] [ERROR] ==============================
+[2026-10-05T12:07:54.416Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T12:07:54.462Z] [INFO] Database connection established successfully.
+[2026-10-05T12:07:54.467Z] [INFO] ==================================================
+[2026-10-05T12:07:54.469Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T12:07:54.469Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T12:07:54.470Z] [INFO] ==================================================
+[2026-10-05T12:07:59.877Z] [INFO] HTTP Request: GET /api/notifications 304 - - 72.058 ms
+[2026-10-05T12:08:29.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.965 ms
+[2026-10-05T12:08:59.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.961 ms
+[2026-10-05T12:09:29.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.275 ms
+[2026-10-05T12:09:59.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.956 ms
+[2026-10-05T12:10:29.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.266 ms
+[2026-10-05T12:10:59.805Z] [INFO] HTTP Request: GET /api/notifications 304 - - 16.909 ms
+[2026-10-05T12:11:29.759Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.362 ms
+[2026-10-05T12:11:59.745Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.215 ms
+[2026-10-05T12:12:29.786Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.036 ms
+[2026-10-05T12:12:59.766Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.042 ms
+[2026-10-05T12:13:29.769Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.725 ms
+[2026-10-05T12:13:59.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.992 ms
+[2026-10-05T12:14:29.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.325 ms
+[2026-10-05T12:14:59.812Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.029 ms
+[2026-10-05T12:15:29.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.941 ms
+[2026-10-05T12:15:59.768Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.605 ms
+[2026-10-05T12:16:29.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.599 ms
+[2026-10-05T12:16:59.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.560 ms
+[2026-10-05T12:17:23.453Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 200 - - 16.143 ms
+[2026-10-05T12:17:29.760Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.757 ms
+[2026-10-05T12:17:30.148Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 9.600 ms
+[2026-10-05T12:17:30.163Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 6.948 ms
+[2026-10-05T12:17:30.177Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 200 - - 17.806 ms
+[2026-10-05T12:17:30.203Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 5.971 ms
+[2026-10-05T12:17:31.767Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 9.200 ms
+[2026-10-05T12:17:31.782Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 7.739 ms
+[2026-10-05T12:17:48.361Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 5.212 ms
+[2026-10-05T12:17:48.367Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 9.134 ms
+[2026-10-05T12:17:48.391Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 2.871 ms
+[2026-10-05T12:17:48.407Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 4.355 ms
+[2026-10-05T12:17:55.821Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 7.025 ms
+[2026-10-05T12:17:55.847Z] [INFO] HTTP Request: GET /api/departments?limit=100&sortColumn=name&sortOrder=asc&searchQuery=&statusFilter= 304 - - 8.462 ms
+[2026-10-05T12:17:59.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.328 ms
+[2026-10-05T12:18:06.651Z] [INFO] HTTP Request: GET /api/departments/4/details 200 - - 22.670 ms
+[2026-10-05T12:18:06.672Z] [INFO] HTTP Request: GET /api/departments/4/details 304 - - 11.773 ms
+[2026-10-05T12:18:29.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.766 ms
+[2026-10-05T12:18:54.179Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 4.412 ms
+[2026-10-05T12:18:54.192Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 16.235 ms
+[2026-10-05T12:18:54.245Z] [INFO] HTTP Request: GET /api/departments/dropdown 304 - - 3.471 ms
+[2026-10-05T12:18:54.263Z] [INFO] HTTP Request: GET /api/users/managers?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 20.220 ms
+[2026-10-05T12:18:56.203Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 200 284 - 8.341 ms
+[2026-10-05T12:18:56.212Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 16.716 ms
+[2026-10-05T12:18:56.216Z] [INFO] HTTP Request: GET /api/departments 200 - - 16.453 ms
+[2026-10-05T12:18:56.233Z] [INFO] HTTP Request: GET /api/users/managers/dropdown 304 - - 5.135 ms
+[2026-10-05T12:18:56.247Z] [INFO] HTTP Request: GET /api/users/employees?page=1&limit=10&sortColumn=full_name&sortOrder=asc&searchQuery=&departmentFilter=&statusFilter=active 304 - - 17.129 ms
+[2026-10-05T12:18:56.258Z] [INFO] HTTP Request: GET /api/departments 304 - - 12.602 ms
+[2026-10-05T12:18:59.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 10.242 ms
+[2026-10-05T12:19:29.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 11.200 ms
+[2026-10-05T12:19:59.793Z] [INFO] HTTP Request: GET /api/notifications 304 - - 12.563 ms
+[2026-10-05T12:20:29.782Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.847 ms
+[2026-10-05T12:20:59.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 12.126 ms
+[2026-10-05T12:21:29.772Z] [INFO] HTTP Request: GET /api/notifications 304 - - 9.341 ms
+[2026-10-05T12:21:59.756Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.059 ms
+[2026-10-05T12:22:29.745Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.693 ms
+[2026-10-05T12:22:59.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.654 ms
+[2026-10-05T12:23:29.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.117 ms
+[2026-10-05T12:23:59.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.835 ms
+[2026-10-05T12:24:29.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 10.018 ms
+[2026-10-05T12:24:59.773Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.886 ms
+[2026-10-05T12:25:29.808Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.952 ms
+[2026-10-05T12:25:59.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.815 ms
+[2026-10-05T12:26:29.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.933 ms
+[2026-10-05T12:26:59.773Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.902 ms
+[2026-10-05T12:27:29.748Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.625 ms
+[2026-10-05T12:27:59.765Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.032 ms
+[2026-10-05T12:28:29.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.293 ms
+[2026-10-05T12:28:59.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.129 ms
+[2026-10-05T12:29:29.762Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.279 ms
+[2026-10-05T12:29:59.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.031 ms
+[2026-10-05T12:30:29.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.701 ms
+[2026-10-05T12:30:59.767Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.565 ms
+[2026-10-05T12:31:29.775Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.580 ms
+[2026-10-05T12:31:59.773Z] [INFO] HTTP Request: GET /api/notifications 304 - - 7.887 ms
+[2026-10-05T12:32:29.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.181 ms
+[2026-10-05T12:32:59.770Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.458 ms
+[2026-10-05T12:33:29.775Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.249 ms
+[2026-10-05T12:33:59.785Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.508 ms
+[2026-10-05T12:34:29.779Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.584 ms
+[2026-10-05T12:35:13.809Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.896 ms
+[2026-10-05T12:36:13.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.922 ms
+[2026-10-05T12:37:13.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.064 ms
+[2026-10-05T12:38:13.776Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.159 ms
+[2026-10-05T12:39:13.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.250 ms
+[2026-10-05T12:40:13.778Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.027 ms
+[2026-10-05T12:41:13.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.940 ms
+[2026-10-05T12:42:13.763Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.954 ms
+[2026-10-05T12:43:13.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.661 ms
+[2026-10-05T12:44:13.799Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.391 ms
+[2026-10-05T12:45:13.799Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.565 ms
+[2026-10-05T12:46:13.781Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.995 ms
+[2026-10-05T12:47:13.810Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.140 ms
+[2026-10-05T12:48:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.016 ms
+[2026-10-05T12:49:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.096 ms
+[2026-10-05T12:50:13.791Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.987 ms
+[2026-10-05T12:51:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.582 ms
+[2026-10-05T12:52:13.774Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.990 ms
+[2026-10-05T12:53:13.811Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.800 ms
+[2026-10-05T12:54:13.794Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.801 ms
+[2026-10-05T12:55:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.527 ms
+[2026-10-05T12:56:13.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.782 ms
+[2026-10-05T12:57:14.452Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.950 ms
+[2026-10-05T12:58:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.600 ms
+[2026-10-05T12:59:13.800Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.239 ms
+[2026-10-05T13:00:13.793Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.986 ms
+[2026-10-05T13:01:13.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.205 ms
+[2026-10-05T13:02:13.764Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.156 ms
+[2026-10-05T13:03:13.777Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.918 ms
+[2026-10-05T13:04:13.801Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.890 ms
+[2026-10-05T13:05:13.796Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.756 ms
+[2026-10-05T13:06:13.814Z] [INFO] HTTP Request: GET /api/notifications 304 - - 1.781 ms
+[2026-10-05T13:07:13.802Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.244 ms
+[2026-10-05T13:08:13.780Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.493 ms
+[2026-10-05T13:09:13.805Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.822 ms
+[2026-10-05T13:10:13.810Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.771 ms
+[2026-10-05T13:11:13.803Z] [INFO] HTTP Request: GET /api/notifications 304 - - 4.696 ms
+[2026-10-05T13:11:48.027Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:48.029Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:48.030Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:48.031Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:48.032Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:48.033Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:48.034Z] [ERROR] ==============================
+[2026-10-05T13:11:51.514Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:51.526Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:51.530Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:51.531Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:51.533Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:51.534Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:51.536Z] [ERROR] ==============================
+[2026-10-05T13:11:53.969Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:53.972Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:53.973Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:53.973Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:53.974Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:53.976Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:53.977Z] [ERROR] ==============================
+[2026-10-05T13:11:55.590Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T13:11:55.823Z] [INFO] Database connection established successfully.
+[2026-10-05T13:11:55.827Z] [INFO] ==================================================
+[2026-10-05T13:11:55.827Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T13:11:55.829Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T13:11:55.830Z] [INFO] ==================================================
+[2026-10-05T13:11:56.601Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:56.614Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:56.621Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:56.623Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:56.624Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:56.626Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:56.627Z] [ERROR] ==============================
+[2026-10-05T13:11:57.654Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T13:11:57.875Z] [INFO] Database connection established successfully.
+[2026-10-05T13:11:57.974Z] [INFO] ==================================================
+[2026-10-05T13:11:58.060Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T13:11:58.120Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T13:11:58.128Z] [INFO] ==================================================
+[2026-10-05T13:12:14.061Z] [INFO] HTTP Request: GET /api/notifications 304 - - 28.826 ms
+[2026-10-05T13:12:15.435Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:15.440Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:15.440Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:15.441Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:15.441Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:15.442Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:15.443Z] [ERROR] ==============================
+[2026-10-05T13:12:26.048Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:26.052Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:26.053Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:26.054Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:26.054Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:26.055Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:26.056Z] [ERROR] ==============================
+[2026-10-05T13:12:35.916Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:35.919Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:35.920Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:35.920Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:35.921Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:35.921Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:35.922Z] [ERROR] ==============================
+[2026-10-05T13:13:13.813Z] [INFO] HTTP Request: GET /api/notifications 304 - - 8.970 ms
+[2026-10-05T13:14:13.802Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.112 ms
+[2026-10-05T13:14:53.101Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:14:53.106Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:14:53.107Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:14:53.107Z] [ERROR] DB_USER: root
+[2026-10-05T13:14:53.108Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:14:53.109Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:14:53.110Z] [ERROR] ==============================
+[2026-10-05T13:15:13.794Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.535 ms
+[2026-10-05T13:16:13.802Z] [INFO] HTTP Request: GET /api/notifications 304 - - 2.549 ms
+[2026-10-05T13:16:20.225Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:16:20.228Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:16:20.229Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:16:20.231Z] [ERROR] DB_USER: root
+[2026-10-05T13:16:20.232Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:16:20.233Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:16:20.233Z] [ERROR] ==============================
+[2026-10-05T13:16:20.902Z] [INFO] Validating database connection (attempt 1/10)...
+[2026-10-05T13:16:20.950Z] [INFO] Database connection established successfully.
+[2026-10-05T13:16:20.954Z] [INFO] ==================================================
+[2026-10-05T13:16:20.958Z] [INFO] ERP Admin Backend Server is running in development mode.
+[2026-10-05T13:16:20.958Z] [INFO] Local Access URL: http://localhost:5050
+[2026-10-05T13:16:20.959Z] [INFO] ==================================================
+[2026-10-05T13:17:13.977Z] [INFO] HTTP Request: GET /api/notifications 304 - - 36.167 ms
+[2026-10-05T13:18:13.771Z] [INFO] HTTP Request: GET /api/notifications 304 - - 6.042 ms
+[2026-10-05T13:19:13.803Z] [INFO] HTTP Request: GET /api/notifications 304 - - 5.063 ms
+[2026-10-05T13:20:13.789Z] [INFO] HTTP Request: GET /api/notifications 304 - - 3.570 ms

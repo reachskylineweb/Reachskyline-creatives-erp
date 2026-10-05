@@ -9179,3 +9179,434 @@
 [2026-10-03T09:58:34.234Z] [ERROR] DB_NAME: reachskyline_erp
 [2026-10-03T09:58:34.235Z] [ERROR] DB_PASSWORD_LENGTH: 10
 [2026-10-03T09:58:34.236Z] [ERROR] ==============================
+[2026-10-03T11:34:54.411Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T11:34:54.415Z] [ERROR] DB_HOST: localhost
+[2026-10-03T11:34:54.416Z] [ERROR] DB_PORT: 3306
+[2026-10-03T11:34:54.417Z] [ERROR] DB_USER: root
+[2026-10-03T11:34:54.418Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T11:34:54.420Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T11:34:54.422Z] [ERROR] ==============================
+[2026-10-03T11:34:56.258Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T11:34:56.262Z] [ERROR] DB_HOST: localhost
+[2026-10-03T11:34:56.263Z] [ERROR] DB_PORT: 3306
+[2026-10-03T11:34:56.264Z] [ERROR] DB_USER: root
+[2026-10-03T11:34:56.266Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T11:34:56.267Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T11:34:56.269Z] [ERROR] ==============================
+[2026-10-03T12:37:49.437Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T12:37:49.440Z] [ERROR] DB_HOST: localhost
+[2026-10-03T12:37:49.441Z] [ERROR] DB_PORT: 3306
+[2026-10-03T12:37:49.442Z] [ERROR] DB_USER: root
+[2026-10-03T12:37:49.443Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T12:37:49.444Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T12:37:49.445Z] [ERROR] ==============================
+[2026-10-03T12:37:51.012Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-03T12:37:51.015Z] [ERROR] DB_HOST: localhost
+[2026-10-03T12:37:51.016Z] [ERROR] DB_PORT: 3306
+[2026-10-03T12:37:51.017Z] [ERROR] DB_USER: root
+[2026-10-03T12:37:51.018Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-03T12:37:51.020Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-03T12:37:51.022Z] [ERROR] ==============================
+[2026-10-05T06:02:25.851Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:02:25.858Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:02:25.863Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:02:25.881Z] [ERROR] DB_USER: root
+[2026-10-05T06:02:25.903Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:02:25.908Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:02:25.909Z] [ERROR] ==============================
+[2026-10-05T06:02:28.319Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:02:28.325Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:02:28.326Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:02:28.328Z] [ERROR] DB_USER: root
+[2026-10-05T06:02:28.329Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:02:28.331Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:02:28.332Z] [ERROR] ==============================
+[2026-10-05T06:17:34.919Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:17:34.924Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:17:34.926Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:17:34.926Z] [ERROR] DB_USER: root
+[2026-10-05T06:17:34.927Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:17:34.927Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:17:34.928Z] [ERROR] ==============================
+[2026-10-05T06:19:31.048Z] [ERROR] API Error on [POST /api/api/auth/login]: Cannot find requested route /api/api/auth/login on this server. | Meta: {"statusCode":404,"errors":[],"stack":"Error: Cannot find requested route /api/api/auth/login on this server.\n    at D:\\Reachskyline - ERP\\backend\\server.js:246:15\n    at Layer.handle [as handle_request] (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:646:15\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:265:14)\n    at router.handle (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)"}
+[2026-10-05T06:29:59.445Z] [ERROR] API Error on [POST /api/api/auth/login]: Cannot find requested route /api/api/auth/login on this server. | Meta: {"statusCode":404,"errors":[],"stack":"Error: Cannot find requested route /api/api/auth/login on this server.\n    at D:\\Reachskyline - ERP\\backend\\server.js:246:15\n    at Layer.handle [as handle_request] (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\layer.js:95:5)\n    at trim_prefix (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:328:13)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:286:9\n    at router.process_params (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:346:12)\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:280:10)\n    at D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:646:15\n    at next (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:265:14)\n    at router.handle (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:175:3)\n    at router (D:\\Reachskyline - ERP\\backend\\node_modules\\express\\lib\\router\\index.js:47:12)"}
+[2026-10-05T06:38:18.457Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T06:38:18.461Z] [ERROR] DB_HOST: localhost
+[2026-10-05T06:38:18.462Z] [ERROR] DB_PORT: 3306
+[2026-10-05T06:38:18.463Z] [ERROR] DB_USER: root
+[2026-10-05T06:38:18.463Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T06:38:18.464Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T06:38:18.464Z] [ERROR] ==============================
+[2026-10-05T07:10:25.424Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:10:25.427Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:10:25.428Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:10:25.432Z] [ERROR] DB_USER: root
+[2026-10-05T07:10:25.433Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:10:25.434Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:10:25.435Z] [ERROR] ==============================
+[2026-10-05T07:10:27.719Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:10:27.723Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:10:27.726Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:10:27.727Z] [ERROR] DB_USER: root
+[2026-10-05T07:10:27.730Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:10:27.734Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:10:27.735Z] [ERROR] ==============================
+[2026-10-05T07:16:10.462Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:16:10.464Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:16:10.466Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:16:10.466Z] [ERROR] DB_USER: root
+[2026-10-05T07:16:10.467Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:16:10.468Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:16:10.469Z] [ERROR] ==============================
+[2026-10-05T07:22:09.537Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:22:09.557Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:22:09.559Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:22:09.600Z] [ERROR] DB_USER: root
+[2026-10-05T07:22:09.618Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:22:09.674Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:22:09.678Z] [ERROR] ==============================
+[2026-10-05T07:22:14.222Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:22:14.228Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:22:14.230Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:22:14.233Z] [ERROR] DB_USER: root
+[2026-10-05T07:22:14.233Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:22:14.234Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:22:14.239Z] [ERROR] ==============================
+[2026-10-05T07:23:26.985Z] [ERROR] API Error on [POST /api/auth/login]: Invalid username or password. | Meta: {"statusCode":401,"errors":[],"stack":"Error: Invalid username or password.\n    at AuthService.login (D:\\Reachskyline - ERP\\backend\\services\\authService.js:77:21)\n    at async login (D:\\Reachskyline - ERP\\backend\\controllers\\authController.js:7:20)"}
+[2026-10-05T07:32:10.991Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:32:11.001Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:32:11.001Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:32:11.002Z] [ERROR] DB_USER: root
+[2026-10-05T07:32:11.003Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:32:11.007Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:32:11.008Z] [ERROR] ==============================
+[2026-10-05T07:32:20.906Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:32:20.910Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:32:20.910Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:32:20.911Z] [ERROR] DB_USER: root
+[2026-10-05T07:32:20.912Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:32:20.912Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:32:20.917Z] [ERROR] ==============================
+[2026-10-05T07:34:45.127Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:34:45.131Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:34:45.132Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:34:45.133Z] [ERROR] DB_USER: root
+[2026-10-05T07:34:45.133Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:34:45.134Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:34:45.135Z] [ERROR] ==============================
+[2026-10-05T07:34:59.622Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:34:59.626Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:34:59.627Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:34:59.628Z] [ERROR] DB_USER: root
+[2026-10-05T07:34:59.628Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:34:59.629Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:34:59.629Z] [ERROR] ==============================
+[2026-10-05T07:35:26.228Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:35:26.232Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:35:26.233Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:35:26.235Z] [ERROR] DB_USER: root
+[2026-10-05T07:35:26.236Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:35:26.236Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:35:26.237Z] [ERROR] ==============================
+[2026-10-05T07:35:47.253Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:35:47.259Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:35:47.265Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:35:47.268Z] [ERROR] DB_USER: root
+[2026-10-05T07:35:47.272Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:35:47.276Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:35:47.284Z] [ERROR] ==============================
+[2026-10-05T07:36:26.248Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:26.251Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:26.252Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:26.254Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:26.255Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:26.258Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:26.260Z] [ERROR] ==============================
+[2026-10-05T07:36:36.030Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:36.034Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:36.034Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:36.035Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:36.036Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:36.036Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:36.037Z] [ERROR] ==============================
+[2026-10-05T07:36:44.019Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:44.029Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:44.030Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:44.030Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:44.031Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:44.031Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:44.032Z] [ERROR] ==============================
+[2026-10-05T07:36:54.564Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:36:54.575Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:36:54.577Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:36:54.578Z] [ERROR] DB_USER: root
+[2026-10-05T07:36:54.579Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:36:54.580Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:36:54.581Z] [ERROR] ==============================
+[2026-10-05T07:37:07.306Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:37:07.310Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:37:07.311Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:37:07.312Z] [ERROR] DB_USER: root
+[2026-10-05T07:37:07.312Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:37:07.313Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:37:07.313Z] [ERROR] ==============================
+[2026-10-05T07:37:20.011Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:37:20.022Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:37:20.023Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:37:20.023Z] [ERROR] DB_USER: root
+[2026-10-05T07:37:20.024Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:37:20.025Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:37:20.025Z] [ERROR] ==============================
+[2026-10-05T07:44:16.537Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:16.541Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:16.541Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:16.542Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:16.543Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:16.543Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:16.544Z] [ERROR] ==============================
+[2026-10-05T07:44:36.848Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:36.859Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:36.874Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:36.902Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:36.907Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:36.909Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:36.913Z] [ERROR] ==============================
+[2026-10-05T07:44:44.797Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:44.802Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:44.803Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:44.803Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:44.804Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:44.805Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:44.805Z] [ERROR] ==============================
+[2026-10-05T07:44:59.054Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:44:59.059Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:44:59.060Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:44:59.060Z] [ERROR] DB_USER: root
+[2026-10-05T07:44:59.061Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:44:59.061Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:44:59.062Z] [ERROR] ==============================
+[2026-10-05T07:45:07.903Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:45:07.908Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:45:07.908Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:45:07.909Z] [ERROR] DB_USER: root
+[2026-10-05T07:45:07.909Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:45:07.910Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:45:07.911Z] [ERROR] ==============================
+[2026-10-05T07:50:52.828Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:50:52.834Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:50:52.835Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:50:52.836Z] [ERROR] DB_USER: root
+[2026-10-05T07:50:52.836Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:50:52.838Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:50:52.839Z] [ERROR] ==============================
+[2026-10-05T07:51:04.518Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:04.521Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:04.522Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:04.523Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:04.523Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:04.524Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:04.524Z] [ERROR] ==============================
+[2026-10-05T07:51:31.092Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:31.096Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:31.096Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:31.097Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:31.098Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:31.099Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:31.099Z] [ERROR] ==============================
+[2026-10-05T07:51:42.634Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:42.643Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:42.643Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:42.644Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:42.644Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:42.645Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:42.645Z] [ERROR] ==============================
+[2026-10-05T07:51:49.569Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:51:49.574Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:51:49.575Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:51:49.576Z] [ERROR] DB_USER: root
+[2026-10-05T07:51:49.576Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:51:49.576Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:51:49.577Z] [ERROR] ==============================
+[2026-10-05T07:53:20.045Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:53:20.049Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:53:20.050Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:53:20.051Z] [ERROR] DB_USER: root
+[2026-10-05T07:53:20.051Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:53:20.052Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:53:20.052Z] [ERROR] ==============================
+[2026-10-05T07:53:35.292Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:53:35.297Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:53:35.299Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:53:35.299Z] [ERROR] DB_USER: root
+[2026-10-05T07:53:35.300Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:53:35.300Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:53:35.301Z] [ERROR] ==============================
+[2026-10-05T07:57:05.012Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:05.015Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:05.016Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:05.017Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:05.017Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:05.018Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:05.019Z] [ERROR] ==============================
+[2026-10-05T07:57:25.148Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:25.152Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:25.153Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:25.154Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:25.156Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:25.157Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:25.157Z] [ERROR] ==============================
+[2026-10-05T07:57:41.427Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:41.446Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:41.457Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:41.460Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:41.461Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:41.463Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:41.467Z] [ERROR] ==============================
+[2026-10-05T07:57:52.276Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T07:57:52.281Z] [ERROR] DB_HOST: localhost
+[2026-10-05T07:57:52.281Z] [ERROR] DB_PORT: 3306
+[2026-10-05T07:57:52.282Z] [ERROR] DB_USER: root
+[2026-10-05T07:57:52.283Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T07:57:52.283Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T07:57:52.284Z] [ERROR] ==============================
+[2026-10-05T09:13:02.064Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T09:13:02.067Z] [ERROR] DB_HOST: localhost
+[2026-10-05T09:13:02.068Z] [ERROR] DB_PORT: 3306
+[2026-10-05T09:13:02.069Z] [ERROR] DB_USER: root
+[2026-10-05T09:13:02.070Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T09:13:02.071Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T09:13:02.071Z] [ERROR] ==============================
+[2026-10-05T09:13:11.043Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T09:13:11.046Z] [ERROR] DB_HOST: localhost
+[2026-10-05T09:13:11.047Z] [ERROR] DB_PORT: 3306
+[2026-10-05T09:13:11.049Z] [ERROR] DB_USER: root
+[2026-10-05T09:13:11.050Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T09:13:11.051Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T09:13:11.052Z] [ERROR] ==============================
+[2026-10-05T10:21:26.995Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T10:21:26.998Z] [ERROR] DB_HOST: localhost
+[2026-10-05T10:21:26.999Z] [ERROR] DB_PORT: 3306
+[2026-10-05T10:21:27.000Z] [ERROR] DB_USER: root
+[2026-10-05T10:21:27.001Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T10:21:27.002Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T10:21:27.003Z] [ERROR] ==============================
+[2026-10-05T10:21:28.625Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T10:21:28.627Z] [ERROR] DB_HOST: localhost
+[2026-10-05T10:21:28.628Z] [ERROR] DB_PORT: 3306
+[2026-10-05T10:21:28.630Z] [ERROR] DB_USER: root
+[2026-10-05T10:21:28.631Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T10:21:28.632Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T10:21:28.633Z] [ERROR] ==============================
+[2026-10-05T11:22:11.465Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:22:11.468Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:22:11.469Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:22:11.470Z] [ERROR] DB_USER: root
+[2026-10-05T11:22:11.471Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:22:11.472Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:22:11.474Z] [ERROR] ==============================
+[2026-10-05T11:22:12.963Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:22:12.966Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:22:12.968Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:22:12.969Z] [ERROR] DB_USER: root
+[2026-10-05T11:22:12.970Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:22:12.971Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:22:12.972Z] [ERROR] ==============================
+[2026-10-05T11:24:54.829Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T11:24:54.831Z] [ERROR] DB_HOST: localhost
+[2026-10-05T11:24:54.833Z] [ERROR] DB_PORT: 3306
+[2026-10-05T11:24:54.834Z] [ERROR] DB_USER: root
+[2026-10-05T11:24:54.835Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T11:24:54.837Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T11:24:54.841Z] [ERROR] ==============================
+[2026-10-05T12:00:49.787Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:00:49.791Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:00:49.793Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:00:49.794Z] [ERROR] DB_USER: root
+[2026-10-05T12:00:49.796Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:00:49.802Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:00:49.807Z] [ERROR] ==============================
+[2026-10-05T12:05:41.360Z] [ERROR] API Error on [POST /api/users/managers]: onesignalService is not defined | Meta: {"statusCode":500,"errors":[],"stack":"ReferenceError: onesignalService is not defined\n    at UserService.createManager (D:\\Reachskyline - ERP\\backend\\services\\userService.js:212:7)\n    at process.processTicksAndRejections (node:internal/process/task_queues:104:5)\n    at async createManager (D:\\Reachskyline - ERP\\backend\\controllers\\userController.js:36:22)"}
+[2026-10-05T12:07:28.792Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:28.795Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:28.796Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:28.797Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:28.798Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:28.799Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:28.800Z] [ERROR] ==============================
+[2026-10-05T12:07:46.354Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:46.357Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:46.358Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:46.359Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:46.360Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:46.361Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:46.362Z] [ERROR] ==============================
+[2026-10-05T12:07:53.856Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T12:07:53.859Z] [ERROR] DB_HOST: localhost
+[2026-10-05T12:07:53.861Z] [ERROR] DB_PORT: 3306
+[2026-10-05T12:07:53.867Z] [ERROR] DB_USER: root
+[2026-10-05T12:07:53.871Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T12:07:53.872Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T12:07:53.873Z] [ERROR] ==============================
+[2026-10-05T13:11:48.027Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:48.029Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:48.030Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:48.031Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:48.032Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:48.033Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:48.034Z] [ERROR] ==============================
+[2026-10-05T13:11:51.514Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:51.526Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:51.530Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:51.531Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:51.533Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:51.534Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:51.536Z] [ERROR] ==============================
+[2026-10-05T13:11:53.969Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:53.972Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:53.973Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:53.973Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:53.974Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:53.976Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:53.977Z] [ERROR] ==============================
+[2026-10-05T13:11:56.601Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:11:56.614Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:11:56.621Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:11:56.623Z] [ERROR] DB_USER: root
+[2026-10-05T13:11:56.624Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:11:56.626Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:11:56.627Z] [ERROR] ==============================
+[2026-10-05T13:12:15.435Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:15.440Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:15.440Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:15.441Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:15.441Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:15.442Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:15.443Z] [ERROR] ==============================
+[2026-10-05T13:12:26.048Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:26.052Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:26.053Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:26.054Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:26.054Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:26.055Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:26.056Z] [ERROR] ==============================
+[2026-10-05T13:12:35.916Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:12:35.919Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:12:35.920Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:12:35.920Z] [ERROR] DB_USER: root
+[2026-10-05T13:12:35.921Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:12:35.921Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:12:35.922Z] [ERROR] ==============================
+[2026-10-05T13:14:53.101Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:14:53.106Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:14:53.107Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:14:53.107Z] [ERROR] DB_USER: root
+[2026-10-05T13:14:53.108Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:14:53.109Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:14:53.110Z] [ERROR] ==============================
+[2026-10-05T13:16:20.225Z] [ERROR] ========== DB DEBUG ==========
+[2026-10-05T13:16:20.228Z] [ERROR] DB_HOST: localhost
+[2026-10-05T13:16:20.229Z] [ERROR] DB_PORT: 3306
+[2026-10-05T13:16:20.231Z] [ERROR] DB_USER: root
+[2026-10-05T13:16:20.232Z] [ERROR] DB_NAME: reachskyline_erp
+[2026-10-05T13:16:20.233Z] [ERROR] DB_PASSWORD_LENGTH: 10
+[2026-10-05T13:16:20.233Z] [ERROR] ==============================

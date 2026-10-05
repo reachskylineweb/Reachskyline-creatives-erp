@@ -22,6 +22,7 @@ const contentWorkRoutes = require('./contentWorkRoutes');
 const blogAssignmentRoutes = require('./blogAssignmentRoutes');
 const blogCalendarRoutes = require('./blogCalendarRoutes');
 const uploadRoutes = require('./uploadRoutes');
+const campaignRunRoutes = require('./campaignRunRoutes');
 
 // 1. Mount Auth (contains both public and private endpoints)
 router.use('/auth', authRoutes);
@@ -43,6 +44,7 @@ router.use('/event-days', eventDayRoutes);
 router.use('/content-work', contentWorkRoutes);
 router.use('/blog-assignments', blogAssignmentRoutes);
 router.use('/blog-calendar', authenticateToken, blogCalendarRoutes);
+router.use('/campaign-runs', authenticateToken, campaignRunRoutes);
 
 // 3. Global Search Endpoint
 const userRepository = require('../repositories/userRepository');

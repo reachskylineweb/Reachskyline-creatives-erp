@@ -42,6 +42,7 @@ const SuperadminReports = safeLazy(() => import('./features/Admin/Reports/Supera
 const ActivityTypeList = safeLazy(() => import('./features/Admin/ActivityTypes/ActivityTypeList'));
 const LoginCredentials = safeLazy(() => import('./features/Admin/Credentials/LoginCredentials'));
 const WorkUpdates = safeLazy(() => import('./features/Admin/WorkUpdates/WorkUpdates'));
+const CampaignRunList = safeLazy(() => import('./features/Admin/CampaignRun/CampaignRunList'));
 const ClientPortal = safeLazy(() => import('./features/Client/ClientPortal'));
 
 // Manager features
@@ -209,6 +210,7 @@ function App() {
                   <Route path="branches" element={<SuperAdminBranches />} />
                   <Route path="branches/:id" element={<SuperAdminBranchDetail />} />
                   <Route path="event-calendar" element={<ErrorBoundary><EmployeeEventCalendar /></ErrorBoundary>} />
+                  <Route path="campaign-run" element={<CampaignRunList />} />
                   <Route path="profile" element={<SuperAdminProfile />} />
                   <Route index element={<Navigate to="dashboard" replace />} />
                 </Route>
@@ -218,6 +220,7 @@ function App() {
                   <Route path="dashboard" element={<AdminDashboard />} />
                   <Route path="clients" element={<ClientList />} />
                   <Route path="departments" element={<DepartmentList />} />
+                  <Route path="campaign-run" element={<CampaignRunList />} />
                   <Route path="managers" element={<ManagerList />} />
                   <Route path="employees" element={<EmployeeList />} />
                   <Route path="projects" element={<ProjectList />} />
@@ -234,6 +237,7 @@ function App() {
                  {/* Protected Manager Routing */}
                 <Route path="/manager" element={<ProtectedManagerRoute />}>
                   <Route path="dashboard" element={<ManagerDashboard />} />
+                  <Route path="campaign-run" element={<CampaignRunList />} />
                   <Route path="calendar" element={<ManagerCalendar />} />
                   <Route path="event-calendar" element={<ErrorBoundary><EmployeeEventCalendar /></ErrorBoundary>} />
                   <Route path="daily-todo" element={<ManagerDailyTodo />} />
@@ -255,6 +259,7 @@ function App() {
                 {/* Protected Employee Routing */}
                 <Route path="/employee" element={<ProtectedEmployeeRoute />}>
                   <Route path="dashboard" element={<EmployeeDashboard />} />
+                  <Route path="campaign-run" element={<CampaignRunList />} />
                   <Route path="calendar" element={<EmployeeCalendar />} />
                   <Route path="event-calendar" element={<ErrorBoundary><EmployeeEventCalendar /></ErrorBoundary>} />
                   <Route path="assigned-work" element={<EmployeeAssignedWork />} />

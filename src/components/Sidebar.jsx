@@ -36,6 +36,7 @@ const Sidebar = () => {
       { label: 'Dashboard', path: '/admin/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
       { label: 'Clients', path: '/admin/clients', icon: <AppIcon name="clients" size={26} /> },
       { label: 'Departments', path: '/admin/departments', icon: <AppIcon name="department" size={26} /> },
+      { label: 'Campaign Run', path: '/admin/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
       { label: 'Managers', path: '/admin/managers', icon: <AppIcon name="manager" size={26} /> },
       { label: 'Employees', path: '/admin/employees', icon: <AppIcon name="employee" size={26} /> },
       { label: 'Content Calendar', path: '/admin/projects', icon: <AppIcon name="contentCalendar" size={26} /> },
@@ -76,6 +77,7 @@ const Sidebar = () => {
         { label: 'Dashboard', path: '/super-admin/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
         { label: 'Branches', path: '/super-admin/branches', icon: <Building2 size={24} /> },
         { label: 'Clients', path: '/super-admin/clients', icon: <AppIcon name="clients" size={26} /> },
+        { label: 'Campaign Run', path: '/super-admin/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
         { label: 'Event Day Calendar', path: '/super-admin/event-calendar', icon: <AppIcon name="blogCalendar" size={26} /> },
         { label: 'Employee Efficiency', path: '/super-admin/efficiency', icon: <AppIcon name="report" size={26} /> },
         { label: 'Profile', path: '/super-admin/profile', icon: <User size={24} /> }
@@ -83,7 +85,10 @@ const Sidebar = () => {
     }
 
     if (user?.role === 'manager') {
-      if (user?.managerProfile?.department_code === 'SMM-RS') {
+      const deptCode = user?.managerProfile?.department_code;
+      const deptId = Number(user?.managerProfile?.department_id);
+
+      if (deptCode === 'SMM-RS') {
         return [
           { label: 'Dashboard', path: '/manager/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
           { label: 'Employees', path: '/manager/employees', icon: <AppIcon name="employee" size={26} /> },
@@ -92,8 +97,20 @@ const Sidebar = () => {
           { label: 'Posted History', path: '/manager/posted', icon: <AppIcon name="completedTask" size={26} /> }
         ];
       }
+
+      if (deptCode === 'CMP-RS' || deptId === 4) {
+        return [
+          { label: 'Dashboard', path: '/manager/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
+          { label: 'Campaign Run', path: '/manager/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
+          { label: 'Employees', path: '/manager/employees', icon: <AppIcon name="employee" size={26} /> },
+          { label: 'Sub-departments', path: '/manager/sub-departments', icon: <AppIcon name="department" size={26} /> },
+          { label: 'Employee Efficiency', path: '/manager/efficiency', icon: <AppIcon name="report" size={26} /> }
+        ];
+      }
+
       return [
         { label: 'Dashboard', path: '/manager/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
+        { label: 'Campaign Run', path: '/manager/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
         { label: 'Daily To-Do', path: '/manager/daily-todo', icon: <AppIcon name="task" size={26} /> },
         { label: 'Completed Works', path: '/manager/completed-works', icon: <AppIcon name="completedTask" size={26} /> },
         { label: 'Content Calendar', path: '/manager/calendar', icon: <AppIcon name="contentCalendar" size={26} /> },
@@ -108,7 +125,18 @@ const Sidebar = () => {
     }
 
     if (user?.role === 'employee') {
-      if (user?.employeeProfile?.department_code === 'SMM-RS') {
+      const deptCode = user?.employeeProfile?.department_code;
+      const deptId = Number(user?.employeeProfile?.department_id);
+
+      if (deptCode === 'CMP-RS' || deptId === 4) {
+        return [
+          { label: 'Dashboard', path: '/employee/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
+          { label: 'Campaign Run', path: '/employee/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
+          { label: 'Assigned Work', path: '/employee/assigned-work', icon: <AppIcon name="task" size={26} /> }
+        ];
+      }
+
+      if (deptCode === 'SMM-RS') {
         return [
           { label: 'Dashboard', path: '/employee/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
           { label: 'To-Do', path: '/employee/today-posting', icon: <AppIcon name="task" size={26} /> },
@@ -132,6 +160,7 @@ const Sidebar = () => {
       }
       return [
         { label: 'Dashboard', path: '/employee/dashboard', icon: <AppIcon name="dashboard" size={26} /> },
+        { label: 'Campaign Run', path: '/employee/campaign-run', icon: <AppIcon name="campaignTeam" size={26} /> },
         { label: 'Content Calendar', path: '/employee/calendar', icon: <AppIcon name="contentCalendar" size={26} /> },
         { label: 'Assigned Work', path: '/employee/assigned-work', icon: <AppIcon name="task" size={26} /> },
         { label: 'Reassigned Work', path: '/employee/reassigned-work', icon: <RefreshCw size={22} /> },
