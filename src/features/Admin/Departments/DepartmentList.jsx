@@ -9,6 +9,7 @@ import api from '../../../utils/api';
 import Modal from '../../../components/Modal';
 import { FormInput, FormSelect, FormTextArea } from '../../../components/FormFields';
 import DepartmentDetail from './DepartmentDetail';
+import AppIcon from '../../../utils/appIcons';
 
 // Helper to determine Department visual accents
 const getDeptTheme = (code = '', name = '') => {
@@ -19,16 +20,18 @@ const getDeptTheme = (code = '', name = '') => {
       iconBg: '#fef3c7',
       iconColor: '#b45309',
       borderGlow: 'rgba(218, 167, 27, 0.4)',
+      appIconName: 'creativesTeam',
       icon: Sparkles
     };
   }
-  if (normalized.includes('smm') || normalized.includes('social') || normalized.includes('media')) {
+  if (normalized.includes('smm') || normalized.includes('social') || normalized.includes('media') || normalized.includes('cmp') || normalized.includes('campaign') || normalized.includes('ads')) {
     return {
       gradient: 'linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%)',
       iconBg: '#ede9fe',
       iconColor: '#6d28d9',
       borderGlow: 'rgba(139, 92, 246, 0.4)',
-      icon: TrendingUp
+      appIconName: 'campaignTeam',
+      icon: Layers
     };
   }
   if (normalized.includes('seo') || normalized.includes('search')) {
@@ -37,16 +40,8 @@ const getDeptTheme = (code = '', name = '') => {
       iconBg: '#ecfdf5',
       iconColor: '#047857',
       borderGlow: 'rgba(16, 185, 129, 0.4)',
+      appIconName: 'seoTeam',
       icon: TrendingUp
-    };
-  }
-  if (normalized.includes('cmp') || normalized.includes('campaign') || normalized.includes('ads')) {
-    return {
-      gradient: 'linear-gradient(135deg, #f97316 0%, #ea580c 100%)',
-      iconBg: '#ffedd5',
-      iconColor: '#c2410c',
-      borderGlow: 'rgba(249, 115, 22, 0.4)',
-      icon: Layers
     };
   }
   if (normalized.includes('bd') || normalized.includes('business') || normalized.includes('sales')) {
@@ -55,6 +50,7 @@ const getDeptTheme = (code = '', name = '') => {
       iconBg: '#eff6ff',
       iconColor: '#1d4ed8',
       borderGlow: 'rgba(59, 130, 246, 0.4)',
+      appIconName: 'businessDevelopment',
       icon: Briefcase
     };
   }
@@ -64,6 +60,7 @@ const getDeptTheme = (code = '', name = '') => {
       iconBg: '#fce7f3',
       iconColor: '#be185d',
       borderGlow: 'rgba(236, 72, 153, 0.4)',
+      appIconName: 'hr',
       icon: Users
     };
   }
@@ -72,6 +69,7 @@ const getDeptTheme = (code = '', name = '') => {
     iconBg: '#f1f5f9',
     iconColor: '#334155',
     borderGlow: 'rgba(100, 116, 139, 0.4)',
+    appIconName: 'department',
     icon: Building2
   };
 };
@@ -468,7 +466,7 @@ const DepartmentList = () => {
                       className="dept-card-icon-box"
                       style={{ background: theme.iconBg }}
                     >
-                      <IconComponent size={22} style={{ color: theme.iconColor }} />
+                      <AppIcon name={theme.appIconName} size={30} alt={dept.name} />
                     </div>
 
                     <div className="dept-card-tags">
@@ -492,19 +490,31 @@ const DepartmentList = () => {
                   {/* Department Personnel & Connected Entities */}
                   <div className="dept-card-stats">
                     <div className="dept-stat-item">
-                      <span className="dept-stat-val" style={{ color: '#2563eb' }}>{empCount}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                        <AppIcon name="employee" size={16} />
+                        <span className="dept-stat-val" style={{ color: '#2563eb' }}>{empCount}</span>
+                      </div>
                       <span className="dept-stat-lbl">Employees</span>
                     </div>
                     <div className="dept-stat-item">
-                      <span className="dept-stat-val" style={{ color: '#7c3aed' }}>{mgrCount}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                        <AppIcon name="manager" size={16} />
+                        <span className="dept-stat-val" style={{ color: '#7c3aed' }}>{mgrCount}</span>
+                      </div>
                       <span className="dept-stat-lbl">Managers</span>
                     </div>
                     <div className="dept-stat-item">
-                      <span className="dept-stat-val" style={{ color: '#d97706' }}>{subCount}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                        <AppIcon name="department" size={16} />
+                        <span className="dept-stat-val" style={{ color: '#d97706' }}>{subCount}</span>
+                      </div>
                       <span className="dept-stat-lbl">Sub-depts</span>
                     </div>
                     <div className="dept-stat-item">
-                      <span className="dept-stat-val" style={{ color: '#059669' }}>{clientCount}</span>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
+                        <AppIcon name="clients" size={16} />
+                        <span className="dept-stat-val" style={{ color: '#059669' }}>{clientCount}</span>
+                      </div>
                       <span className="dept-stat-lbl">Clients</span>
                     </div>
                   </div>

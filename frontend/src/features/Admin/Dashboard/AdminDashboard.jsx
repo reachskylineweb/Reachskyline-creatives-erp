@@ -5,6 +5,7 @@ import {
   Search, AlertCircle, ListTodo, ClipboardList
 } from 'lucide-react';
 import api from '../../../utils/api';
+import AppIcon from '../../../utils/appIcons';
 
 const AdminDashboard = () => {
   const [metrics, setMetrics] = useState(null);
@@ -206,7 +207,9 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Total Clients</span>
-            <div className="stat-icon bg-blue" style={{ width: '36px', height: '36px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.1)' }}><Building2 size={18} /></div>
+            <div className="stat-icon bg-blue" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#eff6ff' }}>
+              <AppIcon name="clients" size={24} />
+            </div>
           </div>
           <div>
             <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalClients}</div>
@@ -217,7 +220,9 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Departments</span>
-            <div className="stat-icon bg-teal" style={{ width: '36px', height: '36px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#14b8a6', backgroundColor: 'rgba(20, 184, 166, 0.1)' }}><Layers size={18} /></div>
+            <div className="stat-icon bg-teal" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0fdf4' }}>
+              <AppIcon name="department" size={24} />
+            </div>
           </div>
           <div>
             <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalDepartments}</div>
@@ -228,7 +233,9 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Sub-departments</span>
-            <div className="stat-icon bg-orange" style={{ width: '36px', height: '36px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f97316', backgroundColor: 'rgba(249, 115, 22, 0.1)' }}><GitMerge size={18} /></div>
+            <div className="stat-icon bg-orange" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff7ed' }}>
+              <AppIcon name="department" size={24} />
+            </div>
           </div>
           <div>
             <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalSubDepartments}</div>
@@ -239,7 +246,9 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Managers</span>
-            <div className="stat-icon bg-purple" style={{ width: '36px', height: '36px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#a855f7', backgroundColor: 'rgba(168, 85, 247, 0.1)' }}><Award size={18} /></div>
+            <div className="stat-icon bg-purple" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#faf5ff' }}>
+              <AppIcon name="manager" size={24} />
+            </div>
           </div>
           <div>
             <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalManagers}</div>
@@ -250,7 +259,9 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Employees</span>
-            <div className="stat-icon bg-green" style={{ width: '36px', height: '36px', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--success)', backgroundColor: 'rgba(16, 185, 129, 0.1)' }}><Users size={18} /></div>
+            <div className="stat-icon bg-green" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ecfdf5' }}>
+              <AppIcon name="employee" size={24} />
+            </div>
           </div>
           <div>
             <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalEmployees}</div>
@@ -265,8 +276,8 @@ const AdminDashboard = () => {
         
         {/* Card 1: Today's Total Work */}
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(218, 167, 27, 0.08)', color: '#DAA71B' }}>
-            <ClipboardList size={26} />
+          <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(218, 167, 27, 0.08)' }}>
+            <AppIcon name="deliverables" size={28} />
           </div>
           <div>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', display: 'block' }}>Today's Total Tasks</span>
@@ -277,8 +288,8 @@ const AdminDashboard = () => {
 
         {/* Card 2: Today's Working Clients List */}
         <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Building2 size={16} /> Clients Active Today
+          <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AppIcon name="clients" size={18} /> Clients Active Today
           </span>
           <div style={{ flex: 1, maxHeight: '80px', overflowY: 'auto', display: 'flex', flexWrap: 'wrap', gap: '6px', alignContent: 'flex-start' }}>
             {daily.todayClientsList && daily.todayClientsList.length > 0 ? (

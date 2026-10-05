@@ -9,6 +9,7 @@ import {
 import api from '../../../utils/api';
 import Modal from '../../../components/Modal';
 import { FormInput, FormSelect, FormTextArea } from '../../../components/FormFields';
+import AppIcon from '../../../utils/appIcons';
 
 const DepartmentDetail = ({ deptId, onBack }) => {
   const [details, setDetails] = useState(null);
@@ -541,6 +542,16 @@ const DepartmentDetail = ({ deptId, onBack }) => {
     );
   }
 
+  const getDeptIconName = (code = '', name = '') => {
+    const normalized = (code + ' ' + name).toLowerCase();
+    if (normalized.includes('cd') || normalized.includes('creat') || normalized.includes('design')) return 'creativesTeam';
+    if (normalized.includes('smm') || normalized.includes('social') || normalized.includes('media') || normalized.includes('cmp') || normalized.includes('campaign') || normalized.includes('ads')) return 'campaignTeam';
+    if (normalized.includes('seo') || normalized.includes('search')) return 'seoTeam';
+    if (normalized.includes('bd') || normalized.includes('business') || normalized.includes('sales')) return 'businessDevelopment';
+    if (normalized.includes('hr') || normalized.includes('human')) return 'hr';
+    return 'department';
+  };
+
   return (
     <div className="dept-workspace-container">
       
@@ -575,11 +586,16 @@ const DepartmentDetail = ({ deptId, onBack }) => {
             <div 
               className="dept-hero-icon-large"
               style={{
-                background: 'linear-gradient(135deg, #DAA71B 0%, #b8860b 100%)',
-                color: '#ffffff'
+                background: '#ffffff',
+                border: '2px solid rgba(218, 167, 27, 0.3)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.04)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '6px'
               }}
             >
-              <Building2 size={32} />
+              <AppIcon name={getDeptIconName(department.code, department.name)} size={42} alt={department.name} />
             </div>
 
             <div className="dept-hero-title-group">
@@ -602,23 +618,23 @@ const DepartmentDetail = ({ deptId, onBack }) => {
         {/* Quick Summary Pill Bar */}
         <div className="dept-hero-stats-bar">
           <div className="dept-hero-pill">
-            <Users size={14} style={{ color: '#2563eb' }} />
+            <AppIcon name="employee" size={16} />
             <span>Employees: <strong>{stats.totalEmployees}</strong> ({stats.activeEmployees} active)</span>
           </div>
           <div className="dept-hero-pill">
-            <Shield size={14} style={{ color: '#7c3aed' }} />
+            <AppIcon name="manager" size={16} />
             <span>Managers: <strong>{stats.totalManagers}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <Layers size={14} style={{ color: '#d97706' }} />
+            <AppIcon name="department" size={16} />
             <span>Sub-departments: <strong>{stats.totalSubDepartments}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <Briefcase size={14} style={{ color: '#059669' }} />
+            <AppIcon name="clients" size={16} />
             <span>Clients: <strong>{stats.totalClients}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <TrendingUp size={14} style={{ color: '#DAA71B' }} />
+            <AppIcon name="report" size={16} />
             <span>Avg Efficiency: <strong style={{ color: stats.avgEmployeeEfficiency >= 80 ? '#059669' : '#d97706' }}>{stats.avgEmployeeEfficiency}%</strong></span>
           </div>
         </div>
@@ -638,7 +654,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'sub_departments' ? 'active' : ''}`}
           onClick={() => setActiveTab('sub_departments')}
         >
-          <Layers size={16} />
+          <AppIcon name="department" size={16} />
           <span>Sub-departments</span>
           <span className="dept-nav-tab-badge">{subDepartments.length}</span>
         </button>
@@ -647,7 +663,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'employees' ? 'active' : ''}`}
           onClick={() => setActiveTab('employees')}
         >
-          <Users size={16} />
+          <AppIcon name="employee" size={16} />
           <span>Employees</span>
           <span className="dept-nav-tab-badge">{employees.length}</span>
         </button>
@@ -656,7 +672,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'managers' ? 'active' : ''}`}
           onClick={() => setActiveTab('managers')}
         >
-          <Shield size={16} />
+          <AppIcon name="manager" size={16} />
           <span>Managers</span>
           <span className="dept-nav-tab-badge">{allManagers.length}</span>
         </button>
@@ -665,7 +681,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'clients' ? 'active' : ''}`}
           onClick={() => setActiveTab('clients')}
         >
-          <Briefcase size={16} />
+          <AppIcon name="clients" size={16} />
           <span>Clients</span>
           <span className="dept-nav-tab-badge">{clients.length}</span>
         </button>
@@ -674,7 +690,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'employee_efficiency' ? 'active' : ''}`}
           onClick={() => setActiveTab('employee_efficiency')}
         >
-          <Zap size={16} />
+          <AppIcon name="report" size={16} />
           <span>Employee Efficiency</span>
         </button>
 
@@ -682,7 +698,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'manager_efficiency' ? 'active' : ''}`}
           onClick={() => setActiveTab('manager_efficiency')}
         >
-          <Award size={16} />
+          <AppIcon name="report" size={16} />
           <span>Manager Efficiency</span>
         </button>
       </div>
@@ -696,7 +712,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           <div className="dept-kpi-row">
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#eff6ff', color: '#2563eb' }}>
-                <Users size={22} />
+                <AppIcon name="employee" size={24} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalEmployees}</span>
@@ -706,7 +722,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#ede9fe', color: '#7c3aed' }}>
-                <Shield size={22} />
+                <AppIcon name="manager" size={24} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalManagers}</span>
@@ -716,7 +732,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#fef3c7', color: '#d97706' }}>
-                <Layers size={22} />
+                <AppIcon name="department" size={24} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalSubDepartments}</span>
@@ -726,7 +742,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#ecfdf5', color: '#059669' }}>
-                <Briefcase size={22} />
+                <AppIcon name="clients" size={24} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalClients}</span>
@@ -736,7 +752,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#fdf8e2', color: '#b45309' }}>
-                <TrendingUp size={22} />
+                <AppIcon name="report" size={24} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.avgEmployeeEfficiency}%</span>
