@@ -106,7 +106,7 @@ const AppLayout = () => {
       <Sidebar />
       <div className="main-content">
         <Header />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
+        <main className="main-content-scroll" style={{ flex: 1, overflowY: 'auto', minHeight: 0 }}>
           <Suspense fallback={<PageLoader />}>
             <Outlet />
           </Suspense>
