@@ -218,40 +218,177 @@ class DepartmentService {
       throw error;
     }
 
-    // 1. Get active manager details for department header
+    // 1. Get primary active manager for department header
     const [managers] = await pool.query(
-      'SELECT id, full_name, manager_id_code FROM managers WHERE department_id = ? AND sub_department_id IS NULL AND status = "active" LIMIT 1',
+      `SELECT m.id, m.full_name, m.manager_id_code, m.phone, u.email, u.username
+       FROM managers m
+       JOIN users u ON m.user_id = u.id
+       WHERE m.department_id = ? AND m.sub_department_id IS NULL AND m.status = 'active' AND u.deleted_at IS NULL
+       LIMIT 1`,
       [departmentId]
     );
     const manager = managers[0] || null;
 
     // 1b. Get all managers in this department (including sub-departments)
     const [allManagers] = await pool.query(
-      `SELECT m.id, m.manager_id_code, m.full_name, m.phone, m.sub_department_id, u.email, m.status, m.joining_date
+      `SELECT m.id, m.manager_id_code, m.full_name, m.phone, m.branch, m.sub_department_id, 
+              sd.name AS sub_department_name, u.username, u.email, m.status, m.joining_date, m.profile_image
+       FROM managers m
+       JOIN users u ON m.user_id = u.id
+       LEFT JOIN sub_departments sd ON m.sub_department_id = sd.id
+       WHERE m.department_id = ? AND u.deleted_at IS NULL
+       ORDER BY m.id DESC`,
+      [departmentId]
+    );
+
+    // 2. Get sub-departments with counts
+    const [subDepartments] = await pool.query(
+      `SELECT 
+         sd.*,
+         (SELECT COUNT(*) FROM employees e JOIN users u ON e.user_id = u.id WHERE e.sub_department_id = sd.id AND u.deleted_at IS NULL) AS employee_count,
+         (SELECT COUNT(*) FROM managers m JOIN users u ON m.user_id = u.id WHERE m.sub_department_id = sd.id AND u.deleted_at IS NULL) AS manager_count
+       FROM sub_departments sd
+       WHERE sd.department_id = ?
+       ORDER BY sd.name ASC`,
+      [departmentId]
+    );
+
+    // 3. Get employees in this department with full details
+    const [employees] = await pool.query(
+      `SELECT e.id, e.employee_id_code, e.full_name, e.phone, e.sub_department_id, 
+              sd.name AS sub_department_name, e.reporting_manager_id, 
+              mgr.full_name AS reporting_manager_name, u.username, u.email, 
+              e.status, e.joining_date, e.profile_image
+       FROM employees e
+       JOIN users u ON e.user_id = u.id
+       LEFT JOIN sub_departments sd ON e.sub_department_id = sd.id
+       LEFT JOIN managers mgr ON e.reporting_manager_id = mgr.id
+       WHERE e.department_id = ? AND u.deleted_at IS NULL
+       ORDER BY e.id DESC`,
+      [departmentId]
+    );
+
+    // 4. Get clients working with this department
+    const [clients] = await pool.query(
+      `SELECT DISTINCT 
+         c.id, c.client_id_code, c.company_name, c.client_name, c.phone, c.email, c.status, c.industry, c.website,
+         (SELECT COUNT(*) FROM projects p WHERE p.client_id = c.id AND p.department_id = ? AND p.deleted_at IS NULL) AS project_count,
+         (SELECT COUNT(*) FROM monthly_deliverables md WHERE md.client_id = c.id AND md.department_id = ? AND md.deleted_at IS NULL) AS deliverable_count
+       FROM clients c
+       WHERE c.deleted_at IS NULL
+         AND (
+           EXISTS (SELECT 1 FROM projects p WHERE p.client_id = c.id AND p.department_id = ? AND p.deleted_at IS NULL)
+           OR EXISTS (SELECT 1 FROM monthly_deliverables md WHERE md.client_id = c.id AND md.department_id = ? AND md.deleted_at IS NULL)
+           OR EXISTS (SELECT 1 FROM job_works jw JOIN managers m ON jw.assigned_manager_id = m.id WHERE jw.client_id = c.id AND m.department_id = ?)
+         )
+       ORDER BY c.company_name ASC`,
+      [departmentId, departmentId, departmentId, departmentId, departmentId]
+    );
+
+    // 5. Manager Efficiency for this department
+    const [managerEfficiency] = await pool.query(
+      `SELECT 
+         m.id,
+         m.full_name,
+         m.manager_id_code,
+         (SELECT COUNT(*) FROM employees e WHERE e.reporting_manager_id = m.id) AS team_size,
+         (
+           (SELECT COUNT(*) FROM monthly_deliverables md WHERE (md.assigned_manager_id = m.id OR md.department_id = m.department_id) AND md.status != 'pending' AND md.deleted_at IS NULL)
+           + (SELECT COUNT(*) FROM job_works jw WHERE jw.assigned_manager_id = m.id)
+         ) AS total_tasks,
+         (
+           (SELECT COUNT(*) FROM monthly_deliverables md WHERE (md.assigned_manager_id = m.id OR md.department_id = m.department_id) AND md.status IN ('client_approved', 'approved', 'posted', 'completed') AND md.deleted_at IS NULL)
+           + (SELECT COUNT(*) FROM job_works jw WHERE jw.assigned_manager_id = m.id AND jw.status IN ('approved', 'completed'))
+         ) AS completed_tasks
        FROM managers m
        JOIN users u ON m.user_id = u.id
        WHERE m.department_id = ? AND u.deleted_at IS NULL`,
       [departmentId]
     );
 
-    // 2. Get sub-departments
-    const subDepartments = await departmentRepository.getSubDepartmentsByDeptId(departmentId);
+    const formattedManagerEfficiency = managerEfficiency.map(mgr => {
+      const total = Number(mgr.total_tasks) || 0;
+      const completed = Number(mgr.completed_tasks) || 0;
+      const efficiency = total > 0 ? Math.round((completed / total) * 100) : 100;
+      return {
+        ...mgr,
+        total_tasks: total,
+        completed_tasks: completed,
+        efficiency
+      };
+    });
 
-    // 3. Get employees in this department
-    const [employees] = await pool.query(
-      `SELECT e.id, e.employee_id_code, e.full_name, e.phone, e.sub_department_id, u.email, e.status, e.joining_date
-       FROM employees e
-       JOIN users u ON e.user_id = u.id
-       WHERE e.department_id = ? AND u.deleted_at IS NULL`,
-      [departmentId]
-    );
+    // 6. Compute Employee Efficiency for this department's employees
+    const employeeEfficiency = [];
+    for (const emp of employees) {
+      const [delivRows] = await pool.query(
+        `SELECT COUNT(*) AS total, 
+                SUM(CASE WHEN status IN ('completed', 'posted', 'client_approved', 'approved') THEN 1 ELSE 0 END) AS completed
+         FROM monthly_deliverables 
+         WHERE (assigned_employee_id = ? OR content_writer_id = ? OR smm_employee_id = ?) 
+           AND status != 'pending' AND deleted_at IS NULL`,
+        [emp.id, emp.id, emp.id]
+      );
+      const [jwRows] = await pool.query(
+        `SELECT COUNT(*) AS total, 
+                SUM(CASE WHEN status IN ('completed', 'approved', 'posted') THEN 1 ELSE 0 END) AS completed
+         FROM job_works 
+         WHERE (assigned_employee_id = ? OR content_writer_id = ? OR smm_employee_id = ?)`,
+        [emp.id, emp.id, emp.id]
+      );
+
+      const totalTasks = (Number(delivRows[0]?.total) || 0) + (Number(jwRows[0]?.total) || 0);
+      const completedTasks = (Number(delivRows[0]?.completed) || 0) + (Number(jwRows[0]?.completed) || 0);
+      const efficiencyRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 100;
+
+      employeeEfficiency.push({
+        id: emp.id,
+        employee_id_code: emp.employee_id_code,
+        full_name: emp.full_name,
+        sub_department_id: emp.sub_department_id,
+        sub_department_name: emp.sub_department_name || 'Direct Department',
+        total_tasks: totalTasks,
+        completed_tasks: completedTasks,
+        pending_tasks: Math.max(0, totalTasks - completedTasks),
+        efficiency: efficiencyRate
+      });
+    }
+
+    // 7. Aggregate Dashboard Stats
+    const totalEmp = employees.length;
+    const activeEmp = employees.filter(e => e.status === 'active').length;
+    const totalMgr = allManagers.length;
+    const activeMgr = allManagers.filter(m => m.status === 'active').length;
+    const totalSub = subDepartments.length;
+    const totalCli = clients.length;
+    const avgEmpEff = employeeEfficiency.length > 0 
+      ? Math.round(employeeEfficiency.reduce((acc, curr) => acc + curr.efficiency, 0) / employeeEfficiency.length) 
+      : 100;
+    const avgMgrEff = formattedManagerEfficiency.length > 0 
+      ? Math.round(formattedManagerEfficiency.reduce((acc, curr) => acc + curr.efficiency, 0) / formattedManagerEfficiency.length) 
+      : 100;
+
+    const stats = {
+      totalEmployees: totalEmp,
+      activeEmployees: activeEmp,
+      totalManagers: totalMgr,
+      activeManagers: activeMgr,
+      totalSubDepartments: totalSub,
+      totalClients: totalCli,
+      avgEmployeeEfficiency: avgEmpEff,
+      avgManagerEfficiency: avgMgrEff
+    };
 
     return {
       department: dept,
       manager,
       allManagers,
       subDepartments,
-      employees
+      employees,
+      clients,
+      managerEfficiency: formattedManagerEfficiency,
+      employeeEfficiency,
+      stats
     };
   }
 

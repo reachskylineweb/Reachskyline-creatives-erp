@@ -1,30 +1,50 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { ArrowLeft, Plus, Users, UserPlus, Mail, Phone, Calendar, Shield, Info, Edit2, Key, Ban, CheckCircle, Trash2 } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { 
+  ArrowLeft, Plus, Users, UserPlus, Mail, Phone, Calendar, 
+  Shield, Info, Edit2, Key, Ban, CheckCircle, Trash2, 
+  Search, LayoutDashboard, Building2, UserCheck, Briefcase, 
+  Zap, Award, TrendingUp, Filter, ExternalLink, Sparkles, 
+  Clock, CheckCircle2, AlertCircle, Layers
+} from 'lucide-react';
 import api from '../../../utils/api';
 import Modal from '../../../components/Modal';
-import { FormInput, FormSelect } from '../../../components/FormFields';
+import { FormInput, FormSelect, FormTextArea } from '../../../components/FormFields';
 
 const DepartmentDetail = ({ deptId, onBack }) => {
   const [details, setDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
-  // Active sub-department tab
-  const [activeSubDeptId, setActiveSubDeptId] = useState(null);
+  // Active Tab: 'dashboard' | 'sub_departments' | 'employees' | 'managers' | 'clients' | 'employee_efficiency' | 'manager_efficiency'
+  const [activeTab, setActiveTab] = useState('dashboard');
+
+  // Search & filter states within tabs
+  const [empSearch, setEmpSearch] = useState('');
+  const [empSubDeptFilter, setEmpSubDeptFilter] = useState('');
+  const [empStatusFilter, setEmpStatusFilter] = useState('');
+
+  const [mgrSearch, setMgrSearch] = useState('');
+  const [mgrStatusFilter, setMgrStatusFilter] = useState('');
+
+  const [clientSearch, setClientSearch] = useState('');
+  const [subDeptSearch, setSubDeptSearch] = useState('');
 
   // Modals state
   const [isSubDeptModalOpen, setIsSubDeptModalOpen] = useState(false);
   const [isEmployeeModalOpen, setIsEmployeeModalOpen] = useState(false);
   const [isManagerModalOpen, setIsManagerModalOpen] = useState(false);
+  const [isResetPasswordModalOpen, setIsResetPasswordModalOpen] = useState(false);
 
+  const [currentSubDept, setCurrentSubDept] = useState(null);
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [currentManager, setCurrentManager] = useState(null);
+  const [targetUserForReset, setTargetUserForReset] = useState(null);
 
-  // Add Sub-department Form
+  // Add/Edit Sub-department Form
   const [subDeptForm, setSubDeptForm] = useState({ name: '', code: '' });
   const [subDeptError, setSubDeptError] = useState('');
 
-  // Register Employee Form
+  // Register/Edit Employee Form
   const [empForm, setEmpForm] = useState({
     full_name: '',
     username: '',
@@ -40,7 +60,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   const [empErrors, setEmpErrors] = useState({});
   const [empSubmitError, setEmpSubmitError] = useState('');
 
-  // Register Manager Form
+  // Register/Edit Manager Form
   const [mgrForm, setMgrForm] = useState({
     full_name: '',
     username: '',
@@ -55,6 +75,10 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   });
   const [mgrErrors, setMgrErrors] = useState({});
   const [mgrSubmitError, setMgrSubmitError] = useState('');
+
+  // Reset Password State
+  const [newPassword, setNewPassword] = useState('');
+  const [resetError, setResetError] = useState('');
 
   // Fetch all department details
   const fetchDetails = useCallback(async () => {
@@ -76,16 +100,23 @@ const DepartmentDetail = ({ deptId, onBack }) => {
     fetchDetails();
   }, [fetchDetails]);
 
-  // Handle Add Sub-department Submit
+  // Sub-department Submit
+  const handleOpenAddSubDept = () => {
+    setCurrentSubDept(null);
+    setSubDeptForm({ name: '', code: '' });
+    setSubDeptError('');
+    setIsSubDeptModalOpen(true);
+  };
+
   const handleSubDeptSubmit = async (e) => {
     e.preventDefault();
     setSubDeptError('');
     if (!subDeptForm.name.trim() || !subDeptForm.code.trim()) {
-      setSubDeptError('Both fields are required.');
+      setSubDeptError('Both sub-department name and code prefix are required.');
       return;
     }
-    if (!/^[A-Z0-9-]{2,12}$/.test(subDeptForm.code.toUpperCase().trim())) {
-      setSubDeptError('Prefix code must be 2-12 letters/numbers, e.g. GD, VD-RS.');
+    if (!/^[A-Z0-9-]{2,15}$/.test(subDeptForm.code.toUpperCase().trim())) {
+      setSubDeptError('Prefix code must be 2-15 letters/numbers, e.g. CW-RS, GD-RS.');
       return;
     }
 
@@ -98,8 +129,6 @@ const DepartmentDetail = ({ deptId, onBack }) => {
       if (res.data.success) {
         setIsSubDeptModalOpen(false);
         setSubDeptForm({ name: '', code: '' });
-        // Set new sub-dept active
-        setActiveSubDeptId(res.data.data.id);
         fetchDetails();
       }
     } catch (err) {
@@ -108,18 +137,114 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   };
 
   const handleDeleteSubDept = async (subDept) => {
+    const empCount = (details?.employees || []).filter(e => e.sub_department_id === subDept.id).length;
+    if (empCount > 0) {
+      alert(`Cannot delete sub-department "${subDept.name}" because it currently has ${empCount} assigned employee(s). Please reassign or delete the employees first.`);
+      return;
+    }
+
     if (!(await window.confirm(`Are you sure you want to delete the "${subDept.name}" sub-department?`))) return;
 
     try {
       const res = await api.delete(`/departments/sub-departments/${subDept.id}`);
       if (res.data.success) {
-        if (activeSubDeptId === subDept.id) {
-          setActiveSubDeptId(null);
-        }
         fetchDetails();
       }
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to delete sub-department.');
+    }
+  };
+
+  // Open Employee Modal
+  const handleOpenAddEmployee = (subDeptId = '') => {
+    setCurrentEmployee(null);
+    setEmpForm({
+      full_name: '',
+      username: '',
+      password: '',
+      email: '',
+      phone: '',
+      reporting_manager_id: '',
+      joining_date: new Date().toISOString().split('T')[0],
+      status: 'active',
+      profile_image: null,
+      sub_department_id: subDeptId || ''
+    });
+    setEmpErrors({});
+    setEmpSubmitError('');
+    setIsEmployeeModalOpen(true);
+  };
+
+  const handleOpenEditEmployee = (emp) => {
+    setCurrentEmployee(emp);
+    setEmpForm({
+      full_name: emp.full_name,
+      username: emp.username,
+      password: '',
+      email: emp.email,
+      phone: emp.phone,
+      reporting_manager_id: emp.reporting_manager_id || '',
+      joining_date: emp.joining_date ? emp.joining_date.substring(0, 10) : '',
+      status: emp.status,
+      profile_image: emp.profile_image || null,
+      sub_department_id: emp.sub_department_id || ''
+    });
+    setEmpErrors({});
+    setEmpSubmitError('');
+    setIsEmployeeModalOpen(true);
+  };
+
+  const validateEmployeeForm = () => {
+    const errors = {};
+    if (!empForm.full_name.trim()) errors.full_name = 'Full name is required.';
+    if (!currentEmployee) {
+      if (!empForm.username.trim() || empForm.username.trim().length < 3) {
+        errors.username = 'Username must be at least 3 characters.';
+      }
+      if (!empForm.password.trim() || empForm.password.trim().length < 6) {
+        errors.password = 'Initial password must be at least 6 characters.';
+      }
+    }
+    if (!empForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(empForm.email)) {
+      errors.email = 'Valid email is required.';
+    }
+    if (!empForm.phone.trim() || !/^\+?[0-9\s\-()]{10,20}$/.test(empForm.phone)) {
+      errors.phone = 'Valid phone number is required.';
+    }
+    setEmpErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleEmployeeSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateEmployeeForm()) return;
+    setEmpSubmitError('');
+
+    try {
+      const payload = {
+        ...empForm,
+        department_id: Number(deptId),
+        sub_department_id: empForm.sub_department_id ? Number(empForm.sub_department_id) : null
+      };
+
+      let res;
+      if (currentEmployee) {
+        try {
+          res = await api.post(`/users/employees/${currentEmployee.id}/update`, payload);
+        } catch (_) {
+          res = await api.put(`/users/employees/${currentEmployee.id}`, payload);
+        }
+      } else {
+        res = await api.post('/users/employees', payload);
+      }
+
+      if (res.data.success) {
+        setIsEmployeeModalOpen(false);
+        setCurrentEmployee(null);
+        fetchDetails();
+      }
+    } catch (err) {
+      setEmpSubmitError(err.response?.data?.message || 'Failed to save employee.');
     }
   };
 
@@ -156,8 +281,102 @@ const DepartmentDetail = ({ deptId, onBack }) => {
     }
   };
 
+  // Open Manager Modal
+  const handleOpenAddManager = () => {
+    setCurrentManager(null);
+    setMgrForm({
+      full_name: '',
+      username: '',
+      password: '',
+      email: '',
+      phone: '',
+      branch: 'Main Office',
+      joining_date: new Date().toISOString().split('T')[0],
+      status: 'active',
+      profile_image: null,
+      sub_department_id: ''
+    });
+    setMgrErrors({});
+    setMgrSubmitError('');
+    setIsManagerModalOpen(true);
+  };
+
+  const handleOpenEditManager = (mgr) => {
+    setCurrentManager(mgr);
+    setMgrForm({
+      full_name: mgr.full_name,
+      username: mgr.username,
+      password: '',
+      email: mgr.email,
+      phone: mgr.phone,
+      branch: mgr.branch || 'Main Office',
+      joining_date: mgr.joining_date ? mgr.joining_date.substring(0, 10) : '',
+      status: mgr.status,
+      profile_image: mgr.profile_image || null,
+      sub_department_id: mgr.sub_department_id || ''
+    });
+    setMgrErrors({});
+    setMgrSubmitError('');
+    setIsManagerModalOpen(true);
+  };
+
+  const validateManagerForm = () => {
+    const errors = {};
+    if (!mgrForm.full_name.trim()) errors.full_name = 'Full name is required.';
+    if (!currentManager) {
+      if (!mgrForm.username.trim() || mgrForm.username.trim().length < 3) {
+        errors.username = 'Username must be at least 3 characters.';
+      }
+      if (!mgrForm.password.trim() || mgrForm.password.trim().length < 6) {
+        errors.password = 'Initial password must be at least 6 characters.';
+      }
+    }
+    if (!mgrForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mgrForm.email)) {
+      errors.email = 'Valid email is required.';
+    }
+    if (!mgrForm.phone.trim() || !/^\+?[0-9\s\-()]{10,20}$/.test(mgrForm.phone)) {
+      errors.phone = 'Valid phone number is required.';
+    }
+    if (!mgrForm.branch.trim()) errors.branch = 'Work branch office is required.';
+    setMgrErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleManagerSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateManagerForm()) return;
+    setMgrSubmitError('');
+
+    try {
+      const payload = {
+        ...mgrForm,
+        department_id: Number(deptId),
+        sub_department_id: mgrForm.sub_department_id ? Number(mgrForm.sub_department_id) : null
+      };
+
+      let res;
+      if (currentManager) {
+        try {
+          res = await api.post(`/users/managers/${currentManager.id}/update`, payload);
+        } catch (_) {
+          res = await api.put(`/users/managers/${currentManager.id}`, payload);
+        }
+      } else {
+        res = await api.post('/users/managers', payload);
+      }
+
+      if (res.data.success) {
+        setIsManagerModalOpen(false);
+        setCurrentManager(null);
+        fetchDetails();
+      }
+    } catch (err) {
+      setMgrSubmitError(err.response?.data?.message || 'Failed to save manager.');
+    }
+  };
+
   const handleDeleteManager = async (id) => {
-    if (!(await window.confirm('Are you sure you want to permanently delete this manager?'))) return;
+    if (!(await window.confirm('Are you sure you want to delete this manager?'))) return;
     try {
       let res;
       try {
@@ -189,283 +408,142 @@ const DepartmentDetail = ({ deptId, onBack }) => {
     }
   };
 
-  // Validate Employee Register Form
-  const validateEmployeeForm = () => {
-    const errors = {};
-    if (!empForm.full_name.trim()) errors.full_name = 'Full name is required.';
-    if (!currentEmployee) {
-      if (!empForm.username.trim() || empForm.username.trim().length < 3) {
-        errors.username = 'Username must be at least 3 characters.';
-      }
-      if (!empForm.password.trim() || empForm.password.trim().length < 6) {
-        errors.password = 'Initial password must be at least 6 characters.';
-      }
-    }
-    if (!empForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(empForm.email)) {
-      errors.email = 'Valid email is required.';
-    }
-    if (!empForm.phone.trim() || !/^\+?[0-9\s\-()]{10,20}$/.test(empForm.phone)) {
-      errors.phone = 'Valid phone number is required.';
-    }
-    setEmpErrors(errors);
-    return Object.keys(errors).length === 0;
+  // Open Reset Password
+  const handleOpenResetPassword = (userObj, type) => {
+    setTargetUserForReset({ id: userObj.id, name: userObj.full_name, type });
+    setNewPassword('');
+    setResetError('');
+    setIsResetPasswordModalOpen(true);
   };
 
-  // Handle Register Employee Submit
-  const handleEmployeeSubmit = async (e) => {
+  const handleResetPasswordSubmit = async (e) => {
     e.preventDefault();
-    if (!validateEmployeeForm()) return;
-    setEmpSubmitError('');
-
+    if (!newPassword || newPassword.length < 6) {
+      setResetError('Password must be at least 6 characters.');
+      return;
+    }
     try {
-      const payload = {
-        ...empForm,
-        department_id: Number(deptId),
-        sub_department_id: empForm.sub_department_id ? Number(empForm.sub_department_id) : null
-      };
-
-      let res;
-      if (currentEmployee) {
-        res = await api.put(`/users/employees/${currentEmployee.id}`, payload);
-      } else {
-        res = await api.post('/users/employees', payload);
-      }
-
+      const res = await api.post('/users/reset-password', {
+        profileId: targetUserForReset.id,
+        userType: targetUserForReset.type,
+        newPassword
+      });
       if (res.data.success) {
-        setIsEmployeeModalOpen(false);
-        // Reset form
-        setEmpForm({
-          full_name: '',
-          username: '',
-          password: '',
-          email: '',
-          phone: '',
-          reporting_manager_id: '',
-          joining_date: new Date().toISOString().split('T')[0],
-          status: 'active',
-          profile_image: null,
-          sub_department_id: ''
-        });
-        setCurrentEmployee(null);
-        fetchDetails();
+        setIsResetPasswordModalOpen(false);
+        setNewPassword('');
+        setTargetUserForReset(null);
+        alert('Password updated successfully.');
       }
     } catch (err) {
-      setEmpSubmitError(err.response?.data?.message || 'Failed to save employee.');
+      setResetError(err.response?.data?.message || 'Failed to reset password.');
     }
   };
 
-  // Validate Manager Register Form
-  const validateManagerForm = () => {
-    const errors = {};
-    if (!mgrForm.full_name.trim()) errors.full_name = 'Full name is required.';
-    if (!currentManager) {
-      if (!mgrForm.username.trim() || mgrForm.username.trim().length < 3) {
-        errors.username = 'Username must be at least 3 characters.';
-      }
-      if (!mgrForm.password.trim() || mgrForm.password.trim().length < 6) {
-        errors.password = 'Initial password must be at least 6 characters.';
-      }
-    }
-    if (!mgrForm.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mgrForm.email)) {
-      errors.email = 'Valid email is required.';
-    }
-    if (!mgrForm.phone.trim() || !/^\+?[0-9\s\-()]{10,20}$/.test(mgrForm.phone)) {
-      errors.phone = 'Valid phone number is required.';
-    }
-    if (!mgrForm.branch.trim()) errors.branch = 'Work branch office is required.';
-    setMgrErrors(errors);
-    return Object.keys(errors).length === 0;
+  // Filtered views
+  const department = details?.department || {};
+  const manager = details?.manager || null;
+  const allManagers = details?.allManagers || [];
+  const subDepartments = details?.subDepartments || [];
+  const employees = details?.employees || [];
+  const clients = details?.clients || [];
+  const employeeEfficiency = details?.employeeEfficiency || [];
+  const managerEfficiency = details?.managerEfficiency || [];
+  const stats = details?.stats || {
+    totalEmployees: employees.length,
+    activeEmployees: employees.filter(e => e.status === 'active').length,
+    totalManagers: allManagers.length,
+    activeManagers: allManagers.filter(m => m.status === 'active').length,
+    totalSubDepartments: subDepartments.length,
+    totalClients: clients.length,
+    avgEmployeeEfficiency: 100,
+    avgManagerEfficiency: 100
   };
 
-  // Handle Register Manager Submit
-  const handleManagerSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateManagerForm()) return;
-    setMgrSubmitError('');
+  // Filtered Employees
+  const filteredEmployees = useMemo(() => {
+    return employees.filter(emp => {
+      const matchSearch = !empSearch.trim() || 
+        emp.full_name?.toLowerCase().includes(empSearch.toLowerCase()) ||
+        emp.employee_id_code?.toLowerCase().includes(empSearch.toLowerCase()) ||
+        emp.email?.toLowerCase().includes(empSearch.toLowerCase()) ||
+        emp.username?.toLowerCase().includes(empSearch.toLowerCase());
+      
+      const matchSubDept = !empSubDeptFilter || 
+        String(emp.sub_department_id) === String(empSubDeptFilter) || 
+        (empSubDeptFilter === 'direct' && !emp.sub_department_id);
 
-    try {
-      const payload = {
-        ...mgrForm,
-        department_id: Number(deptId),
-        sub_department_id: mgrForm.sub_department_id ? Number(mgrForm.sub_department_id) : null
-      };
+      const matchStatus = !empStatusFilter || emp.status === empStatusFilter;
 
-      let res;
-      if (currentManager) {
-        try {
-          res = await api.post(`/users/managers/${currentManager.id}/update`, payload);
-        } catch (_) {
-          res = await api.put(`/users/managers/${currentManager.id}`, payload);
-        }
-      } else {
-        res = await api.post('/users/managers', payload);
-      }
-
-      if (res.data.success) {
-        setIsManagerModalOpen(false);
-        // Reset form
-        setMgrForm({
-          full_name: '',
-          username: '',
-          password: '',
-          email: '',
-          phone: '',
-          branch: 'Main Office',
-          joining_date: new Date().toISOString().split('T')[0],
-          status: 'active',
-          profile_image: null,
-          sub_department_id: ''
-        });
-        setCurrentManager(null);
-        fetchDetails();
-      }
-    } catch (err) {
-      setMgrSubmitError(err.response?.data?.message || 'Failed to save manager.');
-    }
-  };
-
-  const handleEmpImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDim = 200;
-        let width = img.width;
-        let height = img.height;
-        if (width > height) {
-          if (width > maxDim) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          }
-        } else {
-          if (height > maxDim) {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        const webpBase64 = canvas.toDataURL('image/webp', 0.85);
-        setEmpForm(prev => ({ ...prev, profile_image: webpBase64 }));
-      };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleMgrImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement('canvas');
-        const maxDim = 200;
-        let width = img.width;
-        let height = img.height;
-        if (width > height) {
-          if (width > maxDim) {
-            height = Math.round((height * maxDim) / width);
-            width = maxDim;
-          }
-        } else {
-          if (height > maxDim) {
-            width = Math.round((width * maxDim) / height);
-            height = maxDim;
-          }
-        }
-        canvas.width = width;
-        canvas.height = height;
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-        const webpBase64 = canvas.toDataURL('image/webp', 0.85);
-        setMgrForm(prev => ({ ...prev, profile_image: webpBase64 }));
-      };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleOpenEditEmployee = (emp) => {
-    setCurrentEmployee(emp);
-    setEmpForm({
-      full_name: emp.full_name,
-      username: emp.username,
-      password: '',
-      email: emp.email,
-      phone: emp.phone,
-      reporting_manager_id: emp.reporting_manager_id || '',
-      joining_date: emp.joining_date ? emp.joining_date.substring(0, 10) : '',
-      status: emp.status,
-      profile_image: emp.profile_image || null,
-      sub_department_id: emp.sub_department_id || ''
+      return matchSearch && matchSubDept && matchStatus;
     });
-    setEmpErrors({});
-    setEmpSubmitError('');
-    setIsEmployeeModalOpen(true);
-  };
+  }, [employees, empSearch, empSubDeptFilter, empStatusFilter]);
 
-  const handleOpenEditManager = (mgr) => {
-    setCurrentManager(mgr);
-    setMgrForm({
-      full_name: mgr.full_name,
-      username: mgr.username,
-      password: '',
-      email: mgr.email,
-      phone: mgr.phone,
-      branch: mgr.branch || 'Main Office',
-      joining_date: mgr.joining_date ? mgr.joining_date.substring(0, 10) : '',
-      status: mgr.status,
-      profile_image: mgr.profile_image || null,
-      sub_department_id: mgr.sub_department_id || ''
+  // Filtered Managers
+  const filteredManagers = useMemo(() => {
+    return allManagers.filter(mgr => {
+      const matchSearch = !mgrSearch.trim() || 
+        mgr.full_name?.toLowerCase().includes(mgrSearch.toLowerCase()) ||
+        mgr.manager_id_code?.toLowerCase().includes(mgrSearch.toLowerCase()) ||
+        mgr.email?.toLowerCase().includes(mgrSearch.toLowerCase());
+
+      const matchStatus = !mgrStatusFilter || mgr.status === mgrStatusFilter;
+
+      return matchSearch && matchStatus;
     });
-    setMgrErrors({});
-    setMgrSubmitError('');
-    setIsManagerModalOpen(true);
-  };
+  }, [allManagers, mgrSearch, mgrStatusFilter]);
+
+  // Filtered Clients
+  const filteredClients = useMemo(() => {
+    return clients.filter(c => {
+      return !clientSearch.trim() || 
+        c.company_name?.toLowerCase().includes(clientSearch.toLowerCase()) ||
+        c.client_name?.toLowerCase().includes(clientSearch.toLowerCase()) ||
+        c.client_id_code?.toLowerCase().includes(clientSearch.toLowerCase()) ||
+        c.industry?.toLowerCase().includes(clientSearch.toLowerCase());
+    });
+  }, [clients, clientSearch]);
+
+  // Filtered Sub-departments
+  const filteredSubDepts = useMemo(() => {
+    return subDepartments.filter(sd => {
+      return !subDeptSearch.trim() ||
+        sd.name?.toLowerCase().includes(subDeptSearch.toLowerCase()) ||
+        sd.code?.toLowerCase().includes(subDeptSearch.toLowerCase());
+    });
+  }, [subDepartments, subDeptSearch]);
+
+  const managerOptions = allManagers
+    .filter(mgr => mgr.status === 'active')
+    .map(mgr => ({ value: mgr.id, label: `${mgr.full_name} (${mgr.manager_id_code})` }));
 
   if (loading && !details) {
     return (
       <div style={{ padding: '80px', textAlign: 'center', color: 'var(--text-muted)' }}>
-        <div className="spinner" style={{ margin: '0 auto 12px auto' }}></div>
-        <span>Loading department workspace...</span>
+        <div className="spinner" style={{ margin: '0 auto 16px auto' }}></div>
+        <span style={{ fontWeight: 600, fontSize: '15px' }}>Loading department workspace...</span>
       </div>
     );
   }
 
   if (error || !details) {
     return (
-      <div style={{ padding: '40px', textAlign: 'center' }}>
-        <p className="text-danger" style={{ fontWeight: 600 }}>{error || 'Workspace could not be loaded.'}</p>
-        <button className="btn btn-secondary btn-sm" onClick={onBack}>
+      <div style={{ padding: '60px 20px', textAlign: 'center' }}>
+        <p className="text-danger" style={{ fontWeight: 700, fontSize: '16px', marginBottom: '16px' }}>
+          {error || 'Department workspace could not be loaded.'}
+        </p>
+        <button 
+          className="btn btn-secondary" 
+          onClick={onBack}
+          style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+        >
           <ArrowLeft size={16} /> Back to Departments
         </button>
       </div>
     );
   }
 
-  const { department, manager, allManagers = [], subDepartments, employees } = details;
-  const activeSubDept = subDepartments.find(sd => sd.id === activeSubDeptId);
-
-  // Filter employees and managers for active sub-department
-  const activeEmployees = employees.filter(emp => emp.sub_department_id === (activeSubDeptId || null));
-  const activeManagers = allManagers.filter(mgr => mgr.sub_department_id === (activeSubDeptId || null));
-
-  // Reporting managers of this department
-  const managerOptions = allManagers
-    .filter(mgr => mgr.status === 'active')
-    .map(mgr => ({ value: mgr.id, label: `${mgr.full_name} (${mgr.manager_id_code})` }));
-
   return (
-    <div style={{ padding: '30px', maxWidth: '1400px', margin: '0 auto' }}>
+    <div className="dept-workspace-container">
       
       {/* Back Button */}
       <button 
@@ -473,715 +551,1324 @@ const DepartmentDetail = ({ deptId, onBack }) => {
         style={{
           display: 'inline-flex',
           alignItems: 'center',
-          gap: '6px',
-          padding: '8px 14px',
-          backgroundColor: 'var(--bg-light)',
+          gap: '8px',
+          padding: '8px 16px',
+          backgroundColor: '#ffffff',
           border: '1px solid var(--border-color)',
-          borderRadius: 'var(--radius-sm)',
+          borderRadius: '8px',
           fontSize: '13px',
           fontWeight: 700,
           cursor: 'pointer',
-          marginBottom: '24px',
-          color: 'var(--text-color)'
+          marginBottom: '20px',
+          color: 'var(--text-main)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.02)',
+          transition: 'all 0.15s ease'
         }}
       >
         <ArrowLeft size={16} />
-        Back to Departments
+        Back to All Departments
       </button>
 
-      {/* Main Department Header Panel */}
-      <div 
-        style={{
-          backgroundColor: '#ffffff',
-          border: '1px solid var(--border-color)',
-          borderRadius: 'var(--radius-md)',
-          boxShadow: 'var(--shadow-sm)',
-          padding: '30px',
-          marginBottom: '30px',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '20px'
-        }}
-      >
-        <div>
-          <span 
-            style={{ 
-              backgroundColor: 'var(--primary-light)', 
-              color: 'var(--primary)', 
-              fontSize: '11px', 
-              fontWeight: 700, 
-              padding: '4px 10px', 
-              borderRadius: '12px',
-              textTransform: 'uppercase',
-              letterSpacing: '0.5px'
-            }}
-          >
-            {department.code}
-          </span>
-          <h1 style={{ fontSize: '28px', fontWeight: 850, color: 'var(--text-color)', margin: '8px 0 6px 0' }}>
-            {department.name} Department
-          </h1>
-          {department.description && (
-            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '14px', maxWidth: '600px' }}>
-              {department.description}
-            </p>
-          )}
-        </div>
+      {/* Hero Header Card */}
+      <div className="dept-workspace-hero">
+        <div className="dept-workspace-hero-top">
+          <div className="dept-hero-identity">
+            <div 
+              className="dept-hero-icon-large"
+              style={{
+                background: 'linear-gradient(135deg, #DAA71B 0%, #b8860b 100%)',
+                color: '#ffffff'
+              }}
+            >
+              <Building2 size={32} />
+            </div>
 
-        {/* Manager Widget & Control */}
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+            <div className="dept-hero-title-group">
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
+                <span className="dept-code-pill" style={{ background: '#fef3c7', color: '#92400e', border: '1px solid #fde68a' }}>
+                  {department.code}
+                </span>
+                <span className={`badge ${department.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
+                  {department.status === 'active' ? 'Active Unit' : 'Inactive Unit'}
+                </span>
+              </div>
+              <h1>{department.name} Department</h1>
+              <p className="dept-hero-desc">
+                {department.description || 'Corporate operations, team personnel, project assignments, and productivity metrics.'}
+              </p>
+            </div>
+          </div>
+
+          {/* Quick Leadership Card */}
           <div 
-            style={{ 
-              backgroundColor: 'var(--bg-light)', 
-              border: '1px solid var(--border-color)', 
-              padding: '16px 24px', 
-              borderRadius: 'var(--radius-sm)',
-              minWidth: '280px',
+            style={{
+              background: '#ffffff',
+              border: '1px solid var(--border-color)',
+              borderRadius: '12px',
+              padding: '12px 18px',
               display: 'flex',
               alignItems: 'center',
+              gap: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+              minWidth: '240px'
+            }}
+          >
+            <div style={{
+              width: '40px',
+              height: '40px',
+              borderRadius: '50%',
+              background: 'linear-gradient(135deg, #4f46e5, #6366f1)',
+              color: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 800,
+              fontSize: '14px'
+            }}>
+              {manager ? manager.full_name.charAt(0).toUpperCase() : <Shield size={18} />}
+            </div>
+            <div>
+              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.4px', display: 'block' }}>
+                Department Head
+              </span>
+              <strong style={{ fontSize: '14.5px', color: 'var(--text-main)', display: 'block', marginTop: '1px' }}>
+                {manager ? manager.full_name : 'No Lead Assigned'}
+              </strong>
+              {manager && (
+                <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>{manager.manager_id_code}</span>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Quick Summary Pill Bar */}
+        <div className="dept-hero-stats-bar">
+          <div className="dept-hero-pill">
+            <Users size={14} style={{ color: '#2563eb' }} />
+            <span>Staff: <strong>{stats.totalEmployees}</strong> ({stats.activeEmployees} active)</span>
+          </div>
+          <div className="dept-hero-pill">
+            <Shield size={14} style={{ color: '#7c3aed' }} />
+            <span>Managers: <strong>{stats.totalManagers}</strong></span>
+          </div>
+          <div className="dept-hero-pill">
+            <Layers size={14} style={{ color: '#d97706' }} />
+            <span>Sub-units: <strong>{stats.totalSubDepartments}</strong></span>
+          </div>
+          <div className="dept-hero-pill">
+            <Briefcase size={14} style={{ color: '#059669' }} />
+            <span>Clients: <strong>{stats.totalClients}</strong></span>
+          </div>
+          <div className="dept-hero-pill">
+            <TrendingUp size={14} style={{ color: '#DAA71B' }} />
+            <span>Avg Efficiency: <strong style={{ color: stats.avgEmployeeEfficiency >= 80 ? '#059669' : '#d97706' }}>{stats.avgEmployeeEfficiency}%</strong></span>
+          </div>
+        </div>
+      </div>
+
+      {/* Modern Navigation Tabs Strip */}
+      <div className="dept-tabs-nav-bar">
+        <button 
+          className={`dept-nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+          onClick={() => setActiveTab('dashboard')}
+        >
+          <LayoutDashboard size={16} />
+          <span>Dashboard</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'sub_departments' ? 'active' : ''}`}
+          onClick={() => setActiveTab('sub_departments')}
+        >
+          <Layers size={16} />
+          <span>Sub-departments</span>
+          <span className="dept-nav-tab-badge">{subDepartments.length}</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'employees' ? 'active' : ''}`}
+          onClick={() => setActiveTab('employees')}
+        >
+          <Users size={16} />
+          <span>Employees</span>
+          <span className="dept-nav-tab-badge">{employees.length}</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'managers' ? 'active' : ''}`}
+          onClick={() => setActiveTab('managers')}
+        >
+          <Shield size={16} />
+          <span>Managers</span>
+          <span className="dept-nav-tab-badge">{allManagers.length}</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'clients' ? 'active' : ''}`}
+          onClick={() => setActiveTab('clients')}
+        >
+          <Briefcase size={16} />
+          <span>Clients</span>
+          <span className="dept-nav-tab-badge">{clients.length}</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'employee_efficiency' ? 'active' : ''}`}
+          onClick={() => setActiveTab('employee_efficiency')}
+        >
+          <Zap size={16} />
+          <span>Employee Efficiency</span>
+        </button>
+
+        <button 
+          className={`dept-nav-tab ${activeTab === 'manager_efficiency' ? 'active' : ''}`}
+          onClick={() => setActiveTab('manager_efficiency')}
+        >
+          <Award size={16} />
+          <span>Manager Efficiency</span>
+        </button>
+      </div>
+
+      {/* ========================================================================= */}
+      {/* TAB 1: 📊 DASHBOARD OVERVIEW                                              */}
+      {/* ========================================================================= */}
+      {activeTab === 'dashboard' && (
+        <div>
+          {/* KPI Cards Row */}
+          <div className="dept-kpi-row">
+            <div className="dept-kpi-card">
+              <div className="dept-kpi-icon" style={{ background: '#eff6ff', color: '#2563eb' }}>
+                <Users size={22} />
+              </div>
+              <div className="dept-kpi-data">
+                <span className="dept-kpi-val">{stats.totalEmployees}</span>
+                <span className="dept-kpi-lbl">Total Employees</span>
+              </div>
+            </div>
+
+            <div className="dept-kpi-card">
+              <div className="dept-kpi-icon" style={{ background: '#ede9fe', color: '#7c3aed' }}>
+                <Shield size={22} />
+              </div>
+              <div className="dept-kpi-data">
+                <span className="dept-kpi-val">{stats.totalManagers}</span>
+                <span className="dept-kpi-lbl">Department Managers</span>
+              </div>
+            </div>
+
+            <div className="dept-kpi-card">
+              <div className="dept-kpi-icon" style={{ background: '#fef3c7', color: '#d97706' }}>
+                <Layers size={22} />
+              </div>
+              <div className="dept-kpi-data">
+                <span className="dept-kpi-val">{stats.totalSubDepartments}</span>
+                <span className="dept-kpi-lbl">Sub-departments</span>
+              </div>
+            </div>
+
+            <div className="dept-kpi-card">
+              <div className="dept-kpi-icon" style={{ background: '#ecfdf5', color: '#059669' }}>
+                <Briefcase size={22} />
+              </div>
+              <div className="dept-kpi-data">
+                <span className="dept-kpi-val">{stats.totalClients}</span>
+                <span className="dept-kpi-lbl">Connected Clients</span>
+              </div>
+            </div>
+
+            <div className="dept-kpi-card">
+              <div className="dept-kpi-icon" style={{ background: '#fdf8e2', color: '#b45309' }}>
+                <TrendingUp size={22} />
+              </div>
+              <div className="dept-kpi-data">
+                <span className="dept-kpi-val">{stats.avgEmployeeEfficiency}%</span>
+                <span className="dept-kpi-lbl">Team Efficiency</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Quick Actions Bar */}
+          <div 
+            style={{
+              background: '#ffffff',
+              border: '1px solid var(--border-color)',
+              borderRadius: '14px',
+              padding: '16px 20px',
+              marginBottom: '24px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
               gap: '12px'
             }}
           >
-            <Shield size={24} style={{ color: 'var(--primary)', opacity: 0.8 }} />
             <div>
-              <span style={{ fontSize: '11px', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700, display: 'block' }}>
-                Department Manager
+              <h4 style={{ margin: 0, fontSize: '15px', fontWeight: 800, color: 'var(--text-main)' }}>
+                Department Administrative Actions
+              </h4>
+              <span style={{ fontSize: '12.5px', color: 'var(--text-muted)' }}>
+                Register personnel or configure sub-department units for {department.name}
               </span>
-              <strong style={{ fontSize: '15px', color: 'var(--text-color)', display: 'block', marginTop: '2px' }}>
-                {manager ? manager.full_name : 'No Active Manager'}
-              </strong>
-              {manager && (
-                <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Code: {manager.manager_id_code}</span>
-              )}
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+              <button 
+                className="btn btn-primary"
+                onClick={() => handleOpenAddEmployee()}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
+              >
+                <UserPlus size={15} /> Add Employee
+              </button>
+              <button 
+                className="btn btn-secondary"
+                onClick={handleOpenAddManager}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
+              >
+                <Shield size={15} /> Add Manager
+              </button>
+              <button 
+                className="btn btn-secondary"
+                onClick={handleOpenAddSubDept}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px' }}
+              >
+                <Plus size={15} /> Add Sub-department
+              </button>
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setMgrForm({
-                full_name: '',
-                username: '',
-                password: '',
-                email: '',
-                phone: '',
-                branch: 'Main Office',
-                joining_date: new Date().toISOString().split('T')[0],
-                status: 'active',
-                profile_image: null,
-                sub_department_id: ''
-              });
-              setMgrErrors({});
-              setMgrSubmitError('');
-              setCurrentManager(null);
-              setIsManagerModalOpen(true);
-            }}
-            className="btn btn-secondary"
-            style={{ height: '54px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
-          >
-            <UserPlus size={16} /> Add Manager
-          </button>
+          {/* 2-Column Dashboard Sections */}
+          <div className="dept-dash-grid">
+            
+            {/* Left Panel: Sub-department Units */}
+            <div className="dept-dash-panel">
+              <div className="dept-dash-panel-title">
+                <span>Sub-departments ({subDepartments.length})</span>
+                <button 
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => setActiveTab('sub_departments')}
+                  style={{ fontSize: '12px', padding: '4px 10px' }}
+                >
+                  View All
+                </button>
+              </div>
 
-          <button
-            onClick={() => {
-              setEmpForm({
-                full_name: '',
-                username: '',
-                password: '',
-                email: '',
-                phone: '',
-                reporting_manager_id: '',
-                joining_date: new Date().toISOString().split('T')[0],
-                status: 'active',
-                profile_image: null,
-                sub_department_id: ''
-              });
-              setEmpErrors({});
-              setEmpSubmitError('');
-              setCurrentEmployee(null);
-              setIsEmployeeModalOpen(true);
-            }}
-            className="btn btn-success"
-            style={{ height: '54px', padding: '0 16px', display: 'inline-flex', alignItems: 'center', gap: '6px', fontWeight: 700 }}
-          >
-            <UserPlus size={16} /> Add Employee
-          </button>
+              {subDepartments.length === 0 ? (
+                <div style={{ padding: '30px 10px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  <Layers size={32} style={{ color: '#cbd5e1', margin: '0 auto 8px auto' }} />
+                  <p style={{ margin: 0, fontSize: '13.5px' }}>No sub-departments configured yet.</p>
+                  <button 
+                    onClick={handleOpenAddSubDept}
+                    style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer', marginTop: '6px' }}
+                  >
+                    + Add first sub-department
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {subDepartments.slice(0, 5).map(sd => (
+                    <div 
+                      key={sd.id}
+                      style={{
+                        padding: '12px 16px',
+                        background: '#f8fafc',
+                        borderRadius: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <span className="dept-code-pill" style={{ fontSize: '10px', padding: '3px 8px' }}>{sd.code}</span>
+                        <strong style={{ fontSize: '13.5px', color: 'var(--text-main)' }}>{sd.name}</strong>
+                      </div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '12px', color: 'var(--text-muted)' }}>
+                        <span>👥 <strong>{sd.employee_count || 0}</strong> staff</span>
+                        <span>👔 <strong>{sd.manager_count || 0}</strong> mgrs</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Right Panel: Top Department Employees */}
+            <div className="dept-dash-panel">
+              <div className="dept-dash-panel-title">
+                <span>Roster Overview ({employees.length} Staff)</span>
+                <button 
+                  className="btn btn-secondary btn-sm"
+                  onClick={() => setActiveTab('employees')}
+                  style={{ fontSize: '12px', padding: '4px 10px' }}
+                >
+                  Manage Employees
+                </button>
+              </div>
+
+              {employees.length === 0 ? (
+                <div style={{ padding: '30px 10px', textAlign: 'center', color: 'var(--text-muted)' }}>
+                  <Users size={32} style={{ color: '#cbd5e1', margin: '0 auto 8px auto' }} />
+                  <p style={{ margin: 0, fontSize: '13.5px' }}>No employees registered in this department yet.</p>
+                  <button 
+                    onClick={() => handleOpenAddEmployee()}
+                    style={{ background: 'none', border: 'none', color: 'var(--primary)', fontWeight: 700, cursor: 'pointer', marginTop: '6px' }}
+                  >
+                    + Register employee now
+                  </button>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {employees.slice(0, 5).map(emp => (
+                    <div 
+                      key={emp.id}
+                      style={{
+                        padding: '10px 14px',
+                        background: '#f8fafc',
+                        borderRadius: '10px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between'
+                      }}
+                    >
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                        <div style={{
+                          width: '32px',
+                          height: '32px',
+                          borderRadius: '50%',
+                          background: '#e2e8f0',
+                          color: '#475569',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontWeight: 700,
+                          fontSize: '12px'
+                        }}>
+                          {emp.full_name?.charAt(0).toUpperCase()}
+                        </div>
+                        <div>
+                          <strong style={{ fontSize: '13px', color: 'var(--text-main)', display: 'block' }}>
+                            {emp.full_name}
+                          </strong>
+                          <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>
+                            {emp.employee_id_code} {emp.sub_department_name ? `• ${emp.sub_department_name}` : ''}
+                          </span>
+                        </div>
+                      </div>
+
+                      <span className={`badge ${emp.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
+                        {emp.status}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+          </div>
         </div>
-      </div>
+      )}
 
-      {/* Columns Workspace */}
-      <div style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: '30px', alignItems: 'start' }}>
-        
-        {/* Left Column: Sub-departments */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
+      {/* ========================================================================= */}
+      {/* TAB 2: 🏢 SUB-DEPARTMENTS                                                 */}
+      {/* ========================================================================= */}
+      {activeTab === 'sub_departments' && (
+        <div>
+          {/* Sub-departments Toolbar */}
+          <div style={{
+            background: '#ffffff',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: 'var(--shadow-sm)',
-            padding: '20px'
-          }}
-        >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0, textTransform: 'uppercase', color: 'var(--text-color)' }}>
-              Sub-departments
-            </h3>
+            borderRadius: '14px',
+            padding: '14px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '360px' }}>
+              <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <input
+                type="text"
+                placeholder="Search sub-departments..."
+                value={subDeptSearch}
+                onChange={(e) => setSubDeptSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 12px 8px 36px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  background: '#f8fafc'
+                }}
+              />
+            </div>
+
             <button 
-              onClick={() => setIsSubDeptModalOpen(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '4px',
-                padding: '6px 10px',
-                backgroundColor: 'var(--primary)',
-                color: '#ffffff',
-                border: 'none',
-                borderRadius: 'var(--radius-xs)',
-                fontSize: '12px',
-                fontWeight: 700,
-                cursor: 'pointer'
-              }}
-              title="Add Sub-department"
+              className="btn btn-primary"
+              onClick={handleOpenAddSubDept}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
             >
-              <Plus size={14} />
-              Add
+              <Plus size={16} /> Add Sub-department
             </button>
           </div>
 
-          {subDepartments.length === 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {/* Direct Department Roster Tab when no sub-departments */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid var(--primary)',
-                  backgroundColor: 'var(--primary-light)',
-                  transition: 'border-color 0.2s, background-color 0.2s'
-                }}
-              >
-                <button
-                  style={{
-                    flex: 1,
-                    padding: '12px 16px',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: 'var(--primary)',
-                    textAlign: 'left',
-                    fontWeight: 700,
-                    fontSize: '14px',
-                    cursor: 'pointer',
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
-                  <span>Direct Department Roster</span>
-                  <span 
-                    style={{ 
-                      backgroundColor: 'var(--primary)', 
-                      color: '#ffffff',
-                      padding: '2px 8px',
-                      borderRadius: '10px',
-                      fontSize: '11px',
-                      fontWeight: 700
-                    }}
-                  >
-                    {employees.filter(e => e.sub_department_id === null).length}
-                  </span>
-                </button>
-              </div>
+          {filteredSubDepts.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Layers size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Sub-departments</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: '0 auto 16px auto', maxWidth: '380px' }}>
+                Break down {department.name} into specialized units (e.g. Content Writers, Designers, Video Editors).
+              </p>
+              <button className="btn btn-primary" onClick={handleOpenAddSubDept}>
+                <Plus size={15} /> Create Sub-department
+              </button>
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              {/* Direct Department Roster Tab */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  borderRadius: 'var(--radius-sm)',
-                  border: '1px solid ' + (activeSubDeptId === null ? 'var(--primary)' : 'var(--border-color)'),
-                  backgroundColor: activeSubDeptId === null ? 'var(--primary-light)' : '#ffffff',
-                  transition: 'border-color 0.2s, background-color 0.2s'
-                }}
-              >
-                <button
-                  onClick={() => setActiveSubDeptId(null)}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              {filteredSubDepts.map(sd => (
+                <div 
+                  key={sd.id}
                   style={{
-                    flex: 1,
-                    padding: '12px 16px',
-                    backgroundColor: 'transparent',
-                    border: 'none',
-                    color: activeSubDeptId === null ? 'var(--primary)' : 'var(--text-color)',
-                    textAlign: 'left',
-                    fontWeight: 700,
-                    fontSize: '14px',
-                    cursor: 'pointer',
+                    background: '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '14px',
+                    padding: '20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
                     display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center'
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
                   }}
                 >
-                  <span>Direct Department Roster</span>
-                  <span 
-                    style={{ 
-                      backgroundColor: activeSubDeptId === null ? 'var(--primary)' : 'var(--bg-light)', 
-                      color: activeSubDeptId === null ? '#ffffff' : 'var(--text-muted)',
-                      padding: '2px 8px',
-                      borderRadius: '10px',
-                      fontSize: '11px',
-                      fontWeight: 700
-                    }}
-                  >
-                    {employees.filter(e => e.sub_department_id === null).length}
-                  </span>
-                </button>
-              </div>
-
-              {subDepartments.map(sd => {
-                const isActive = sd.id === activeSubDeptId;
-                const empCount = employees.filter(e => e.sub_department_id === sd.id).length;
-
-                return (
-                  <div
-                    key={sd.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      borderRadius: 'var(--radius-sm)',
-                      border: '1px solid ' + (isActive ? 'var(--primary)' : 'var(--border-color)'),
-                      backgroundColor: isActive ? 'var(--primary-light)' : '#ffffff',
-                      transition: 'border-color 0.2s, background-color 0.2s'
-                    }}
-                  >
-                    <button
-                      onClick={() => setActiveSubDeptId(sd.id)}
-                      style={{
-                        flex: 1,
-                        padding: '12px 16px',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        color: isActive ? 'var(--primary)' : 'var(--text-color)',
-                        textAlign: 'left',
-                        fontWeight: 700,
-                        fontSize: '14px',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <span>{sd.name} ({sd.code})</span>
-                      <span 
-                        style={{ 
-                          backgroundColor: isActive ? 'var(--primary)' : 'var(--bg-light)', 
-                          color: isActive ? '#ffffff' : 'var(--text-muted)',
-                          padding: '2px 8px',
-                          borderRadius: '10px',
-                          fontSize: '11px',
-                          fontWeight: 700,
-                          marginRight: '6px'
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+                      <span className="dept-code-pill">{sd.code}</span>
+                      <button 
+                        onClick={() => handleDeleteSubDept(sd)}
+                        title="Delete Sub-department"
+                        style={{
+                          background: 'none',
+                          border: 'none',
+                          color: '#94a3b8',
+                          cursor: 'pointer',
+                          padding: '4px'
                         }}
                       >
-                        {empCount}
-                      </span>
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteSubDept(sd);
+                        <Trash2 size={15} />
+                      </button>
+                    </div>
+
+                    <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 12px 0' }}>
+                      {sd.name}
+                    </h3>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '10px', background: '#f8fafc', borderRadius: '10px', marginBottom: '14px' }}>
+                      <div style={{ textAlign: 'center' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#2563eb', display: 'block' }}>{sd.employee_count || 0}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Staff Members</span>
+                      </div>
+                      <div style={{ textAlign: 'center' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#7c3aed', display: 'block' }}>{sd.manager_count || 0}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Managers</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style={{ display: 'flex', gap: '8px', paddingTop: '10px', borderTop: '1px solid #f1f5f9' }}>
+                    <button 
+                      className="btn btn-secondary btn-sm"
+                      onClick={() => {
+                        setEmpSubDeptFilter(String(sd.id));
+                        setActiveTab('employees');
                       }}
-                      style={{
-                        padding: '12px 12px',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        color: 'var(--danger)',
-                        cursor: 'pointer',
-                        opacity: 0.6,
-                        transition: 'opacity 0.2s',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}
-                      title="Delete sub-department"
+                      style={{ flex: 1, fontSize: '12px' }}
                     >
-                      <Trash2 size={15} />
+                      View Staff
+                    </button>
+                    <button 
+                      className="btn btn-primary btn-sm"
+                      onClick={() => handleOpenAddEmployee(String(sd.id))}
+                      style={{ flex: 1, fontSize: '12px' }}
+                    >
+                      + Add Staff
                     </button>
                   </div>
-                );
-              })}
+                </div>
+              ))}
             </div>
           )}
         </div>
+      )}
 
-        {/* Right Column: Staff assigned under sub-department */}
-        <div 
-          style={{
-            backgroundColor: '#ffffff',
+      {/* ========================================================================= */}
+      {/* TAB 3: 👥 EMPLOYEES                                                       */}
+      {/* ========================================================================= */}
+      {activeTab === 'employees' && (
+        <div>
+          {/* Employee Toolbar */}
+          <div style={{
+            background: '#ffffff',
             border: '1px solid var(--border-color)',
-            borderRadius: 'var(--radius-md)',
-            boxShadow: 'var(--shadow-sm)',
-            padding: '24px',
-            minHeight: '400px'
-          }}
-        >
-          {(activeSubDept || subDepartments.length === 0 || activeSubDeptId === null) ? (
-            <div>
-              {/* Header */}
-              <div 
-                style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center', 
-                  borderBottom: '1px solid var(--border-color)',
-                  paddingBottom: '16px',
-                  marginBottom: '20px',
-                  flexWrap: 'wrap',
-                  gap: '12px'
-                }}
-              >
-                <div>
-                  <h2 style={{ fontSize: '18px', fontWeight: 800, color: 'var(--text-color)', margin: 0 }}>
-                    {(() => {
-                      const name = activeSubDept ? activeSubDept.name : department.name;
-                      return name.toLowerCase().endsWith('team') || name.toLowerCase().endsWith('department') ? name : `${name} Team`;
-                    })()}
-                  </h2>
-                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
-                    {activeSubDept 
-                      ? `Staff roster assigned to ${department.name} ➔ ${activeSubDept.name}`
-                      : `Staff roster assigned directly to ${department.name} department`}
-                  </span>
-                </div>
-
-                <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
-                    onClick={() => {
-                      setMgrForm({
-                        full_name: '',
-                        username: '',
-                        password: '',
-                        email: '',
-                        phone: '',
-                        branch: 'Main Office',
-                        joining_date: new Date().toISOString().split('T')[0],
-                        status: 'active',
-                        profile_image: null,
-                        sub_department_id: activeSubDeptId || ''
-                      });
-                      setMgrErrors({});
-                      setMgrSubmitError('');
-                      setCurrentManager(null);
-                      setIsManagerModalOpen(true);
-                    }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '8px 14px',
-                      backgroundColor: 'var(--primary)',
-                      color: '#ffffff',
-                      border: 'none',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <UserPlus size={16} />
-                    Register Manager
-                  </button>
-                  <button
-                    onClick={() => {
-                      setEmpForm({
-                        full_name: '',
-                        username: '',
-                        password: '',
-                        email: '',
-                        phone: '',
-                        reporting_manager_id: '',
-                        joining_date: new Date().toISOString().split('T')[0],
-                        status: 'active',
-                        profile_image: null,
-                        sub_department_id: activeSubDeptId || ''
-                      });
-                      setEmpErrors({});
-                      setEmpSubmitError('');
-                      setCurrentEmployee(null);
-                      setIsEmployeeModalOpen(true);
-                    }}
-                    style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      padding: '8px 14px',
-                      backgroundColor: 'var(--success)',
-                      color: '#ffffff',
-                      border: 'none',
-                      borderRadius: 'var(--radius-sm)',
-                      fontSize: '13px',
-                      fontWeight: 700,
-                      cursor: 'pointer'
-                    }}
-                  >
-                    <UserPlus size={16} />
-                    Register Employee
-                  </button>
-                </div>
+            borderRadius: '14px',
+            padding: '14px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', flex: 1, minWidth: '280px' }}>
+              <div style={{ position: 'relative', width: '100%', maxWidth: '320px' }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                <input
+                  type="text"
+                  placeholder="Search employees..."
+                  value={empSearch}
+                  onChange={(e) => setEmpSearch(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px 8px 36px',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    background: '#f8fafc'
+                  }}
+                />
               </div>
 
-              {/* Combined Roster lists */}
-              {activeManagers.length === 0 && activeEmployees.length === 0 ? (
-                <div style={{ padding: '60px 40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-                  <Users size={36} style={{ margin: '0 auto 12px auto', opacity: 0.5 }} />
-                  <h4 style={{ margin: 0, fontSize: '15px', color: 'var(--text-color)', fontWeight: 700 }}>No Staff Registered</h4>
-                  <p style={{ margin: '6px 0 0 0', fontSize: '13px' }}>
-                    Click "Register Employee" or "Register Manager" to create staff for this {activeSubDept ? 'sub-department' : 'department'}.
-                  </p>
-                </div>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '30px' }}>
-                  
-                  {/* Sub-department Managers */}
-                  {activeManagers.length > 0 && (
-                    <div>
-                      <h3 style={{ fontSize: '13px', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        {activeSubDept ? 'Sub-department Managers' : 'Department Managers'} ({activeManagers.length})
-                      </h3>
-                      <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                          <thead>
-                            <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Manager ID</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Full Name</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Email</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Phone</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Status</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase', textAlign: 'right' }}>Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {activeManagers.map(mgr => (
-                              <tr key={mgr.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', fontWeight: 700, color: 'var(--primary)' }}>
-                                  {mgr.manager_id_code}
-                                </td>
-                                 <td style={{ padding: '14px 10px', fontSize: '13px', fontWeight: 600, color: 'var(--text-color)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    {mgr.profile_image ? (
-                                      <img 
-                                        src={mgr.profile_image} 
-                                        alt={mgr.full_name} 
-                                        style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} 
-                                      />
-                                    ) : (
-                                      <div style={{ 
-                                        width: '28px', 
-                                        height: '28px', 
-                                        borderRadius: '50%', 
-                                        backgroundColor: 'var(--primary-light)', 
-                                        color: 'var(--primary)', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        fontWeight: '700',
-                                        fontSize: '11px'
-                                      }}>
-                                        {mgr.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                                      </div>
-                                    )}
-                                    <span>{mgr.full_name}</span>
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', color: 'var(--text-muted)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    <Mail size={12} />
-                                    {mgr.email}
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', color: 'var(--text-muted)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    <Phone size={12} />
-                                    {mgr.phone}
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px' }}>
-                                  <span className={`badge ${mgr.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
-                                    {mgr.status}
-                                  </span>
-                                </td>
-                                 <td style={{ padding: '14px 10px', textAlign: 'right' }}>
-                                   <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
-                                     <button 
-                                       className="btn btn-secondary btn-sm" 
-                                       onClick={() => handleToggleManagerStatus(mgr)} 
-                                       title={mgr.status === 'active' ? 'Deactivate' : 'Activate'}
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       {mgr.status === 'active' ? (
-                                         <Ban size={14} className="text-danger" />
-                                       ) : (
-                                         <CheckCircle size={14} className="text-success" />
-                                       )}
-                                     </button>
-                                     <button
-                                       className="btn btn-secondary btn-sm"
-                                       onClick={() => handleDeleteManager(mgr.id)}
-                                       title="Delete Manager"
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       <Trash2 size={14} className="text-danger" />
-                                     </button>
-                                   </div>
-                                 </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
+              <select
+                value={empSubDeptFilter}
+                onChange={(e) => setEmpSubDeptFilter(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  background: '#ffffff'
+                }}
+              >
+                <option value="">All Sub-departments</option>
+                <option value="direct">Direct Department Roster</option>
+                {subDepartments.map(sd => (
+                  <option key={sd.id} value={sd.id}>{sd.name} ({sd.code})</option>
+                ))}
+              </select>
 
-                  {/* Sub-department Employees */}
-                  {activeEmployees.length > 0 && (
-                    <div>
-                      <h3 style={{ fontSize: '13px', fontWeight: 800, color: 'var(--text-muted)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
-                        {activeSubDept ? 'Sub-department Employees' : 'Department Employees'} ({activeEmployees.length})
-                      </h3>
-                      <div style={{ overflowX: 'auto' }}>
-                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
-                          <thead>
-                            <tr style={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-muted)' }}>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Employee ID</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Full Name</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Email</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Phone</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase' }}>Status</th>
-                              <th style={{ padding: '12px 10px', fontSize: '12px', fontWeight: 750, textTransform: 'uppercase', textAlign: 'right' }}>Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {activeEmployees.map(emp => (
-                              <tr key={emp.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', fontWeight: 700, color: 'var(--primary)' }}>
-                                  {emp.employee_id_code}
-                                </td>
-                                 <td style={{ padding: '14px 10px', fontSize: '13px', fontWeight: 600, color: 'var(--text-color)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    {emp.profile_image ? (
-                                      <img 
-                                        src={emp.profile_image} 
-                                        alt={emp.full_name} 
-                                        style={{ width: '28px', height: '28px', borderRadius: '50%', objectFit: 'cover' }} 
-                                      />
-                                    ) : (
-                                      <div style={{ 
-                                        width: '28px', 
-                                        height: '28px', 
-                                        borderRadius: '50%', 
-                                        backgroundColor: 'var(--primary-light)', 
-                                        color: 'var(--primary)', 
-                                        display: 'flex', 
-                                        alignItems: 'center', 
-                                        justifyContent: 'center',
-                                        fontWeight: '700',
-                                        fontSize: '11px'
-                                      }}>
-                                        {emp.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2)}
-                                      </div>
-                                    )}
-                                    <span>{emp.full_name}</span>
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', color: 'var(--text-muted)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    <Mail size={12} />
-                                    {emp.email}
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px', color: 'var(--text-muted)' }}>
-                                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                    <Phone size={12} />
-                                    {emp.phone}
-                                  </div>
-                                </td>
-                                <td style={{ padding: '14px 10px', fontSize: '13px' }}>
-                                  <span className={`badge ${emp.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
-                                    {emp.status}
-                                  </span>
-                                </td>
-                                 <td style={{ padding: '14px 10px', textAlign: 'right' }}>
-                                   <div style={{ display: 'inline-flex', gap: '6px', justifyContent: 'flex-end' }}>
-                                     <button 
-                                       className="btn btn-secondary btn-sm" 
-                                       onClick={() => handleToggleEmployeeStatus(emp)} 
-                                       title={emp.status === 'active' ? 'Deactivate' : 'Activate'}
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       {emp.status === 'active' ? (
-                                         <Ban size={14} className="text-danger" />
-                                       ) : (
-                                         <CheckCircle size={14} className="text-success" />
-                                       )}
-                                     </button>
-                                     <button
-                                       className="btn btn-secondary btn-sm"
-                                       onClick={() => handleDeleteEmployee(emp.id)}
-                                       title="Delete Employee"
-                                       style={{ padding: '6px 8px' }}
-                                     >
-                                       <Trash2 size={14} className="text-danger" />
-                                     </button>
-                                   </div>
-                                 </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
+              <select
+                value={empStatusFilter}
+                onChange={(e) => setEmpStatusFilter(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  background: '#ffffff'
+                }}
+              >
+                <option value="">All Statuses</option>
+                <option value="active">Active Only</option>
+                <option value="inactive">Inactive Only</option>
+              </select>
+            </div>
+
+            <button 
+              className="btn btn-primary"
+              onClick={() => handleOpenAddEmployee()}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <UserPlus size={16} /> Add Employee
+            </button>
+          </div>
+
+          {/* Employees List */}
+          {filteredEmployees.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Users size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Employees Found</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: '0 auto 16px auto', maxWidth: '380px' }}>
+                {empSearch || empSubDeptFilter || empStatusFilter ? 'No staff match the selected filters.' : `No employees have been added to ${department.name} yet.`}
+              </p>
+              <button className="btn btn-primary" onClick={() => handleOpenAddEmployee()}>
+                <UserPlus size={15} /> Add First Employee
+              </button>
             </div>
           ) : (
-            <div style={{ padding: '80px 40px', textAlign: 'center', color: 'var(--text-muted)' }}>
-              <Info size={36} style={{ margin: '0 auto 12px auto', opacity: 0.5 }} />
-              <h4 style={{ margin: 0, fontWeight: 700 }}>Select Sub-department</h4>
-              <p style={{ margin: '4px 0 0 0', fontSize: '13px' }}>
-                Select a sub-department from the left column to view its team roster and register staff.
-              </p>
+            <div style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '14px', overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13.5px' }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)' }}>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Employee</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Code / Sub-unit</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Contact</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Reporting Manager</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Status</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredEmployees.map(emp => (
+                    <tr key={emp.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '50%',
+                            background: '#f1f5f9',
+                            color: '#334155',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 800,
+                            fontSize: '13px'
+                          }}>
+                            {emp.full_name?.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <strong style={{ display: 'block', color: 'var(--text-main)' }}>{emp.full_name}</strong>
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>@{emp.username}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span className="dept-code-pill" style={{ fontSize: '11px' }}>{emp.employee_id_code}</span>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          {emp.sub_department_name || 'Direct Roster'}
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontSize: '13px', color: 'var(--text-main)' }}>{emp.email}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{emp.phone}</div>
+                      </td>
+                      <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
+                        {emp.reporting_manager_name || '—'}
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span className={`badge ${emp.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
+                          {emp.status}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', gap: '6px' }}>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleOpenEditEmployee(emp)}
+                            title="Edit Employee"
+                          >
+                            <Edit2 size={13} />
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleOpenResetPassword(emp, 'employee')}
+                            title="Reset Password"
+                          >
+                            <Key size={13} />
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleToggleEmployeeStatus(emp)}
+                            title={emp.status === 'active' ? 'Deactivate' : 'Activate'}
+                          >
+                            {emp.status === 'active' ? (
+                              <Ban size={13} style={{ color: '#e11d48' }} />
+                            ) : (
+                              <CheckCircle size={13} style={{ color: '#059669' }} />
+                            )}
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn danger"
+                            onClick={() => handleDeleteEmployee(emp.id)}
+                            title="Delete Employee"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
+      )}
 
-      </div>
+      {/* ========================================================================= */}
+      {/* TAB 4: 👔 MANAGERS                                                         */}
+      {/* ========================================================================= */}
+      {activeTab === 'managers' && (
+        <div>
+          {/* Manager Toolbar */}
+          <div style={{
+            background: '#ffffff',
+            border: '1px solid var(--border-color)',
+            borderRadius: '14px',
+            padding: '14px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', flex: 1, minWidth: '280px' }}>
+              <div style={{ position: 'relative', width: '100%', maxWidth: '320px' }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                <input
+                  type="text"
+                  placeholder="Search managers..."
+                  value={mgrSearch}
+                  onChange={(e) => setMgrSearch(e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '8px 12px 8px 36px',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '8px',
+                    fontSize: '13px',
+                    background: '#f8fafc'
+                  }}
+                />
+              </div>
 
-      {/* 1. ADD SUB-DEPARTMENT MODAL */}
+              <select
+                value={mgrStatusFilter}
+                onChange={(e) => setMgrStatusFilter(e.target.value)}
+                style={{
+                  padding: '8px 12px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  background: '#ffffff'
+                }}
+              >
+                <option value="">All Statuses</option>
+                <option value="active">Active Only</option>
+                <option value="inactive">Inactive Only</option>
+              </select>
+            </div>
+
+            <button 
+              className="btn btn-primary"
+              onClick={handleOpenAddManager}
+              style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+            >
+              <UserPlus size={16} /> Add Manager
+            </button>
+          </div>
+
+          {filteredManagers.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Shield size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Managers Registered</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: '0 auto 16px auto', maxWidth: '380px' }}>
+                {mgrSearch || mgrStatusFilter ? 'No managers match the selected criteria.' : `Assign a manager to lead ${department.name}.`}
+              </p>
+              <button className="btn btn-primary" onClick={handleOpenAddManager}>
+                <UserPlus size={15} /> Add Department Manager
+              </button>
+            </div>
+          ) : (
+            <div style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '14px', overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13.5px' }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)' }}>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Manager</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Code / Branch</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Contact</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Sub-department</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Status</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', textAlign: 'right' }}>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredManagers.map(mgr => (
+                    <tr key={mgr.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <div style={{
+                            width: '36px',
+                            height: '36px',
+                            borderRadius: '50%',
+                            background: '#eff6ff',
+                            color: '#1d4ed8',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            fontWeight: 800,
+                            fontSize: '13px'
+                          }}>
+                            {mgr.full_name?.charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <strong style={{ display: 'block', color: 'var(--text-main)' }}>{mgr.full_name}</strong>
+                            <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>@{mgr.username}</span>
+                          </div>
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span className="dept-code-pill" style={{ fontSize: '11px' }}>{mgr.manager_id_code}</span>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '2px' }}>
+                          {mgr.branch || 'Main Office'}
+                        </div>
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <div style={{ fontSize: '13px', color: 'var(--text-main)' }}>{mgr.email}</div>
+                        <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{mgr.phone}</div>
+                      </td>
+                      <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
+                        {mgr.sub_department_name || 'Department-wide Lead'}
+                      </td>
+                      <td style={{ padding: '14px 16px' }}>
+                        <span className={`badge ${mgr.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
+                          {mgr.status}
+                        </span>
+                      </td>
+                      <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                        <div style={{ display: 'inline-flex', gap: '6px' }}>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleOpenEditManager(mgr)}
+                            title="Edit Manager"
+                          >
+                            <Edit2 size={13} />
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleOpenResetPassword(mgr, 'manager')}
+                            title="Reset Password"
+                          >
+                            <Key size={13} />
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn"
+                            onClick={() => handleToggleManagerStatus(mgr)}
+                            title={mgr.status === 'active' ? 'Deactivate' : 'Activate'}
+                          >
+                            {mgr.status === 'active' ? (
+                              <Ban size={13} style={{ color: '#e11d48' }} />
+                            ) : (
+                              <CheckCircle size={13} style={{ color: '#059669' }} />
+                            )}
+                          </button>
+                          <button 
+                            className="dept-action-icon-btn danger"
+                            onClick={() => handleDeleteManager(mgr.id)}
+                            title="Delete Manager"
+                          >
+                            <Trash2 size={13} />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 5: 🤝 CLIENTS WORKING WITH THIS DEPARTMENT                            */}
+      {/* ========================================================================= */}
+      {activeTab === 'clients' && (
+        <div>
+          {/* Client Search Toolbar */}
+          <div style={{
+            background: '#ffffff',
+            border: '1px solid var(--border-color)',
+            borderRadius: '14px',
+            padding: '14px 18px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px',
+            marginBottom: '20px'
+          }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '360px' }}>
+              <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+              <input
+                type="text"
+                placeholder="Search clients by name, code or industry..."
+                value={clientSearch}
+                onChange={(e) => setClientSearch(e.target.value)}
+                style={{
+                  width: '100%',
+                  padding: '8px 12px 8px 36px',
+                  border: '1px solid var(--border-color)',
+                  borderRadius: '8px',
+                  fontSize: '13px',
+                  background: '#f8fafc'
+                }}
+              />
+            </div>
+
+            <div style={{ fontSize: '13px', color: 'var(--text-muted)', fontWeight: 600 }}>
+              Showing {filteredClients.length} connected client(s)
+            </div>
+          </div>
+
+          {filteredClients.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Briefcase size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Clients Currently Connected</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: '0 auto 16px auto', maxWidth: '420px' }}>
+                Clients are automatically connected when projects or deliverables are assigned to {department.name}.
+              </p>
+              <a 
+                href="/admin/clients"
+                className="btn btn-secondary"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}
+              >
+                <span>View All Corporate Clients</span>
+                <ExternalLink size={14} />
+              </a>
+            </div>
+          ) : (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+              {filteredClients.map(c => (
+                <div 
+                  key={c.id}
+                  style={{
+                    background: '#ffffff',
+                    border: '1px solid var(--border-color)',
+                    borderRadius: '14px',
+                    padding: '20px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                      <span className="dept-code-pill">{c.client_id_code}</span>
+                      <span className={`badge ${c.status === 'active' ? 'badge-active' : 'badge-inactive'}`}>
+                        {c.status}
+                      </span>
+                    </div>
+
+                    <h3 style={{ fontSize: '17px', fontWeight: 800, color: 'var(--text-main)', margin: '0 0 4px 0' }}>
+                      {c.company_name}
+                    </h3>
+                    <span style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'block', marginBottom: '14px' }}>
+                      {c.industry || 'Enterprise Partner'}
+                    </span>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '10px', background: '#f8fafc', borderRadius: '10px', marginBottom: '14px' }}>
+                      <div style={{ textAlign: 'center' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#2563eb', display: 'block' }}>{c.project_count || 0}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Dept Projects</span>
+                      </div>
+                      <div style={{ textAlign: 'center' }}>
+                        <span style={{ fontSize: '18px', fontWeight: 800, color: '#059669', display: 'block' }}>{c.deliverable_count || 0}</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Deliverables</span>
+                      </div>
+                    </div>
+
+                    <div style={{ fontSize: '12.5px', color: '#475569', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      {c.contact_person && <div>👤 {c.contact_person}</div>}
+                      {c.email && <div>✉️ {c.email}</div>}
+                      {c.phone && <div>📞 {c.phone}</div>}
+                    </div>
+                  </div>
+
+                  <div style={{ paddingTop: '14px', borderTop: '1px solid #f1f5f9', marginTop: '14px' }}>
+                    <a 
+                      href={`/admin/clients?id=${c.id}`}
+                      className="btn btn-secondary btn-sm"
+                      style={{ width: '100%', textAlign: 'center', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}
+                    >
+                      <span>Open Client Profile</span>
+                      <ExternalLink size={13} />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 6: ⚡ EMPLOYEE EFFICIENCY                                             */}
+      {/* ========================================================================= */}
+      {activeTab === 'employee_efficiency' && (
+        <div>
+          {/* Header Banner */}
+          <div style={{
+            background: 'linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%)',
+            border: '1px solid #fde68a',
+            borderRadius: '14px',
+            padding: '18px 24px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 850, color: '#92400e' }}>
+                {department.name} Staff Efficiency Metrics
+              </h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#b45309' }}>
+                Real-time tracking of task deliveries, completion velocity, and individual staff performance
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+              <div style={{ textAlign: 'right' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: '#b45309', display: 'block' }}>
+                  Average Unit Score
+                </span>
+                <span style={{ fontSize: '24px', fontWeight: 900, color: '#92400e' }}>
+                  {stats.avgEmployeeEfficiency}%
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {employeeEfficiency.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Zap size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Performance Records</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: 0 }}>
+                Employees will appear here once tasks and deliverables are tracked.
+              </p>
+            </div>
+          ) : (
+            <div style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '14px', overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13.5px' }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)' }}>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Employee</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Sub-department</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Total Tasks</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Completed</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Pending</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', width: '220px' }}>Efficiency Score</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', textAlign: 'right' }}>Performance Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {employeeEfficiency.map(emp => {
+                    const eff = emp.efficiency || 0;
+                    let barColor = '#10b981';
+                    let badgeClass = 'badge-active';
+                    let label = 'Top Performer';
+
+                    if (eff < 50) {
+                      barColor = '#ef4444';
+                      badgeClass = 'badge-inactive';
+                      label = 'Needs Attention';
+                    } else if (eff < 75) {
+                      barColor = '#f59e0b';
+                      badgeClass = 'badge-warning';
+                      label = 'Average';
+                    } else if (eff < 90) {
+                      barColor = '#3b82f6';
+                      badgeClass = 'badge-info';
+                      label = 'Good';
+                    }
+
+                    return (
+                      <tr key={emp.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={{ padding: '14px 16px' }}>
+                          <strong style={{ display: 'block', color: 'var(--text-main)' }}>{emp.full_name}</strong>
+                          <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>{emp.employee_id_code}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px', color: 'var(--text-muted)' }}>
+                          {emp.sub_department_name || 'Direct Roster'}
+                        </td>
+                        <td style={{ padding: '14px 16px', fontWeight: 700 }}>
+                          {emp.total_tasks}
+                        </td>
+                        <td style={{ padding: '14px 16px', color: '#059669', fontWeight: 700 }}>
+                          {emp.completed_tasks}
+                        </td>
+                        <td style={{ padding: '14px 16px', color: '#d97706', fontWeight: 700 }}>
+                          {emp.pending_tasks}
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <div className="dept-eff-bar-wrapper">
+                            <div className="dept-eff-bar-bg">
+                              <div 
+                                className="dept-eff-bar-fill" 
+                                style={{ width: `${Math.min(eff, 100)}%`, background: barColor }} 
+                              />
+                            </div>
+                            <span className="dept-eff-pct" style={{ color: barColor }}>{eff}%</span>
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                          <span className={`badge ${badgeClass}`} style={{ fontSize: '11.5px', padding: '4px 10px' }}>
+                            {label}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* TAB 7: 🏆 MANAGER EFFICIENCY                                              */}
+      {/* ========================================================================= */}
+      {activeTab === 'manager_efficiency' && (
+        <div>
+          {/* Header Banner */}
+          <div style={{
+            background: 'linear-gradient(135deg, #ede9fe 0%, #f5f3ff 100%)',
+            border: '1px solid #ddd6fe',
+            borderRadius: '14px',
+            padding: '18px 24px',
+            marginBottom: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '12px'
+          }}>
+            <div>
+              <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 850, color: '#5b21b6' }}>
+                {department.name} Leadership Efficiency
+              </h3>
+              <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#6d28d9' }}>
+                Supervisory throughput, team delivery rates, and review turnaround metrics
+              </p>
+            </div>
+
+            <div style={{ textAlign: 'right' }}>
+              <span style={{ fontSize: '11px', fontWeight: 700, textTransform: 'uppercase', color: '#6d28d9', display: 'block' }}>
+                Overall Leadership Rating
+              </span>
+              <span style={{ fontSize: '24px', fontWeight: 900, color: '#5b21b6' }}>
+                {stats.avgManagerEfficiency}%
+              </span>
+            </div>
+          </div>
+
+          {managerEfficiency.length === 0 ? (
+            <div style={{ background: '#ffffff', border: '1px dashed var(--border-color)', borderRadius: '14px', padding: '50px 20px', textAlign: 'center' }}>
+              <Award size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
+              <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Manager Performance Records</h4>
+              <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: 0 }}>
+                Managers assigned to this department will display their supervised throughput here.
+              </p>
+            </div>
+          ) : (
+            <div style={{ background: '#ffffff', border: '1px solid var(--border-color)', borderRadius: '14px', overflow: 'hidden' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13.5px' }}>
+                <thead>
+                  <tr style={{ background: '#f8fafc', borderBottom: '1px solid var(--border-color)' }}>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Manager</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Manager Code</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Team Size</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Assigned Deliverables</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)' }}>Completed & Approved</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', width: '220px' }}>Team Delivery Rate</th>
+                    <th style={{ padding: '12px 16px', fontWeight: 800, color: 'var(--text-main)', textAlign: 'right' }}>Leadership Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {managerEfficiency.map(mgr => {
+                    const eff = mgr.efficiency || 0;
+                    let barColor = '#10b981';
+                    let label = 'Excellent';
+                    let badgeClass = 'badge-active';
+
+                    if (eff < 50) {
+                      barColor = '#ef4444';
+                      label = 'Critical';
+                      badgeClass = 'badge-inactive';
+                    } else if (eff < 75) {
+                      barColor = '#f59e0b';
+                      label = 'Moderate';
+                      badgeClass = 'badge-warning';
+                    } else if (eff < 90) {
+                      barColor = '#3b82f6';
+                      label = 'Strong';
+                      badgeClass = 'badge-info';
+                    }
+
+                    return (
+                      <tr key={mgr.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                        <td style={{ padding: '14px 16px' }}>
+                          <strong style={{ display: 'block', color: 'var(--text-main)' }}>{mgr.full_name}</strong>
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <span className="dept-code-pill" style={{ fontSize: '11px' }}>{mgr.manager_id_code}</span>
+                        </td>
+                        <td style={{ padding: '14px 16px', color: '#2563eb', fontWeight: 700 }}>
+                          👥 {mgr.team_size || 0} Staff
+                        </td>
+                        <td style={{ padding: '14px 16px', fontWeight: 700 }}>
+                          {mgr.total_tasks}
+                        </td>
+                        <td style={{ padding: '14px 16px', color: '#059669', fontWeight: 700 }}>
+                          {mgr.completed_tasks}
+                        </td>
+                        <td style={{ padding: '14px 16px' }}>
+                          <div className="dept-eff-bar-wrapper">
+                            <div className="dept-eff-bar-bg">
+                              <div 
+                                className="dept-eff-bar-fill" 
+                                style={{ width: `${Math.min(eff, 100)}%`, background: barColor }} 
+                              />
+                            </div>
+                            <span className="dept-eff-pct" style={{ color: barColor }}>{eff}%</span>
+                          </div>
+                        </td>
+                        <td style={{ padding: '14px 16px', textAlign: 'right' }}>
+                          <span className={`badge ${badgeClass}`} style={{ fontSize: '11.5px', padding: '4px 10px' }}>
+                            {label}
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODAL 1: ADD SUB-DEPARTMENT                                               */}
+      {/* ========================================================================= */}
       <Modal
         isOpen={isSubDeptModalOpen}
-        onClose={() => {
-          setIsSubDeptModalOpen(false);
-          setSubDeptForm({ name: '', code: '' });
-          setSubDeptError('');
-        }}
-        title="Add Sub-department"
+        onClose={() => setIsSubDeptModalOpen(false)}
+        title={`Create Sub-department in ${department.name}`}
         footer={
           <>
             <button className="btn btn-secondary" onClick={() => setIsSubDeptModalOpen(false)}>
               Cancel
             </button>
             <button className="btn btn-primary" onClick={handleSubDeptSubmit}>
-              Create Sub-dept
+              Create Sub-department
             </button>
           </>
         }
       >
         <form onSubmit={handleSubDeptSubmit}>
           {subDeptError && (
-            <div style={{ padding: '10px 14px', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: '4px', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
+            <div style={{
+              padding: '10px 14px',
+              backgroundColor: 'var(--danger-light)',
+              color: 'var(--danger)',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 600,
+              marginBottom: '16px'
+            }}>
               {subDeptError}
             </div>
           )}
@@ -1191,32 +1878,31 @@ const DepartmentDetail = ({ deptId, onBack }) => {
             name="name"
             value={subDeptForm.name}
             onChange={(e) => setSubDeptForm(prev => ({ ...prev, name: e.target.value }))}
-            placeholder="e.g. Video Editor, Graphic Designer"
+            placeholder="e.g. Content Writers, Graphic Designers"
             required
           />
 
           <FormInput
-            label="Code Prefix (2-12 letters/numbers)"
+            label="Code Prefix"
             name="code"
             value={subDeptForm.code}
             onChange={(e) => setSubDeptForm(prev => ({ ...prev, code: e.target.value }))}
-            placeholder="e.g. VD, GD, CD-RS"
+            placeholder="e.g. CW-RS, GD-RS, VD-RS"
             required
           />
         </form>
       </Modal>
 
-      {/* 2. REGISTER EMPLOYEE MODAL */}
+      {/* ========================================================================= */}
+      {/* MODAL 2: REGISTER / EDIT EMPLOYEE                                         */}
+      {/* ========================================================================= */}
       <Modal
         isOpen={isEmployeeModalOpen}
-        onClose={() => {
-          setIsEmployeeModalOpen(false);
-          setEmpSubmitError('');
-        }}
-        title={currentEmployee ? `Edit Employee Profile` : (activeSubDept ? `Register Employee under ${activeSubDept.name}` : `Register Employee under ${department.name}`)}
+        onClose={() => setIsEmployeeModalOpen(false)}
+        title={currentEmployee ? `Edit Employee Profile` : `Register Employee in ${department.name}`}
         footer={
           <>
-            <button className="btn btn-secondary" onClick={() => { setIsEmployeeModalOpen(false); setCurrentEmployee(null); }}>
+            <button className="btn btn-secondary" onClick={() => setIsEmployeeModalOpen(false)}>
               Cancel
             </button>
             <button className="btn btn-primary" onClick={handleEmployeeSubmit}>
@@ -1227,25 +1913,32 @@ const DepartmentDetail = ({ deptId, onBack }) => {
       >
         <form onSubmit={handleEmployeeSubmit}>
           {empSubmitError && (
-            <div style={{ padding: '10px 14px', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: '4px', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
+            <div style={{
+              padding: '10px 14px',
+              backgroundColor: 'var(--danger-light)',
+              color: 'var(--danger)',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 600,
+              marginBottom: '16px'
+            }}>
               {empSubmitError}
             </div>
           )}
 
-
-
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div className="form-group">
-              <label className="form-label">Parent Department</label>
+              <label className="form-label">Department</label>
               <input type="text" className="form-control" value={department.name} disabled style={{ backgroundColor: '#f1f5f9' }} />
             </div>
+
             <FormSelect
-              label="Sub-department Assignment (Optional)"
+              label="Sub-department"
               name="sub_department_id"
               value={empForm.sub_department_id}
               onChange={(e) => setEmpForm(prev => ({ ...prev, sub_department_id: e.target.value }))}
               options={subDepartments.map(sd => ({ value: sd.id, label: `${sd.name} (${sd.code})` }))}
-              emptyOptionLabel="None (Direct Department Employee)"
+              emptyOptionLabel="Direct Department Roster"
             />
           </div>
 
@@ -1270,6 +1963,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               required={!currentEmployee}
               disabled={!!currentEmployee}
             />
+
             {!currentEmployee ? (
               <FormInput
                 label="Initial Password"
@@ -1345,17 +2039,16 @@ const DepartmentDetail = ({ deptId, onBack }) => {
         </form>
       </Modal>
 
-      {/* 3. REGISTER MANAGER MODAL */}
+      {/* ========================================================================= */}
+      {/* MODAL 3: REGISTER / EDIT MANAGER                                          */}
+      {/* ========================================================================= */}
       <Modal
         isOpen={isManagerModalOpen}
-        onClose={() => {
-          setIsManagerModalOpen(false);
-          setMgrSubmitError('');
-        }}
-        title={currentManager ? `Edit Manager Profile` : (activeSubDept ? `Register Manager under ${activeSubDept.name}` : `Register Manager under ${department.name}`)}
+        onClose={() => setIsManagerModalOpen(false)}
+        title={currentManager ? `Edit Manager Profile` : `Register Manager in ${department.name}`}
         footer={
           <>
-            <button className="btn btn-secondary" onClick={() => { setIsManagerModalOpen(false); setCurrentManager(null); }}>
+            <button className="btn btn-secondary" onClick={() => setIsManagerModalOpen(false)}>
               Cancel
             </button>
             <button className="btn btn-primary" onClick={handleManagerSubmit}>
@@ -1366,18 +2059,25 @@ const DepartmentDetail = ({ deptId, onBack }) => {
       >
         <form onSubmit={handleManagerSubmit}>
           {mgrSubmitError && (
-            <div style={{ padding: '10px 14px', backgroundColor: 'var(--danger-light)', color: 'var(--danger)', borderRadius: '4px', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
+            <div style={{
+              padding: '10px 14px',
+              backgroundColor: 'var(--danger-light)',
+              color: 'var(--danger)',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 600,
+              marginBottom: '16px'
+            }}>
               {mgrSubmitError}
             </div>
           )}
-
-
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
             <div className="form-group">
               <label className="form-label">Parent Department</label>
               <input type="text" className="form-control" value={department.name} disabled style={{ backgroundColor: '#f1f5f9' }} />
             </div>
+
             <FormSelect
               label="Sub-department Assignment (Optional)"
               name="sub_department_id"
@@ -1409,6 +2109,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               required={!currentManager}
               disabled={!!currentManager}
             />
+
             {!currentManager ? (
               <FormInput
                 label="Initial Password"
@@ -1457,7 +2158,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               value={mgrForm.branch}
               onChange={(e) => setMgrForm(prev => ({ ...prev, branch: e.target.value }))}
               error={mgrErrors.branch}
-              placeholder="e.g. Chennai, Bangalore"
+              placeholder="e.g. Main Office, Chennai"
               required
             />
             <FormInput
@@ -1469,6 +2170,55 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               required
             />
           </div>
+        </form>
+      </Modal>
+
+      {/* ========================================================================= */}
+      {/* MODAL 4: RESET USER PASSWORD                                              */}
+      {/* ========================================================================= */}
+      <Modal
+        isOpen={isResetPasswordModalOpen}
+        onClose={() => setIsResetPasswordModalOpen(false)}
+        title={`Reset Password for ${targetUserForReset?.name}`}
+        footer={
+          <>
+            <button className="btn btn-secondary" onClick={() => setIsResetPasswordModalOpen(false)}>
+              Cancel
+            </button>
+            <button className="btn btn-primary" onClick={handleResetPasswordSubmit}>
+              Update Password
+            </button>
+          </>
+        }
+      >
+        <form onSubmit={handleResetPasswordSubmit}>
+          {resetError && (
+            <div style={{
+              padding: '10px 14px',
+              backgroundColor: 'var(--danger-light)',
+              color: 'var(--danger)',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: 600,
+              marginBottom: '16px'
+            }}>
+              {resetError}
+            </div>
+          )}
+
+          <p style={{ fontSize: '13.5px', color: 'var(--text-muted)', marginBottom: '16px' }}>
+            Set a new secure password for <strong>{targetUserForReset?.name}</strong> ({targetUserForReset?.type}).
+          </p>
+
+          <FormInput
+            label="New Password"
+            name="newPassword"
+            type="password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
+            placeholder="Enter at least 6 characters"
+            required
+          />
         </form>
       </Modal>
 

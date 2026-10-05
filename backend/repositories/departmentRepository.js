@@ -5,28 +5,68 @@ class DepartmentRepository {
     return conn || pool;
   }
 
-  async getDepartmentsList({ limit, offset, sortColumn, sortOrder, searchQuery, statusFilter }) {
-    let query = "SELECT * FROM departments WHERE deleted_at IS NULL";
+  async getDepartmentsList({ limit, offset, sortColumn, sortOrder, searchQuery, statusFilter } = {}) {
+    let query = `
+      SELECT 
+        d.*,
+        (
+          SELECT m.full_name 
+          FROM managers m 
+          JOIN users u ON m.user_id = u.id 
+          WHERE m.department_id = d.id AND m.status = 'active' AND u.deleted_at IS NULL 
+          LIMIT 1
+        ) AS manager_name,
+        (
+          SELECT COUNT(*) 
+          FROM managers m 
+          JOIN users u ON m.user_id = u.id 
+          WHERE m.department_id = d.id AND m.status = 'active' AND u.deleted_at IS NULL
+        ) AS manager_count,
+        (
+          SELECT COUNT(*) 
+          FROM employees e 
+          JOIN users u ON e.user_id = u.id 
+          WHERE e.department_id = d.id AND e.status = 'active' AND u.deleted_at IS NULL
+        ) AS employee_count,
+        (
+          SELECT COUNT(*) 
+          FROM sub_departments sd 
+          WHERE sd.department_id = d.id
+        ) AS sub_department_count,
+        (
+          SELECT COUNT(DISTINCT c.id) 
+          FROM clients c 
+          WHERE c.deleted_at IS NULL 
+            AND (
+              EXISTS (SELECT 1 FROM projects p WHERE p.client_id = c.id AND p.department_id = d.id AND p.deleted_at IS NULL)
+              OR EXISTS (SELECT 1 FROM monthly_deliverables md WHERE md.client_id = c.id AND md.department_id = d.id AND md.deleted_at IS NULL)
+            )
+        ) AS client_count
+      FROM departments d 
+      WHERE d.deleted_at IS NULL
+    `;
     const params = [];
 
     if (searchQuery) {
-      query += ` AND (name LIKE ? OR code LIKE ?)`;
+      query += ` AND (d.name LIKE ? OR d.code LIKE ? OR d.description LIKE ?)`;
       const like = `%${searchQuery}%`;
-      params.push(like, like);
+      params.push(like, like, like);
     }
 
     if (statusFilter) {
-      query += ` AND status = ?`;
+      query += ` AND d.status = ?`;
       params.push(statusFilter);
     }
 
-    const allowedSort = ['name', 'code', 'status'];
-    const column = allowedSort.includes(sortColumn) ? sortColumn : 'id';
+    const allowedSort = ['name', 'code', 'status', 'employee_count', 'manager_count'];
+    const column = allowedSort.includes(sortColumn) ? sortColumn : 'd.id';
     const order = sortOrder === 'desc' ? 'DESC' : 'ASC';
     query += ` ORDER BY ${column} ${order}`;
 
-    query += ` LIMIT ? OFFSET ?`;
-    params.push(Number(limit), Number(offset));
+    if (limit) {
+      query += ` LIMIT ? OFFSET ?`;
+      params.push(Number(limit), Number(offset || 0));
+    }
 
     const [rows] = await pool.query(query, params);
     return rows;
