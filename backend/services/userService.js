@@ -3,6 +3,7 @@ const userRepository = require('../repositories/userRepository');
 const clientRepository = require('../repositories/clientRepository');
 const dashboardRepository = require('../repositories/dashboardRepository');
 const notificationRepository = require('../repositories/notificationRepository');
+const onesignalService = require('./onesignalService');
 const pool = require('../config/db');
 function formatToMySQLDate(inputDate) {
   if (!inputDate) return null;
@@ -209,7 +210,12 @@ class UserService {
       await connection.commit();
       
       // Send Welcome Email in the background
-      onesignalService.sendWelcomeEmail(data.email, data.full_name, 'Manager', data.department_id, data.sub_department_id);
+      try {
+        Promise.resolve(onesignalService.sendWelcomeEmail(data.email, data.full_name, 'Manager', data.department_id, data.sub_department_id))
+          .catch(err => console.error('[UserService] Failed to send welcome email to manager:', err.message));
+      } catch (err) {
+        console.error('[UserService] Error initiating welcome email to manager:', err.message);
+      }
 
       return { id: profileId, manager_id_code: managerIdCode };
     } catch (error) {
@@ -416,7 +422,12 @@ class UserService {
       await connection.commit();
 
       // Send Welcome Email in the background
-      onesignalService.sendWelcomeEmail(data.email, data.full_name, 'Employee', data.department_id, data.sub_department_id);
+      try {
+        Promise.resolve(onesignalService.sendWelcomeEmail(data.email, data.full_name, 'Employee', data.department_id, data.sub_department_id))
+          .catch(err => console.error('[UserService] Failed to send welcome email to employee:', err.message));
+      } catch (err) {
+        console.error('[UserService] Error initiating welcome email to employee:', err.message);
+      }
 
       return { id: profileId, employee_id_code: employeeIdCode };
     } catch (error) {
