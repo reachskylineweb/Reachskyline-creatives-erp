@@ -218,27 +218,17 @@ class DepartmentService {
       throw error;
     }
 
-    // 1. Get primary active manager for department header
-    const [managers] = await pool.query(
-      `SELECT m.id, m.full_name, m.manager_id_code, m.phone, u.email, u.username
-       FROM managers m
-       JOIN users u ON m.user_id = u.id
-       WHERE m.department_id = ? AND m.sub_department_id IS NULL AND m.status = 'active' AND u.deleted_at IS NULL
-       LIMIT 1`,
-      [departmentId]
-    );
-    const manager = managers[0] || null;
-
-    // 1b. Get all managers in this department (including sub-departments)
+    // 1. Get all managers in this department (including sub-departments)
     const [allManagers] = await pool.query(
       `SELECT m.id, m.manager_id_code, m.full_name, m.phone, m.branch, m.sub_department_id, 
               sd.name AS sub_department_name, u.username, u.email, m.status, m.joining_date, m.profile_image
        FROM managers m
        JOIN users u ON m.user_id = u.id
        LEFT JOIN sub_departments sd ON m.sub_department_id = sd.id
-       WHERE m.department_id = ? AND u.deleted_at IS NULL
+       WHERE (m.department_id = ? OR m.sub_department_id IN (SELECT id FROM sub_departments WHERE department_id = ?))
+         AND u.deleted_at IS NULL
        ORDER BY m.id DESC`,
-      [departmentId]
+      [departmentId, departmentId]
     );
 
     // 2. Get sub-departments with counts
@@ -263,9 +253,10 @@ class DepartmentService {
        JOIN users u ON e.user_id = u.id
        LEFT JOIN sub_departments sd ON e.sub_department_id = sd.id
        LEFT JOIN managers mgr ON e.reporting_manager_id = mgr.id
-       WHERE e.department_id = ? AND u.deleted_at IS NULL
+       WHERE (e.department_id = ? OR e.sub_department_id IN (SELECT id FROM sub_departments WHERE department_id = ?))
+         AND u.deleted_at IS NULL
        ORDER BY e.id DESC`,
-      [departmentId]
+      [departmentId, departmentId]
     );
 
     // 4. Get clients working with this department
@@ -381,7 +372,6 @@ class DepartmentService {
 
     return {
       department: dept,
-      manager,
       allManagers,
       subDepartments,
       employees,

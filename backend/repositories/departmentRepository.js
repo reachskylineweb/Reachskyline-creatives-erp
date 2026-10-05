@@ -10,23 +10,18 @@ class DepartmentRepository {
       SELECT 
         d.*,
         (
-          SELECT m.full_name 
-          FROM managers m 
-          JOIN users u ON m.user_id = u.id 
-          WHERE m.department_id = d.id AND m.status = 'active' AND u.deleted_at IS NULL 
-          LIMIT 1
-        ) AS manager_name,
-        (
           SELECT COUNT(*) 
           FROM managers m 
           JOIN users u ON m.user_id = u.id 
-          WHERE m.department_id = d.id AND m.status = 'active' AND u.deleted_at IS NULL
+          WHERE (m.department_id = d.id OR m.sub_department_id IN (SELECT id FROM sub_departments WHERE department_id = d.id))
+            AND u.deleted_at IS NULL
         ) AS manager_count,
         (
           SELECT COUNT(*) 
           FROM employees e 
           JOIN users u ON e.user_id = u.id 
-          WHERE e.department_id = d.id AND e.status = 'active' AND u.deleted_at IS NULL
+          WHERE (e.department_id = d.id OR e.sub_department_id IN (SELECT id FROM sub_departments WHERE department_id = d.id))
+            AND u.deleted_at IS NULL
         ) AS employee_count,
         (
           SELECT COUNT(*) 

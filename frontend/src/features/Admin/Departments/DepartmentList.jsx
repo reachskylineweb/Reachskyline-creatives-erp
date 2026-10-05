@@ -489,11 +489,11 @@ const DepartmentList = () => {
                     {dept.description || 'Corporate operations, team deliverables, and strategic workflows.'}
                   </p>
 
-                  {/* 4-Stat Metric Box */}
+                  {/* Department Personnel & Connected Entities */}
                   <div className="dept-card-stats">
                     <div className="dept-stat-item">
                       <span className="dept-stat-val" style={{ color: '#2563eb' }}>{empCount}</span>
-                      <span className="dept-stat-lbl">Staff</span>
+                      <span className="dept-stat-lbl">Employees</span>
                     </div>
                     <div className="dept-stat-item">
                       <span className="dept-stat-val" style={{ color: '#7c3aed' }}>{mgrCount}</span>
@@ -501,24 +501,11 @@ const DepartmentList = () => {
                     </div>
                     <div className="dept-stat-item">
                       <span className="dept-stat-val" style={{ color: '#d97706' }}>{subCount}</span>
-                      <span className="dept-stat-lbl">Sub-units</span>
+                      <span className="dept-stat-lbl">Sub-depts</span>
                     </div>
                     <div className="dept-stat-item">
                       <span className="dept-stat-val" style={{ color: '#059669' }}>{clientCount}</span>
                       <span className="dept-stat-lbl">Clients</span>
-                    </div>
-                  </div>
-
-                  {/* Primary Manager Leadership preview */}
-                  <div className="dept-card-leader">
-                    <div className="dept-leader-avatar">
-                      {dept.manager_name ? dept.manager_name.charAt(0).toUpperCase() : <Shield size={16} />}
-                    </div>
-                    <div className="dept-leader-info">
-                      <span className="dept-leader-role">Department Head</span>
-                      <span className="dept-leader-name" title={dept.manager_name || 'No Lead Manager Assigned'}>
-                        {dept.manager_name || 'No Manager Assigned'}
-                      </span>
                     </div>
                   </div>
 

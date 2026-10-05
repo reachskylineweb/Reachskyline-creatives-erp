@@ -441,7 +441,6 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
   // Filtered views
   const department = details?.department || {};
-  const manager = details?.manager || null;
   const allManagers = details?.allManagers || [];
   const subDepartments = details?.subDepartments || [];
   const employees = details?.employees || [];
@@ -598,54 +597,13 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               </p>
             </div>
           </div>
-
-          {/* Quick Leadership Card */}
-          <div 
-            style={{
-              background: '#ffffff',
-              border: '1px solid var(--border-color)',
-              borderRadius: '12px',
-              padding: '12px 18px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.02)',
-              minWidth: '240px'
-            }}
-          >
-            <div style={{
-              width: '40px',
-              height: '40px',
-              borderRadius: '50%',
-              background: 'linear-gradient(135deg, #4f46e5, #6366f1)',
-              color: '#ffffff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 800,
-              fontSize: '14px'
-            }}>
-              {manager ? manager.full_name.charAt(0).toUpperCase() : <Shield size={18} />}
-            </div>
-            <div>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.4px', display: 'block' }}>
-                Department Head
-              </span>
-              <strong style={{ fontSize: '14.5px', color: 'var(--text-main)', display: 'block', marginTop: '1px' }}>
-                {manager ? manager.full_name : 'No Lead Assigned'}
-              </strong>
-              {manager && (
-                <span style={{ fontSize: '11.5px', color: 'var(--text-muted)' }}>{manager.manager_id_code}</span>
-              )}
-            </div>
-          </div>
         </div>
 
         {/* Quick Summary Pill Bar */}
         <div className="dept-hero-stats-bar">
           <div className="dept-hero-pill">
             <Users size={14} style={{ color: '#2563eb' }} />
-            <span>Staff: <strong>{stats.totalEmployees}</strong> ({stats.activeEmployees} active)</span>
+            <span>Employees: <strong>{stats.totalEmployees}</strong> ({stats.activeEmployees} active)</span>
           </div>
           <div className="dept-hero-pill">
             <Shield size={14} style={{ color: '#7c3aed' }} />
@@ -653,7 +611,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           </div>
           <div className="dept-hero-pill">
             <Layers size={14} style={{ color: '#d97706' }} />
-            <span>Sub-units: <strong>{stats.totalSubDepartments}</strong></span>
+            <span>Sub-departments: <strong>{stats.totalSubDepartments}</strong></span>
           </div>
           <div className="dept-hero-pill">
             <Briefcase size={14} style={{ color: '#059669' }} />
@@ -882,7 +840,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                         <strong style={{ fontSize: '13.5px', color: 'var(--text-main)' }}>{sd.name}</strong>
                       </div>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '12px', color: 'var(--text-muted)' }}>
-                        <span>👥 <strong>{sd.employee_count || 0}</strong> staff</span>
+                        <span>👥 <strong>{sd.employee_count || 0}</strong> employees</span>
                         <span>👔 <strong>{sd.manager_count || 0}</strong> mgrs</span>
                       </div>
                     </div>
@@ -894,7 +852,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
             {/* Right Panel: Top Department Employees */}
             <div className="dept-dash-panel">
               <div className="dept-dash-panel-title">
-                <span>Roster Overview ({employees.length} Staff)</span>
+                <span>Employees Overview ({employees.length})</span>
                 <button 
                   className="btn btn-secondary btn-sm"
                   onClick={() => setActiveTab('employees')}
@@ -1064,7 +1022,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px', padding: '10px', background: '#f8fafc', borderRadius: '10px', marginBottom: '14px' }}>
                       <div style={{ textAlign: 'center' }}>
                         <span style={{ fontSize: '18px', fontWeight: 800, color: '#2563eb', display: 'block' }}>{sd.employee_count || 0}</span>
-                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Staff Members</span>
+                        <span style={{ fontSize: '11px', color: 'var(--text-muted)', fontWeight: 600 }}>Employees</span>
                       </div>
                       <div style={{ textAlign: 'center' }}>
                         <span style={{ fontSize: '18px', fontWeight: 800, color: '#7c3aed', display: 'block' }}>{sd.manager_count || 0}</span>
@@ -1082,14 +1040,14 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                       }}
                       style={{ flex: 1, fontSize: '12px' }}
                     >
-                      View Staff
+                      View Employees
                     </button>
                     <button 
                       className="btn btn-primary btn-sm"
                       onClick={() => handleOpenAddEmployee(String(sd.id))}
                       style={{ flex: 1, fontSize: '12px' }}
                     >
-                      + Add Staff
+                      + Add Employee
                     </button>
                   </div>
                 </div>
@@ -1186,7 +1144,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
               <Users size={40} style={{ color: '#cbd5e1', margin: '0 auto 12px auto' }} />
               <h4 style={{ margin: '0 0 6px 0', fontSize: '16px', fontWeight: 800 }}>No Employees Found</h4>
               <p style={{ color: 'var(--text-muted)', fontSize: '13.5px', margin: '0 auto 16px auto', maxWidth: '380px' }}>
-                {empSearch || empSubDeptFilter || empStatusFilter ? 'No staff match the selected filters.' : `No employees have been added to ${department.name} yet.`}
+                {empSearch || empSubDeptFilter || empStatusFilter ? 'No employees match the selected filters.' : `No employees have been added to ${department.name} yet.`}
               </p>
               <button className="btn btn-primary" onClick={() => handleOpenAddEmployee()}>
                 <UserPlus size={15} /> Add First Employee
@@ -1611,10 +1569,10 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           }}>
             <div>
               <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 850, color: '#92400e' }}>
-                {department.name} Staff Efficiency Metrics
+                {department.name} Employee Efficiency Metrics
               </h3>
               <p style={{ margin: '4px 0 0 0', fontSize: '13px', color: '#b45309' }}>
-                Real-time tracking of task deliveries, completion velocity, and individual staff performance
+                Real-time tracking of task deliveries, completion velocity, and individual employee performance
               </p>
             </div>
 
@@ -1806,7 +1764,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                           <span className="dept-code-pill" style={{ fontSize: '11px' }}>{mgr.manager_id_code}</span>
                         </td>
                         <td style={{ padding: '14px 16px', color: '#2563eb', fontWeight: 700 }}>
-                          👥 {mgr.team_size || 0} Staff
+                          👥 {mgr.team_size || 0} Employees
                         </td>
                         <td style={{ padding: '14px 16px', fontWeight: 700 }}>
                           {mgr.total_tasks}
