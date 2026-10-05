@@ -4,9 +4,17 @@ const getBaseURL = () => {
   const envUrl = import.meta.env.VITE_API_URL;
   if (envUrl) {
     const trimmed = envUrl.trim().replace(/\/+$/, '');
+    if (trimmed === '/api' || trimmed.startsWith('/api/')) {
+      return trimmed;
+    }
+    // In development mode, route requests through same-origin '/api' proxy
+    // to avoid CORS preflight, private network access errors, and socket connection drops
+    if (import.meta.env.DEV) {
+      return '/api';
+    }
     return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
   }
-  return 'https://api.reachskyline.com/api';
+  return '/api';
 };
 
 const api = axios.create({

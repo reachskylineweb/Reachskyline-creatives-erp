@@ -238,7 +238,8 @@ app.post('/api/blog-calendar/month/:month/delete', (req, res, next) => {
 
 // ==============================================================================
 
-// Register API Routes
+// Register API Routes (support both /api and fallback /api/api)
+app.use('/api/api', apiRoutes);
 app.use('/api', apiRoutes);
 
 // 404 Route handler
@@ -291,6 +292,8 @@ async function startServer(retryCount = 0) {
     await pool.connectWithRetry();
 
     server = app.listen(PORT);
+    server.keepAliveTimeout = 65000;
+    server.headersTimeout = 66000;
 
     server.on('listening', () => {
       logger.info(`==================================================`);

@@ -129,9 +129,17 @@ export const AuthProvider = ({ children }) => {
         return { success: true };
       }
     } catch (err) {
-      const errMsg = err.response && err.response.data && err.response.data.message
-        ? err.response.data.message
-        : 'Wrong credentials! Invalid username or password.';
+      console.error('[AuthContext] Login error caught:', err);
+      let errMsg = 'Wrong credentials! Invalid username or password.';
+      if (err.response && err.response.data && err.response.data.message) {
+        errMsg = err.response.data.message;
+      } else if (err.code === 'ECONNABORTED' || (err.message && err.message.includes('timeout'))) {
+        errMsg = 'Connection timed out. The server took too long to respond.';
+      } else if (!err.response && (err.code === 'ERR_NETWORK' || (err.message && err.message.toLowerCase().includes('network')))) {
+        errMsg = 'Network error: Cannot reach backend server. Please verify the server is running.';
+      } else if (err.message) {
+        errMsg = err.message;
+      }
       const errors = err.response && err.response.data && err.response.data.errors
         ? err.response.data.errors
         : [];

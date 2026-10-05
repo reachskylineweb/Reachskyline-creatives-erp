@@ -4,7 +4,8 @@ import react from '@vitejs/plugin-react';
 export default defineConfig(({ mode }) => {
   // Load environment variables from the current directory, loading all variables
   const env = loadEnv(mode, process.cwd(), '');
-  const backendUrl = env.VITE_API_URL || 'https://api.reachskyline.com';
+  const rawBackendUrl = env.VITE_API_URL || 'http://localhost:5050';
+  const backendTarget = rawBackendUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '') || 'http://localhost:5050';
 
   return {
     plugins: [react()],
@@ -33,7 +34,7 @@ export default defineConfig(({ mode }) => {
       port: 3000,
       proxy: {
         '/api': {
-          target: backendUrl,
+          target: backendTarget,
           changeOrigin: true,
           secure: false
         }

@@ -67,7 +67,7 @@ const Login = () => {
       }
     } catch (err) {
       console.error('[Login] Error:', err);
-      const errMsg = err.response?.data?.message || 'Wrong credentials! Invalid email/username or password.';
+      const errMsg = err.response?.data?.message || err.message || 'Wrong credentials! Invalid email/username or password.';
       setError(errMsg);
     } finally {
       setLoading(false);
