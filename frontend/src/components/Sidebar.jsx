@@ -22,16 +22,13 @@ import {
   Key,
   Phone,
   FileText,
-  Grid,
-  PanelLeftClose
+  Grid
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { useSidebar } from '../context/SidebarContext';
 import reachskylineLogo from '../assets/reachskyline-logo.webp';
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
-  const { closeSidebar } = useSidebar();
 
   const getAdminMenuItems = () => {
     const items = [
@@ -162,15 +159,6 @@ const Sidebar = () => {
               className="sidebar-brand-img"
             />
           </NavLink>
-          <button
-            type="button"
-            className="sidebar-close-btn"
-            onClick={closeSidebar}
-            title="Close sidebar (Full page view)"
-            aria-label="Close sidebar"
-          >
-            <PanelLeftClose size={18} />
-          </button>
         </div>
 
         <ul className="sidebar-menu">
