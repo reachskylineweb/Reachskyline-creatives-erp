@@ -300,7 +300,7 @@ class DepartmentService {
     const formattedManagerEfficiency = managerEfficiency.map(mgr => {
       const total = Number(mgr.total_tasks) || 0;
       const completed = Number(mgr.completed_tasks) || 0;
-      const efficiency = total > 0 ? Math.round((completed / total) * 100) : 100;
+      const efficiency = total > 0 ? Math.round((completed / total) * 100) : 0;
       return {
         ...mgr,
         total_tasks: total,
@@ -330,7 +330,7 @@ class DepartmentService {
 
       const totalTasks = (Number(delivRows[0]?.total) || 0) + (Number(jwRows[0]?.total) || 0);
       const completedTasks = (Number(delivRows[0]?.completed) || 0) + (Number(jwRows[0]?.completed) || 0);
-      const efficiencyRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 100;
+      const efficiencyRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
 
       employeeEfficiency.push({
         id: emp.id,
@@ -352,12 +352,12 @@ class DepartmentService {
     const activeMgr = allManagers.filter(m => m.status === 'active').length;
     const totalSub = subDepartments.length;
     const totalCli = clients.length;
-    const avgEmpEff = employeeEfficiency.length > 0 
+    const avgEmpEff = (totalEmp > 0 && employeeEfficiency.length > 0)
       ? Math.round(employeeEfficiency.reduce((acc, curr) => acc + curr.efficiency, 0) / employeeEfficiency.length) 
-      : 100;
-    const avgMgrEff = formattedManagerEfficiency.length > 0 
+      : 0;
+    const avgMgrEff = (totalMgr > 0 && formattedManagerEfficiency.length > 0)
       ? Math.round(formattedManagerEfficiency.reduce((acc, curr) => acc + curr.efficiency, 0) / formattedManagerEfficiency.length) 
-      : 100;
+      : 0;
 
     const stats = {
       totalEmployees: totalEmp,

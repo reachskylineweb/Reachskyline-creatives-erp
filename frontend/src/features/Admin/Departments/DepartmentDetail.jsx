@@ -448,15 +448,28 @@ const DepartmentDetail = ({ deptId, onBack }) => {
   const clients = details?.clients || [];
   const employeeEfficiency = details?.employeeEfficiency || [];
   const managerEfficiency = details?.managerEfficiency || [];
-  const stats = details?.stats || {
-    totalEmployees: employees.length,
-    activeEmployees: employees.filter(e => e.status === 'active').length,
-    totalManagers: allManagers.length,
-    activeManagers: allManagers.filter(m => m.status === 'active').length,
-    totalSubDepartments: subDepartments.length,
-    totalClients: clients.length,
-    avgEmployeeEfficiency: 100,
-    avgManagerEfficiency: 100
+  const rawStats = details?.stats || {};
+  const totalEmployeesCount = Number(rawStats.totalEmployees ?? employees.length) || 0;
+  const totalManagersCount = Number(rawStats.totalManagers ?? allManagers.length) || 0;
+
+  // Strict logic: If there are no team members or recorded tasks, efficiency must be 0%
+  const computedAvgEmpEff = (totalEmployeesCount === 0 || employeeEfficiency.length === 0)
+    ? 0
+    : (Number(rawStats.avgEmployeeEfficiency) || 0);
+
+  const computedAvgMgrEff = (totalManagersCount === 0 || managerEfficiency.length === 0)
+    ? 0
+    : (Number(rawStats.avgManagerEfficiency) || 0);
+
+  const stats = {
+    totalEmployees: totalEmployeesCount,
+    activeEmployees: Number(rawStats.activeEmployees ?? employees.filter(e => e.status === 'active').length) || 0,
+    totalManagers: totalManagersCount,
+    activeManagers: Number(rawStats.activeManagers ?? allManagers.filter(m => m.status === 'active').length) || 0,
+    totalSubDepartments: Number(rawStats.totalSubDepartments ?? subDepartments.length) || 0,
+    totalClients: Number(rawStats.totalClients ?? clients.length) || 0,
+    avgEmployeeEfficiency: computedAvgEmpEff,
+    avgManagerEfficiency: computedAvgMgrEff
   };
 
   // Filtered Employees
@@ -635,7 +648,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           </div>
           <div className="dept-hero-pill">
             <AppIcon name="report" size={20} />
-            <span>Avg Efficiency: <strong style={{ color: stats.avgEmployeeEfficiency >= 80 ? '#059669' : '#d97706' }}>{stats.avgEmployeeEfficiency}%</strong></span>
+            <span>Avg Efficiency: <strong style={{ color: stats.totalEmployees === 0 ? '#64748b' : (stats.avgEmployeeEfficiency >= 80 ? '#059669' : '#d97706') }}>{stats.avgEmployeeEfficiency}%</strong></span>
           </div>
         </div>
       </div>
