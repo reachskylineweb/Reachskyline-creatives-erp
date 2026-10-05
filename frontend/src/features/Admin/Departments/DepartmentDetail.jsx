@@ -595,7 +595,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
                 padding: '6px'
               }}
             >
-              <AppIcon name={getDeptIconName(department.code, department.name)} size={42} alt={department.name} />
+              <AppIcon name={getDeptIconName(department.code, department.name)} size={48} alt={department.name} />
             </div>
 
             <div className="dept-hero-title-group">
@@ -618,23 +618,23 @@ const DepartmentDetail = ({ deptId, onBack }) => {
         {/* Quick Summary Pill Bar */}
         <div className="dept-hero-stats-bar">
           <div className="dept-hero-pill">
-            <AppIcon name="employee" size={16} />
+            <AppIcon name="employee" size={20} />
             <span>Employees: <strong>{stats.totalEmployees}</strong> ({stats.activeEmployees} active)</span>
           </div>
           <div className="dept-hero-pill">
-            <AppIcon name="manager" size={16} />
+            <AppIcon name="manager" size={20} />
             <span>Managers: <strong>{stats.totalManagers}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <AppIcon name="department" size={16} />
+            <AppIcon name="department" size={20} />
             <span>Sub-departments: <strong>{stats.totalSubDepartments}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <AppIcon name="clients" size={16} />
+            <AppIcon name="clients" size={20} />
             <span>Clients: <strong>{stats.totalClients}</strong></span>
           </div>
           <div className="dept-hero-pill">
-            <AppIcon name="report" size={16} />
+            <AppIcon name="report" size={20} />
             <span>Avg Efficiency: <strong style={{ color: stats.avgEmployeeEfficiency >= 80 ? '#059669' : '#d97706' }}>{stats.avgEmployeeEfficiency}%</strong></span>
           </div>
         </div>
@@ -646,7 +646,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
           onClick={() => setActiveTab('dashboard')}
         >
-          <LayoutDashboard size={16} />
+          <AppIcon name="dashboard" size={22} />
           <span>Dashboard</span>
         </button>
 
@@ -654,7 +654,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'sub_departments' ? 'active' : ''}`}
           onClick={() => setActiveTab('sub_departments')}
         >
-          <AppIcon name="department" size={16} />
+          <AppIcon name="department" size={22} />
           <span>Sub-departments</span>
           <span className="dept-nav-tab-badge">{subDepartments.length}</span>
         </button>
@@ -663,7 +663,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'employees' ? 'active' : ''}`}
           onClick={() => setActiveTab('employees')}
         >
-          <AppIcon name="employee" size={16} />
+          <AppIcon name="employee" size={22} />
           <span>Employees</span>
           <span className="dept-nav-tab-badge">{employees.length}</span>
         </button>
@@ -672,7 +672,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'managers' ? 'active' : ''}`}
           onClick={() => setActiveTab('managers')}
         >
-          <AppIcon name="manager" size={16} />
+          <AppIcon name="manager" size={22} />
           <span>Managers</span>
           <span className="dept-nav-tab-badge">{allManagers.length}</span>
         </button>
@@ -681,7 +681,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'clients' ? 'active' : ''}`}
           onClick={() => setActiveTab('clients')}
         >
-          <AppIcon name="clients" size={16} />
+          <AppIcon name="clients" size={22} />
           <span>Clients</span>
           <span className="dept-nav-tab-badge">{clients.length}</span>
         </button>
@@ -690,7 +690,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'employee_efficiency' ? 'active' : ''}`}
           onClick={() => setActiveTab('employee_efficiency')}
         >
-          <AppIcon name="report" size={16} />
+          <AppIcon name="report" size={22} />
           <span>Employee Efficiency</span>
         </button>
 
@@ -698,7 +698,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           className={`dept-nav-tab ${activeTab === 'manager_efficiency' ? 'active' : ''}`}
           onClick={() => setActiveTab('manager_efficiency')}
         >
-          <AppIcon name="report" size={16} />
+          <AppIcon name="report" size={22} />
           <span>Manager Efficiency</span>
         </button>
       </div>
@@ -712,7 +712,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
           <div className="dept-kpi-row">
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#eff6ff', color: '#2563eb' }}>
-                <AppIcon name="employee" size={24} />
+                <AppIcon name="employee" size={28} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalEmployees}</span>
@@ -722,7 +722,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#ede9fe', color: '#7c3aed' }}>
-                <AppIcon name="manager" size={24} />
+                <AppIcon name="manager" size={28} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalManagers}</span>
@@ -732,7 +732,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#fef3c7', color: '#d97706' }}>
-                <AppIcon name="department" size={24} />
+                <AppIcon name="department" size={28} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalSubDepartments}</span>
@@ -742,7 +742,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#ecfdf5', color: '#059669' }}>
-                <AppIcon name="clients" size={24} />
+                <AppIcon name="clients" size={28} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.totalClients}</span>
@@ -752,7 +752,7 @@ const DepartmentDetail = ({ deptId, onBack }) => {
 
             <div className="dept-kpi-card">
               <div className="dept-kpi-icon" style={{ background: '#fdf8e2', color: '#b45309' }}>
-                <AppIcon name="report" size={24} />
+                <AppIcon name="report" size={28} />
               </div>
               <div className="dept-kpi-data">
                 <span className="dept-kpi-val">{stats.avgEmployeeEfficiency}%</span>

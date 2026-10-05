@@ -1,6 +1,9 @@
 import React from 'react';
 
 export const APP_ICONS = {
+  dashboard: 'https://img.icons8.com/clouds/100/performance-macbook.png',
+  completedTask: 'https://img.icons8.com/fluency/48/completed-task.png',
+  task: 'https://img.icons8.com/arcade/64/task.png',
   manager: 'https://img.icons8.com/bubbles/100/manager.png',
   employee: 'https://img.icons8.com/plasticine/100/manager.png',
   clients: 'https://img.icons8.com/doodle/48/manager--v1.png',
@@ -19,7 +22,7 @@ export const APP_ICONS = {
   businessDevelopment: 'https://img.icons8.com/external-flat-icons-pack-pongsakorn-tan/64/external-bussiness-insurance-flat-icons-pack-pongsakorn-tan.png'
 };
 
-export const AppIcon = ({ name, size = 20, style = {}, className = '', alt = '' }) => {
+export const AppIcon = ({ name, size = 26, style = {}, className = '', alt = '' }) => {
   const iconSrc = APP_ICONS[name] || name;
   return (
     <img

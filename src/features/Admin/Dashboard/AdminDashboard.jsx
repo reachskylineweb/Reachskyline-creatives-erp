@@ -158,9 +158,14 @@ const AdminDashboard = () => {
         flexWrap: 'wrap',
         gap: '16px'
       }}>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h2 style={{ fontSize: '20px', fontWeight: 800, color: 'var(--text-color)', margin: 0 }}>Enterprise Admin Dashboard</h2>
-          <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)', fontSize: '13px' }}>Real-time business intelligence, daily logs & team workflow tracker</p>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ width: '50px', height: '50px', borderRadius: '12px', background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <AppIcon name="dashboard" size={34} alt="Dashboard" />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <h2 style={{ fontSize: '20px', margin: 0 }}>Enterprise Admin Dashboard</h2>
+            <p style={{ margin: '4px 0 0 0', color: 'var(--text-muted)', fontSize: '13px' }}>Real-time business intelligence, daily logs & team workflow tracker</p>
+          </div>
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
@@ -207,12 +212,12 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Total Clients</span>
-            <div className="stat-icon bg-blue" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#eff6ff' }}>
-              <AppIcon name="clients" size={24} />
+            <div className="stat-icon bg-blue" style={{ width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#eff6ff' }}>
+              <AppIcon name="clients" size={28} />
             </div>
           </div>
           <div>
-            <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalClients}</div>
+            <div className="stat-value" style={{ fontSize: '28px', color: 'var(--text-color)' }}>{stats.totalClients}</div>
             <div className="stat-footer" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Active partnerships</div>
           </div>
         </div>
@@ -220,12 +225,12 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Departments</span>
-            <div className="stat-icon bg-teal" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0fdf4' }}>
-              <AppIcon name="department" size={24} />
+            <div className="stat-icon bg-teal" style={{ width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#f0fdf4' }}>
+              <AppIcon name="department" size={28} />
             </div>
           </div>
           <div>
-            <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalDepartments}</div>
+            <div className="stat-value" style={{ fontSize: '28px', color: 'var(--text-color)' }}>{stats.totalDepartments}</div>
             <div className="stat-footer" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Organized units</div>
           </div>
         </div>
@@ -233,12 +238,12 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Sub-departments</span>
-            <div className="stat-icon bg-orange" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff7ed' }}>
-              <AppIcon name="department" size={24} />
+            <div className="stat-icon bg-orange" style={{ width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#fff7ed' }}>
+              <AppIcon name="department" size={28} />
             </div>
           </div>
           <div>
-            <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalSubDepartments}</div>
+            <div className="stat-value" style={{ fontSize: '28px', color: 'var(--text-color)' }}>{stats.totalSubDepartments}</div>
             <div className="stat-footer" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Specialized sections</div>
           </div>
         </div>
@@ -246,12 +251,12 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Managers</span>
-            <div className="stat-icon bg-purple" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#faf5ff' }}>
-              <AppIcon name="manager" size={24} />
+            <div className="stat-icon bg-purple" style={{ width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#faf5ff' }}>
+              <AppIcon name="manager" size={28} />
             </div>
           </div>
           <div>
-            <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalManagers}</div>
+            <div className="stat-value" style={{ fontSize: '28px', color: 'var(--text-color)' }}>{stats.totalManagers}</div>
             <div className="stat-footer" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Operational leaders</div>
           </div>
         </div>
@@ -259,12 +264,12 @@ const AdminDashboard = () => {
         <div className="card stat-card" style={{ padding: '20px' }}>
           <div className="stat-header" style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
             <span className="stat-title" style={{ fontSize: '13px', fontWeight: '600', color: 'var(--text-muted)' }}>Employees</span>
-            <div className="stat-icon bg-green" style={{ width: '38px', height: '38px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ecfdf5' }}>
-              <AppIcon name="employee" size={24} />
+            <div className="stat-icon bg-green" style={{ width: '44px', height: '44px', borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: '#ecfdf5' }}>
+              <AppIcon name="employee" size={28} />
             </div>
           </div>
           <div>
-            <div className="stat-value" style={{ fontSize: '28px', fontWeight: '800', color: 'var(--text-color)' }}>{stats.totalEmployees}</div>
+            <div className="stat-value" style={{ fontSize: '28px', color: 'var(--text-color)' }}>{stats.totalEmployees}</div>
             <div className="stat-footer" style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>Registered employees</div>
           </div>
         </div>
@@ -276,12 +281,12 @@ const AdminDashboard = () => {
         
         {/* Card 1: Today's Total Work */}
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(218, 167, 27, 0.08)' }}>
-            <AppIcon name="deliverables" size={28} />
+          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(218, 167, 27, 0.08)' }}>
+            <AppIcon name="task" size={32} />
           </div>
           <div>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', display: 'block' }}>Today's Total Tasks</span>
-            <h3 style={{ margin: '4px 0 0 0', fontSize: '26px', fontWeight: '800', color: 'var(--text-color)' }}>{daily.totalTodayWork}</h3>
+            <h3 style={{ margin: '4px 0 0 0', fontSize: '26px', color: 'var(--text-color)' }}>{daily.totalTodayWork}</h3>
             <span style={{ fontSize: '11px', color: 'var(--text-muted)' }}>Scheduled for {selectedDate}</span>
           </div>
         </div>
@@ -289,7 +294,7 @@ const AdminDashboard = () => {
         {/* Card 2: Today's Working Clients List */}
         <div className="card" style={{ padding: '20px', display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--text-muted)', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <AppIcon name="clients" size={18} /> Clients Active Today
+            <AppIcon name="clients" size={20} /> Clients Active Today
           </span>
           <div style={{ flex: 1, maxHeight: '80px', overflowY: 'auto', display: 'flex', flexWrap: 'wrap', gap: '6px', alignContent: 'flex-start' }}>
             {daily.todayClientsList && daily.todayClientsList.length > 0 ? (
@@ -306,12 +311,12 @@ const AdminDashboard = () => {
 
         {/* Card 3: Postings Done Today */}
         <div className="card" style={{ padding: '20px', display: 'flex', alignItems: 'center', gap: '16px' }}>
-          <div style={{ width: '50px', height: '50px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(16, 185, 129, 0.08)', color: 'var(--success)' }}>
-            <FileCheck size={26} />
+          <div style={{ width: '52px', height: '52px', borderRadius: 'var(--radius-md)', display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(16, 185, 129, 0.08)' }}>
+            <AppIcon name="completedTask" size={32} />
           </div>
           <div>
             <span style={{ fontSize: '12px', fontWeight: '600', color: 'var(--text-muted)', display: 'block' }}>Postings Completed Today</span>
-            <h3 style={{ margin: '4px 0 0 0', fontSize: '26px', fontWeight: '800', color: 'var(--text-color)' }}>{daily.todayPostingsCount}</h3>
+            <h3 style={{ margin: '4px 0 0 0', fontSize: '26px', color: 'var(--text-color)' }}>{daily.todayPostingsCount}</h3>
             <span style={{ fontSize: '11px', color: 'var(--success)', fontWeight: 700 }}>Published live</span>
           </div>
         </div>
@@ -323,8 +328,8 @@ const AdminDashboard = () => {
         
         {/* Left Side: Graphs for completed today vs pending / monthly */}
         <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: 700, marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <ListTodo size={18} className="text-primary" /> 
+          <h3 style={{ fontSize: '16px', marginBottom: '20px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <AppIcon name="task" size={22} /> 
             {isDaily ? `Deliverables Activity Graph (${selectedDate})` : `Monthly Postings Distribution (${selectedMonth})`}
           </h3>
 

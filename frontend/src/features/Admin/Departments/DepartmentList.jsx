@@ -466,7 +466,7 @@ const DepartmentList = () => {
                       className="dept-card-icon-box"
                       style={{ background: theme.iconBg }}
                     >
-                      <AppIcon name={theme.appIconName} size={30} alt={dept.name} />
+                      <AppIcon name={theme.appIconName} size={36} alt={dept.name} />
                     </div>
 
                     <div className="dept-card-tags">
@@ -490,29 +490,29 @@ const DepartmentList = () => {
                   {/* Department Personnel & Connected Entities */}
                   <div className="dept-card-stats">
                     <div className="dept-stat-item">
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                        <AppIcon name="employee" size={16} />
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                        <AppIcon name="employee" size={19} />
                         <span className="dept-stat-val" style={{ color: '#2563eb' }}>{empCount}</span>
                       </div>
                       <span className="dept-stat-lbl">Employees</span>
                     </div>
                     <div className="dept-stat-item">
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                        <AppIcon name="manager" size={16} />
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                        <AppIcon name="manager" size={19} />
                         <span className="dept-stat-val" style={{ color: '#7c3aed' }}>{mgrCount}</span>
                       </div>
                       <span className="dept-stat-lbl">Managers</span>
                     </div>
                     <div className="dept-stat-item">
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                        <AppIcon name="department" size={16} />
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                        <AppIcon name="department" size={19} />
                         <span className="dept-stat-val" style={{ color: '#d97706' }}>{subCount}</span>
                       </div>
                       <span className="dept-stat-lbl">Sub-depts</span>
                     </div>
                     <div className="dept-stat-item">
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '5px' }}>
-                        <AppIcon name="clients" size={16} />
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
+                        <AppIcon name="clients" size={19} />
                         <span className="dept-stat-val" style={{ color: '#059669' }}>{clientCount}</span>
                       </div>
                       <span className="dept-stat-lbl">Clients</span>
