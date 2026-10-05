@@ -2,6 +2,7 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { NotificationProvider } from './context/NotificationContext';
+import { SidebarProvider, useSidebar } from './context/SidebarContext';
 
 // Layout shells
 import Sidebar from './components/Sidebar';
@@ -96,18 +97,12 @@ const getCachedUser = () => {
   }
 };
 
-// Protected Super Admin Route Guard
-const ProtectedSuperAdminRoute = () => {
-  const { isAuthenticated, user, loading } = useAuth();
-  const activeUser = user || getCachedUser();
-
-  if (loading) return <PageLoader />;
-  if (!activeUser || activeUser.role !== 'super_admin') {
-    return <Navigate to="/login" replace />;
-  }
+// Unified Responsive App Layout Shell
+const AppLayout = () => {
+  const { isCollapsed } = useSidebar();
 
   return (
-    <div className="app-layout">
+    <div className={`app-layout ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
       <Sidebar />
       <div className="main-content">
         <Header />
@@ -119,6 +114,19 @@ const ProtectedSuperAdminRoute = () => {
       </div>
     </div>
   );
+};
+
+// Protected Super Admin Route Guard
+const ProtectedSuperAdminRoute = () => {
+  const { isAuthenticated, user, loading } = useAuth();
+  const activeUser = user || getCachedUser();
+
+  if (loading) return <PageLoader />;
+  if (!activeUser || activeUser.role !== 'super_admin') {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <AppLayout />;
 };
 
 const ProtectedAdminRoute = () => {
@@ -131,19 +139,7 @@ const ProtectedAdminRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="app-layout">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
-          <Suspense fallback={<PageLoader />}>
-            <Outlet />
-          </Suspense>
-        </main>
-      </div>
-    </div>
-  );
+  return <AppLayout />;
 };
 
 // Protected Manager Route Guard
@@ -156,19 +152,7 @@ const ProtectedManagerRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="app-layout">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
-          <Suspense fallback={<PageLoader />}>
-            <Outlet />
-          </Suspense>
-        </main>
-      </div>
-    </div>
-  );
+  return <AppLayout />;
 };
 
 // Protected Client Route Guard
@@ -189,19 +173,7 @@ const ProtectedClientRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="app-layout">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
-          <Suspense fallback={<PageLoader />}>
-            <Outlet />
-          </Suspense>
-        </main>
-      </div>
-    </div>
-  );
+  return <AppLayout />;
 };
 
 // Protected Employee Route Guard
@@ -214,29 +186,18 @@ const ProtectedEmployeeRoute = () => {
     return <Navigate to="/login" replace />;
   }
 
-  return (
-    <div className="app-layout">
-      <Sidebar />
-      <div className="main-content">
-        <Header />
-        <main style={{ flex: 1, overflowY: 'auto' }}>
-          <Suspense fallback={<PageLoader />}>
-            <Outlet />
-          </Suspense>
-        </main>
-      </div>
-    </div>
-  );
+  return <AppLayout />;
 };
 
 function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <NotificationProvider>
-          <ErrorBoundary>
-            <Suspense fallback={<PageLoader />}>
-              <Routes>
+        <SidebarProvider>
+          <NotificationProvider>
+            <ErrorBoundary>
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
                 {/* Public Routing */}
                 <Route path="/login" element={<Login />} />
 
@@ -325,6 +286,7 @@ function App() {
             </Suspense>
           </ErrorBoundary>
         </NotificationProvider>
+        </SidebarProvider>
       </AuthProvider>
     </BrowserRouter>
   );

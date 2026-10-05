@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle, Menu } from 'lucide-react';
+import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle, Menu, PanelLeftOpen, PanelLeftClose } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { useSidebar } from '../context/SidebarContext';
 import api from '../utils/api';
 import Modal from './Modal';
 
 const Header = () => {
   const { user, logout } = useAuth();
+  const { isCollapsed, toggleSidebar } = useSidebar();
   
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
@@ -94,6 +96,17 @@ const Header = () => {
           aria-label="Toggle Navigation"
         >
           {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* Desktop Sidebar Toggle Button (Full page view toggle) */}
+        <button 
+          type="button"
+          className="sidebar-toggle-btn" 
+          onClick={toggleSidebar} 
+          title={isCollapsed ? "Open sidebar (Ctrl+B)" : "Close sidebar - Full page view (Ctrl+B)"}
+          aria-label={isCollapsed ? "Open sidebar" : "Close sidebar"}
+        >
+          {isCollapsed ? <PanelLeftOpen size={19} /> : <PanelLeftClose size={19} />}
         </button>
 
         {/* Search Bar */}
