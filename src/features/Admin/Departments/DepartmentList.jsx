@@ -453,12 +453,6 @@ const DepartmentList = () => {
                 className="dept-card"
                 onClick={() => handleOpenDepartment(dept.id)}
               >
-                {/* Top Colored Accent Strip */}
-                <div 
-                  className="dept-card-top-strip" 
-                  style={{ background: theme.gradient }}
-                />
-
                 <div className="dept-card-body">
                   {/* Card Header */}
                   <div className="dept-card-header">

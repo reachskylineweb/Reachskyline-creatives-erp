@@ -1787,8 +1787,9 @@ body,
 }
 
 .dept-card-top-strip {
-  height: 5px;
-  width: 100%;
+  display: none !important;
+  height: 0;
+  width: 0;
 }
 
 .dept-card-body {
