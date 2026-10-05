@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle, Menu, PanelLeftOpen, PanelLeftClose } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Search, LogOut, Check, X, FileText, Briefcase, Award, Users, Layers, AlertCircle, Menu, PanelLeftOpen, PanelLeftClose, Maximize2, Minimize2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useSidebar } from '../context/SidebarContext';
 import api from '../utils/api';
@@ -15,6 +15,25 @@ const Header = () => {
   const [searchResults, setSearchResults] = useState(null);
   const [showSearchModal, setShowSearchModal] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Fullscreen state
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const toggleFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
+  }, []);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', onFullscreenChange);
+  }, []);
 
   const toggleMobileMenu = () => {
     const nextState = !mobileMenuOpen;
@@ -123,8 +142,19 @@ const Header = () => {
         </form>
       </div>
 
-      {/* Actions (User Profile Menu Only) */}
+      {/* Actions */}
       <div className="header-actions">
+        {/* Fullscreen Toggle */}
+        <button
+          type="button"
+          className="header-icon-btn"
+          onClick={toggleFullscreen}
+          title={isFullscreen ? 'Exit Fullscreen (Esc)' : 'Enter Fullscreen'}
+          aria-label={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+        >
+          {isFullscreen ? <Minimize2 size={18} /> : <Maximize2 size={18} />}
+        </button>
+
         {/* User Account Info Widget */}
         <div className="user-profile-menu">
           <div className="user-avatar">{adminInitials}</div>

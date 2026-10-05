@@ -235,14 +235,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sidebar-link:hover {
-  background-color: rgba(255, 255, 255, 0.04);
-  color: var(--text-on-dark);
+  background-color: rgba(218, 167, 27, 0.14);
+  color: #DAA71B;
 }
 
 .sidebar-link.active {
   background-color: var(--primary);
-  color: var(--text-on-dark);
-  box-shadow: 0 4px 12px rgba(218, 167, 27, 0.2);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(218, 167, 27, 0.25);
 }
 
 .sidebar-footer {
@@ -358,7 +358,36 @@ h1, h2, h3, h4, h5, h6 {
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 12px;
+}
+
+/* Generic header icon button (fullscreen, etc.) */
+.header-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  color: #475569;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.header-icon-btn:hover {
+  background: rgba(218, 167, 27, 0.12);
+  border-color: var(--primary);
+  color: var(--primary);
+  box-shadow: 0 2px 8px rgba(218, 167, 27, 0.18);
+  transform: translateY(-1px);
+}
+
+.header-icon-btn:active {
+  transform: translateY(0);
 }
 
 .notification-bell-btn {
