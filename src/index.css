@@ -141,27 +141,36 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .sidebar-logo {
-  padding: 24px;
+  padding: 18px 20px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 20px;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  justify-content: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(15, 23, 42, 0.5);
 }
 
+.sidebar-logo-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  text-decoration: none;
+}
+
+.sidebar-brand-img,
 .sidebar-logo img {
-  height: 28px;
+  height: 52px;
   width: auto;
+  max-width: 180px;
   object-fit: contain;
-  border-radius: 4px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
 }
 
-.sidebar-logo svg {
-  stroke: url(#logo-grad) var(--primary); /* Fallback support */
+.sidebar-brand-img:hover,
+.sidebar-logo img:hover {
+  transform: scale(1.03);
+  filter: drop-shadow(0 6px 14px rgba(218, 167, 27, 0.3));
 }
 
 .sidebar-menu {

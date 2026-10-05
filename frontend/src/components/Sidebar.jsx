@@ -25,6 +25,7 @@ import {
   Grid
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import reachskylineLogo from '../assets/reachskyline-logo.webp';
 
 const Sidebar = () => {
   const { logout, user } = useAuth();
@@ -151,17 +152,13 @@ const Sidebar = () => {
       <div className="sidebar-backdrop" onClick={handleNavClick}></div>
       <aside className="sidebar">
         <div className="sidebar-logo">
-          <img src="https://res.cloudinary.com/srfbqmic/image/upload/f_auto,q_auto/download_1_1_l9glns" alt="ReachSkyline Logo" />
-          <span>ReachSkyline</span>
-          
-          <svg width="0" height="0" style={{ position: 'absolute' }}>
-            <defs>
-              <linearGradient id="logo-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#DAA71B" />
-                <stop offset="100%" stopColor="#4f46e5" />
-              </linearGradient>
-            </defs>
-          </svg>
+          <NavLink to="/" onClick={handleNavClick} className="sidebar-logo-link" title="ReachSkyline ERP">
+            <img 
+              src={reachskylineLogo} 
+              alt="ReachSkyline Logo" 
+              className="sidebar-brand-img"
+            />
+          </NavLink>
         </div>
 
         <ul className="sidebar-menu">
