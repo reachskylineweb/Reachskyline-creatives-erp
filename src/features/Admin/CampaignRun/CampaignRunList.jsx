@@ -880,15 +880,15 @@ const CampaignRunList = () => {
       {/* MODAL 1: CREATE CAMPAIGN RUN (ADMIN / INTAKE)                 */}
       {/* ============================================================ */}
       {/* ============================================================ */}
-      {/* MODAL 1: CREATE CAMPAIGN RUN (ADMIN / INTAKE - FULL HORIZONTAL) */}
+      {/* MODAL 1: CREATE CAMPAIGN RUN (ADMIN / INTAKE - ONE BY ONE)    */}
       {/* ============================================================ */}
       <Modal
         isOpen={isCreateModalOpen}
         onClose={() => setIsCreateModalOpen(false)}
-        title="Create Campaign Run — Client Ad Campaign Intake"
+        title="Create Campaign Run"
         className="campaign-horizontal-modal"
-        maxWidth="96vw"
-        width="96vw"
+        maxWidth="960px"
+        width="90vw"
       >
         <form onSubmit={handleCreateSubmit}>
           {createErrors.submit && (
@@ -898,334 +898,253 @@ const CampaignRunList = () => {
             </div>
           )}
 
-          {/* Full Screen Horizontal 3-Column Panel Grid */}
-          <div className="campaign-create-horizontal-grid">
-            {/* Panel 1: Client & Channel Setup */}
-            <div className="campaign-form-panel">
-              <div className="campaign-form-panel-header">
-                <div className="campaign-panel-icon" style={{ background: '#e0f2fe', color: '#0369a1' }}>
-                  <Layers size={17} />
-                </div>
-                <div>
-                  <h4 className="campaign-panel-title">1. Client & Channel Setup</h4>
-                  <p className="campaign-panel-desc">Select client account, platform and routing manager</p>
-                </div>
-              </div>
+          <div className="campaign-form-stream">
+            {/* 1. Select Client */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px', display: 'flex', justifyContent: 'space-between' }}>
+                <span>Select Client <span style={{ color: '#dc2626' }}>*</span></span>
+                {selectedClient && (
+                  <span style={{ fontSize: '12px', color: '#0284c7', fontWeight: 700 }}>
+                    {selectedClient.client_id_code || ''}
+                  </span>
+                )}
+              </label>
+              <select
+                className="form-control"
+                value={createForm.client_id}
+                onChange={(e) => setCreateForm({ ...createForm, client_id: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px' }}
+              >
+                <option value="">-- Choose Client --</option>
+                {metaOptions.clients.map(c => (
+                  <option key={c.id} value={c.id}>
+                    {c.company_name} {c.client_id_code ? `(${c.client_id_code})` : ''} - {c.client_name}
+                  </option>
+                ))}
+              </select>
+              {createErrors.client_id && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.client_id}</span>}
+            </div>
 
-              {/* Select Client */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px', display: 'flex', justifyContent: 'space-between' }}>
-                  <span>Select Client <span style={{ color: '#dc2626' }}>*</span></span>
-                  {selectedClient && (
-                    <span style={{ fontSize: '11.5px', color: '#0284c7', fontWeight: 700 }}>
-                      {selectedClient.client_id_code || ''}
-                    </span>
-                  )}
-                </label>
-                <select
-                  className="form-control"
-                  value={createForm.client_id}
-                  onChange={(e) => setCreateForm({ ...createForm, client_id: e.target.value })}
-                  style={{ borderRadius: '8px' }}
-                >
-                  <option value="">-- Choose Client --</option>
-                  {metaOptions.clients.map(c => (
-                    <option key={c.id} value={c.id}>
-                      {c.company_name} {c.client_id_code ? `(${c.client_id_code})` : ''} - {c.client_name}
-                    </option>
-                  ))}
-                </select>
-                {createErrors.client_id && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.client_id}</span>}
-              </div>
+            {/* 2. Campaign Title / Concept */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px' }}>
+                Campaign Title / Concept <span style={{ color: '#dc2626' }}>*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="e.g. Festive Sale Lead Generation 2026"
+                value={createForm.title}
+                onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px' }}
+              />
+              {createErrors.title && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.title}</span>}
+            </div>
 
-              {/* Campaign Title / Concept */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Campaign Title / Concept <span style={{ color: '#dc2626' }}>*</span>
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  placeholder="e.g. Festive Sale Lead Generation 2026"
-                  value={createForm.title}
-                  onChange={(e) => setCreateForm({ ...createForm, title: e.target.value })}
-                  style={{ borderRadius: '8px' }}
-                />
-                {createErrors.title && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.title}</span>}
-              </div>
-
-              {/* Platform Target */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Platform Target <span style={{ color: '#dc2626' }}>*</span>
-                </label>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px' }}>
-                  {PLATFORMS.map(p => (
-                    <button
-                      type="button"
-                      key={p.value}
-                      onClick={() => setCreateForm({ ...createForm, platform: p.value })}
-                      style={{
-                        padding: '10px 6px',
-                        borderRadius: '8px',
-                        border: createForm.platform === p.value ? '2px solid var(--primary)' : '1px solid #e2e8f0',
-                        background: createForm.platform === p.value ? '#fdf8e2' : '#ffffff',
-                        fontWeight: 700,
-                        fontSize: '12.5px',
-                        color: createForm.platform === p.value ? '#92400e' : 'var(--text-main)',
-                        cursor: 'pointer',
-                        textAlign: 'center',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      {p.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Route to Campaign Manager */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Route to Campaign Manager <span style={{ color: '#dc2626' }}>*</span>
-                </label>
-                <select
-                  className="form-control"
-                  value={createForm.assigned_manager_id}
-                  onChange={(e) => setCreateForm({ ...createForm, assigned_manager_id: e.target.value })}
-                  style={{ borderRadius: '8px' }}
-                >
-                  <option value="">-- Choose Campaign Manager --</option>
-                  {metaOptions.campaignManagers.map(m => (
-                    <option key={m.id} value={m.id}>
-                      {m.full_name} {m.manager_id_code ? `(${m.manager_id_code})` : ''} - {m.department_name || 'Campaigns'}
-                    </option>
-                  ))}
-                </select>
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  Manager verifies creatives, sets daily pacing, and assigns employee.
-                </div>
-              </div>
-
-              {/* Strategic Objective Notes */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Strategic Objective & Target Geo/Cities
-                </label>
-                <textarea
-                  rows="2"
-                  className="form-control"
-                  placeholder="e.g. Target Bangalore & Chennai, high-income audience, festive offers..."
-                  value={createForm.campaign_details}
-                  onChange={(e) => setCreateForm({ ...createForm, campaign_details: e.target.value })}
-                  style={{ borderRadius: '8px', fontSize: '12.5px' }}
-                />
+            {/* 3. Platform Target */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px' }}>
+                Platform Target <span style={{ color: '#dc2626' }}>*</span>
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                {PLATFORMS.map(p => (
+                  <button
+                    type="button"
+                    key={p.value}
+                    onClick={() => setCreateForm({ ...createForm, platform: p.value })}
+                    style={{
+                      padding: '12px 14px',
+                      borderRadius: '8px',
+                      border: createForm.platform === p.value ? '2px solid var(--primary)' : '1px solid #e2e8f0',
+                      background: createForm.platform === p.value ? '#fdf8e2' : '#ffffff',
+                      fontWeight: 700,
+                      fontSize: '13.5px',
+                      color: createForm.platform === p.value ? '#92400e' : 'var(--text-main)',
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {p.label}
+                  </button>
+                ))}
               </div>
             </div>
 
-            {/* Panel 2: Budget & Scheduling */}
-            <div className="campaign-form-panel">
-              <div className="campaign-form-panel-header">
-                <div className="campaign-panel-icon" style={{ background: '#fef3c7', color: '#92400e' }}>
-                  <DollarSign size={17} />
-                </div>
+            {/* 4. Total Allocated Budget */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px', display: 'flex', justifyContent: 'space-between' }}>
+                <span>Total Allocated Budget (₹) <span style={{ color: '#dc2626' }}>*</span></span>
+                {createForm.total_amount && Number(createForm.total_amount) > 0 && (
+                  <span style={{ fontSize: '12.5px', color: '#059669', fontWeight: 700 }}>
+                    Formatted: {formatINR(createForm.total_amount)}
+                  </span>
+                )}
+              </label>
+              <div style={{ position: 'relative' }}>
+                <span style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', fontWeight: 800, color: '#0f172a', fontSize: '16px' }}>₹</span>
+                <input
+                  type="number"
+                  min="1"
+                  step="1"
+                  className="form-control"
+                  placeholder="e.g. 50000"
+                  value={createForm.total_amount}
+                  onChange={(e) => setCreateForm({ ...createForm, total_amount: e.target.value })}
+                  style={{ paddingLeft: '34px', borderRadius: '8px', paddingRight: '14px', paddingTop: '10px', paddingBottom: '10px', fontSize: '14px', fontWeight: 600 }}
+                />
+              </div>
+              {createErrors.total_amount && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.total_amount}</span>}
+            </div>
+
+            {/* 5. Campaign Schedule Dates */}
+            <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '16px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <span style={{ fontWeight: 700, fontSize: '13.5px', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Calendar size={16} style={{ color: 'var(--primary)' }} />
+                  Campaign Schedule Dates <span style={{ color: '#dc2626' }}>*</span>
+                </span>
+                <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, cursor: 'pointer', color: '#0369a1' }}>
+                  <input
+                    type="checkbox"
+                    checked={createForm.has_no_end_date}
+                    onChange={(e) => setCreateForm({ ...createForm, has_no_end_date: e.target.checked })}
+                  />
+                  Continuous / Without End Date
+                </label>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '14px' }}>
                 <div>
-                  <h4 className="campaign-panel-title">2. Budget & Scheduling</h4>
-                  <p className="campaign-panel-desc">Set total investment & campaign run dates</p>
+                  <label style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px', fontWeight: 600 }}>Start Date *</label>
+                  <input
+                    type="date"
+                    className="form-control"
+                    value={createForm.start_date}
+                    onChange={(e) => setCreateForm({ ...createForm, start_date: e.target.value })}
+                    style={{ borderRadius: '8px', padding: '9px 12px' }}
+                  />
+                  {createErrors.start_date && <span style={{ color: '#dc2626', fontSize: '11.5px' }}>{createErrors.start_date}</span>}
+                </div>
+
+                <div>
+                  <label style={{ fontSize: '12.5px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px', fontWeight: 600 }}>
+                    End Date {createForm.has_no_end_date ? '(Disabled - Continuous)' : '*'}
+                  </label>
+                  <input
+                    type="date"
+                    disabled={createForm.has_no_end_date}
+                    className="form-control"
+                    value={createForm.end_date}
+                    onChange={(e) => setCreateForm({ ...createForm, end_date: e.target.value })}
+                    style={{ borderRadius: '8px', padding: '9px 12px', opacity: createForm.has_no_end_date ? 0.5 : 1 }}
+                  />
+                  {createErrors.end_date && <span style={{ color: '#dc2626', fontSize: '11.5px' }}>{createErrors.end_date}</span>}
                 </div>
               </div>
 
-              {/* Total Allocated Budget */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Total Allocated Budget (₹) <span style={{ color: '#dc2626' }}>*</span>
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <span style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', fontWeight: 800, color: '#0f172a', fontSize: '15px' }}>₹</span>
-                  <input
-                    type="number"
-                    min="1"
-                    step="1"
-                    className="form-control"
-                    placeholder="e.g. 50000"
-                    value={createForm.total_amount}
-                    onChange={(e) => setCreateForm({ ...createForm, total_amount: e.target.value })}
-                    style={{ paddingLeft: '32px', borderRadius: '8px', fontSize: '15px', fontWeight: 700 }}
-                  />
-                </div>
-                {createErrors.total_amount && <span style={{ color: '#dc2626', fontSize: '12px' }}>{createErrors.total_amount}</span>}
-                {createForm.total_amount && Number(createForm.total_amount) > 0 && (
-                  <div style={{ fontSize: '12px', color: '#059669', fontWeight: 700, marginTop: '4px' }}>
-                    Formatted: {formatINR(createForm.total_amount)}
-                  </div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', borderTop: '1px solid #e2e8f0', paddingTop: '10px', marginTop: '12px' }}>
+                <span style={{ fontSize: '12.5px', color: 'var(--primary)', fontWeight: 700 }}>
+                  Schedule Duration: {calculateDurationDays(createForm.start_date, createForm.end_date, createForm.has_no_end_date)}
+                </span>
+                {calcPace() && (
+                  <span style={{ fontSize: '12.5px', color: '#059669', fontWeight: 700, background: '#ecfdf5', padding: '2px 8px', borderRadius: '6px' }}>
+                    Estimated Daily Pace: {calcPace()}
+                  </span>
                 )}
               </div>
+            </div>
 
-              {/* Schedule Card */}
-              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '14px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <span style={{ fontWeight: 700, fontSize: '13px', color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <Calendar size={15} style={{ color: 'var(--primary)' }} />
-                    Run Schedule
-                  </span>
-                  <label style={{ display: 'inline-flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', color: '#0369a1' }}>
-                    <input
-                      type="checkbox"
-                      checked={createForm.has_no_end_date}
-                      onChange={(e) => setCreateForm({ ...createForm, has_no_end_date: e.target.checked })}
-                    />
-                    Continuous (No End Date)
-                  </label>
-                </div>
-
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                  <div>
-                    <label style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>Start Date *</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      value={createForm.start_date}
-                      onChange={(e) => setCreateForm({ ...createForm, start_date: e.target.value })}
-                      style={{ borderRadius: '8px' }}
-                    />
-                    {createErrors.start_date && <span style={{ color: '#dc2626', fontSize: '11px' }}>{createErrors.start_date}</span>}
-                  </div>
-
-                  <div>
-                    <label style={{ fontSize: '12px', color: 'var(--text-muted)', display: 'block', marginBottom: '4px' }}>
-                      End Date {createForm.has_no_end_date ? '(Disabled)' : '*'}
-                    </label>
-                    <input
-                      type="date"
-                      disabled={createForm.has_no_end_date}
-                      className="form-control"
-                      value={createForm.end_date}
-                      onChange={(e) => setCreateForm({ ...createForm, end_date: e.target.value })}
-                      style={{ borderRadius: '8px', opacity: createForm.has_no_end_date ? 0.5 : 1 }}
-                    />
-                    {createErrors.end_date && <span style={{ color: '#dc2626', fontSize: '11px' }}>{createErrors.end_date}</span>}
-                  </div>
-                </div>
-
-                {/* Schedule & Pace Badges */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px', borderTop: '1px solid #e2e8f0', paddingTop: '10px' }}>
-                  <span style={{ fontSize: '12px', color: 'var(--primary)', fontWeight: 700 }}>
-                    Duration: {calculateDurationDays(createForm.start_date, createForm.end_date, createForm.has_no_end_date)}
-                  </span>
-                  {calcPace() && (
-                    <span style={{ fontSize: '12px', color: '#059669', fontWeight: 700, background: '#ecfdf5', padding: '2px 8px', borderRadius: '6px' }}>
-                      Pace: {calcPace()}
-                    </span>
-                  )}
-                </div>
-              </div>
-
-              {/* Quick Budget Guidance Info Box */}
-              <div style={{ background: '#eff6ff', border: '1px solid #bfdbfe', borderRadius: '8px', padding: '10px 12px', fontSize: '11.5px', color: '#1e40af', lineHeight: 1.5 }}>
-                <strong>💡 Workflow Assurance:</strong> The overall campaign investment is defined by Admin. The assigned Campaign Manager verifies creatives, sets the minimum daily pacing rate, and sets campaign objective format.
+            {/* 6. Route to Campaign Manager */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px' }}>
+                Route to Campaign Manager <span style={{ color: '#dc2626' }}>*</span>
+              </label>
+              <select
+                className="form-control"
+                value={createForm.assigned_manager_id}
+                onChange={(e) => setCreateForm({ ...createForm, assigned_manager_id: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px' }}
+              >
+                <option value="">-- Choose Campaign Manager --</option>
+                {metaOptions.campaignManagers.map(m => (
+                  <option key={m.id} value={m.id}>
+                    {m.full_name} {m.manager_id_code ? `(${m.manager_id_code})` : ''} - {m.department_name || 'Campaigns'}
+                  </option>
+                ))}
+              </select>
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                The assigned Campaign Manager will verify creatives, allocate the minimum daily budget, and assign a Campaign Employee.
               </div>
             </div>
 
-            {/* Panel 3: Creatives & Ad Assets */}
-            <div className="campaign-form-panel">
-              <div className="campaign-form-panel-header">
-                <div className="campaign-panel-icon" style={{ background: '#ecfdf5', color: '#047857' }}>
-                  <Sparkles size={17} />
-                </div>
-                <div>
-                  <h4 className="campaign-panel-title">3. Creatives & Ad Assets</h4>
-                  <p className="campaign-panel-desc">Share artwork drive links and copy headlines</p>
-                </div>
-              </div>
-
-              {/* Creatives Asset Link */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
-                  <label className="form-label" style={{ fontWeight: 700, fontSize: '13px', margin: 0 }}>
-                    Creative Assets Drive / Figma Link
-                  </label>
-                  {createForm.creatives_url && (
-                    <a 
-                      href={createForm.creatives_url} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '11.5px', color: '#0284c7', fontWeight: 700, textDecoration: 'none' }}
-                    >
-                      <ExternalLink size={12} /> Test Link
-                    </a>
-                  )}
-                </div>
-                <input
-                  type="url"
-                  className="form-control"
-                  placeholder="https://drive.google.com/... or Figma link"
-                  value={createForm.creatives_url}
-                  onChange={(e) => setCreateForm({ ...createForm, creatives_url: e.target.value })}
-                  style={{ borderRadius: '8px', fontSize: '13px' }}
-                />
-                <div style={{ fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px' }}>
-                  Folder link with banners, videos, reels, copy scripts or PSD/AI design source files.
-                </div>
-              </div>
-
-              {/* Creatives Specifications & Ad Copy Notes */}
-              <div className="form-group" style={{ marginBottom: 0 }}>
-                <label className="form-label" style={{ fontWeight: 700, fontSize: '13px' }}>
-                  Ad Copy, Headlines & Dimension Specs
+            {/* 7. Creative Assets Link */}
+            <div className="form-group">
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
+                <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px', margin: 0 }}>
+                  Creative Assets Drive / Figma Link
                 </label>
-                <textarea
-                  rows="4"
-                  className="form-control"
-                  placeholder="Specify ad copy headlines, call-to-actions, primary text, discount offers, aspect ratio notes (1080x1080 Feed, 1080x1920 Story/Reel)..."
-                  value={createForm.creatives_text}
-                  onChange={(e) => setCreateForm({ ...createForm, creatives_text: e.target.value })}
-                  style={{ borderRadius: '8px', fontSize: '12.5px', lineHeight: 1.45 }}
-                />
+                {createForm.creatives_url && (
+                  <a 
+                    href={createForm.creatives_url} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontSize: '12px', color: '#0284c7', fontWeight: 700, textDecoration: 'none' }}
+                  >
+                    <ExternalLink size={13} /> Test Link
+                  </a>
+                )}
               </div>
-
-              {/* Next Step Responsibility Banner */}
-              <div style={{ background: '#fdf8e2', border: '1px solid #fef08a', borderRadius: '8px', padding: '10px 12px', fontSize: '11.5px', color: '#854d0e', lineHeight: 1.5 }}>
-                <strong>🎯 Collaborative Next Steps:</strong>
-                <div style={{ marginTop: '4px' }}>
-                  • Manager verifies creatives & marks "Creatives OK"<br/>
-                  • Manager sets daily budget & assigns live campaign employee<br/>
-                  • Employee publishes ad and pastes live preview URL
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Full-Width Horizontal Summary & Action Bar */}
-          <div className="campaign-summary-bar">
-            <div className="campaign-summary-chips">
-              <div className="campaign-summary-chip">
-                <span>Client:</span>
-                <strong>{selectedClient ? selectedClient.company_name : 'Not selected'}</strong>
-              </div>
-              <div className="campaign-summary-chip">
-                <span>Platform:</span>
-                <strong style={{ textTransform: 'capitalize' }}>{createForm.platform}</strong>
-              </div>
-              <div className="campaign-summary-chip">
-                <span>Budget:</span>
-                <strong style={{ color: '#059669' }}>{createForm.total_amount ? formatINR(createForm.total_amount) : '₹0'}</strong>
-              </div>
-              <div className="campaign-summary-chip">
-                <span>Schedule:</span>
-                <strong>{calculateDurationDays(createForm.start_date, createForm.end_date, createForm.has_no_end_date) || 'Dates pending'}</strong>
-              </div>
-              <div className="campaign-summary-chip">
-                <span>Manager:</span>
-                <strong>{selectedManager ? selectedManager.full_name : 'Auto-routed'}</strong>
+              <input
+                type="url"
+                className="form-control"
+                placeholder="https://drive.google.com/... or Figma link"
+                value={createForm.creatives_url}
+                onChange={(e) => setCreateForm({ ...createForm, creatives_url: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px' }}
+              />
+              <div style={{ fontSize: '12px', color: 'var(--text-muted)', marginTop: '4px' }}>
+                Folder link containing banners, video reels, ad copy scripts, or design source files.
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            {/* 8. Creatives Specifications & Ad Copy Notes */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px' }}>
+                Creatives Specifications & Ad Copy Notes
+              </label>
+              <textarea
+                rows="3"
+                className="form-control"
+                placeholder="Specify ad headlines, primary copy, discount offers, aspect ratios (1080x1080 Feed, 1080x1920 Story/Reels)..."
+                value={createForm.creatives_text}
+                onChange={(e) => setCreateForm({ ...createForm, creatives_text: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px', lineHeight: 1.5 }}
+              />
+            </div>
+
+            {/* 9. General Campaign Strategy & Client Objective */}
+            <div className="form-group">
+              <label className="form-label" style={{ fontWeight: 700, fontSize: '13.5px' }}>
+                General Campaign Strategy & Client Objective
+              </label>
+              <textarea
+                rows="2"
+                className="form-control"
+                placeholder="e.g. Focus on high-intent conversions in Chennai & Bangalore, target high-income audience..."
+                value={createForm.campaign_details}
+                onChange={(e) => setCreateForm({ ...createForm, campaign_details: e.target.value })}
+                style={{ borderRadius: '8px', padding: '10px 14px', lineHeight: 1.5 }}
+              />
+            </div>
+
+            {/* 10. Action Buttons Footer */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '10px', paddingTop: '16px', borderTop: '1px solid #e2e8f0' }}>
               <button 
                 type="button" 
                 className="btn btn-secondary" 
                 onClick={() => setIsCreateModalOpen(false)}
-                style={{ padding: '8px 18px', fontWeight: 700 }}
+                style={{ padding: '9px 20px', fontWeight: 700 }}
               >
                 Cancel
               </button>
@@ -1233,13 +1152,13 @@ const CampaignRunList = () => {
                 type="submit" 
                 className="btn btn-primary" 
                 disabled={actionLoading}
-                style={{ padding: '8px 22px', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+                style={{ padding: '9px 24px', fontWeight: 800, display: 'inline-flex', alignItems: 'center', gap: '8px' }}
               >
                 {actionLoading ? (
                   <>Creating Campaign...</>
                 ) : (
                   <>
-                    <span>Submit Campaign Run</span>
+                    <span>Submit to Campaign Manager</span>
                     <ArrowRight size={16} />
                   </>
                 )}
