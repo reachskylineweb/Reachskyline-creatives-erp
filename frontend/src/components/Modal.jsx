@@ -6,7 +6,13 @@ const Modal = ({
   onClose,
   title,
   children,
-  footer = null
+  footer = null,
+  maxWidth,
+  width,
+  size,
+  className = '',
+  containerStyle = {},
+  bodyStyle = {}
 }) => {
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -22,10 +28,19 @@ const Modal = ({
 
   if (!isOpen) return null;
 
+  const sizeClass = size ? `modal-${size}` : '';
+
+  const dynamicContainerStyle = {
+    ...(maxWidth ? { maxWidth } : {}),
+    ...(width ? { width } : {}),
+    ...containerStyle
+  };
+
   return (
     <div className="modal-overlay">
       <div 
-        className="modal-container" 
+        className={`modal-container ${sizeClass} ${className}`.trim()} 
+        style={dynamicContainerStyle}
         onClick={(e) => e.stopPropagation()} // Prevent close on modal body click
       >
         <div className="modal-header">
@@ -34,7 +49,7 @@ const Modal = ({
             <X size={20} />
           </button>
         </div>
-        <div className="modal-body">
+        <div className="modal-body" style={bodyStyle}>
           {children}
         </div>
         {footer && (
