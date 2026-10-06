@@ -14,7 +14,12 @@ const getBaseURL = () => {
     }
     return trimmed.endsWith('/api') ? trimmed : `${trimmed}/api`;
   }
-  return '/api';
+  // In development, use local proxy
+  if (import.meta.env.DEV) {
+    return '/api';
+  }
+  // Production fallback — always point to the live backend
+  return 'https://api.reachskyline.com/api';
 };
 
 const api = axios.create({
