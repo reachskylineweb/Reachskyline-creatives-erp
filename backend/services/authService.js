@@ -114,7 +114,7 @@ class AuthService {
       }
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
-        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
+        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image,
                 e.sub_department_id,
                 sd.code AS sub_department_code, sd.name AS sub_department_name,
                 d.code AS department_code, d.name AS department_name
@@ -126,8 +126,8 @@ class AuthService {
       );
       if (empRows.length > 0) {
         userPayload.employeeProfile = empRows[0];
-        userPayload.profile_image = empRows[0].profile_image || empRows[0].avatar_url;
-        userPayload.avatar_url = empRows[0].avatar_url || empRows[0].profile_image;
+        userPayload.profile_image = empRows[0].profile_image;
+        userPayload.avatar_url = empRows[0].profile_image;
       }
     } else if (user.role === 'client') {
       const [clientRows] = await pool.query(
@@ -178,7 +178,7 @@ class AuthService {
       }
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
-        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
+        `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image,
                 e.sub_department_id,
                 sd.code AS sub_department_code, sd.name AS sub_department_name,
                 d.code AS department_code, d.name AS department_name
@@ -190,8 +190,8 @@ class AuthService {
       );
       if (empRows.length > 0) {
         user.employeeProfile = empRows[0];
-        user.profile_image = empRows[0].profile_image || empRows[0].avatar_url;
-        user.avatar_url = empRows[0].avatar_url || empRows[0].profile_image;
+        user.profile_image = empRows[0].profile_image;
+        user.avatar_url = empRows[0].profile_image;
       }
     } else if (user.role === 'client') {
       const [clientRows] = await pool.query(
