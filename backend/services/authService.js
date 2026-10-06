@@ -115,7 +115,8 @@ class AuthService {
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
         `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
-                CASE WHEN sd.code = 'CW-RS' THEN 3 ELSE e.sub_department_id END AS sub_department_id, 
+                e.sub_department_id,
+                sd.code AS sub_department_code, sd.name AS sub_department_name,
                 d.code AS department_code, d.name AS department_name
          FROM employees e
          JOIN departments d ON e.department_id = d.id
@@ -178,7 +179,8 @@ class AuthService {
     } else if (user.role === 'employee') {
       const [empRows] = await pool.query(
         `SELECT e.id AS employee_id, e.full_name, e.department_id, e.profile_image, e.avatar_url,
-                CASE WHEN sd.code = 'CW-RS' THEN 3 ELSE e.sub_department_id END AS sub_department_id, 
+                e.sub_department_id,
+                sd.code AS sub_department_code, sd.name AS sub_department_name,
                 d.code AS department_code, d.name AS department_name
          FROM employees e
          JOIN departments d ON e.department_id = d.id
