@@ -1657,16 +1657,17 @@ body,
   .sidebar {
     position: fixed !important;
     top: 0 !important;
-    left: -285px !important;
+    left: 0 !important;
+    transform: translateX(-105%) !important;
     width: 275px !important;
     height: 100vh !important;
     z-index: 999 !important;
     box-shadow: 4px 0 25px rgba(0, 0, 0, 0.3) !important;
-    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
 
   body.mobile-sidebar-open .sidebar {
-    left: 0 !important;
+    transform: translateX(0) !important;
   }
 
   .header {
@@ -2037,14 +2038,16 @@ body,
    ========================================================================== */
 
 .dept-workspace-container {
-  padding: 24px 32px 60px 32px;
-  max-width: 1440px;
+  padding: 24px 24px 60px 24px;
+  max-width: 1600px;
+  width: 100%;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .dept-workspace-container {
-    padding: 16px;
+    padding: 16px 16px 40px 16px;
   }
 }
 
@@ -2053,11 +2056,12 @@ body,
   background: linear-gradient(135deg, #ffffff 0%, #fafafa 100%);
   border: 1px solid var(--border-color);
   border-radius: 16px;
-  padding: 28px 32px;
+  padding: 24px 28px;
   margin-bottom: 24px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 .dept-workspace-hero-top {
@@ -2072,7 +2076,10 @@ body,
 .dept-hero-identity {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 18px;
+  flex-wrap: wrap;
+  min-width: 0;
+  max-width: 100%;
 }
 
 .dept-hero-icon-large {
