@@ -7,27 +7,7 @@ require('dotenv').config({
   override: true
 });
 
-logger.error('========== DB DEBUG ==========');
-logger.error(`DB_HOST: ${process.env.DB_HOST}`);
-logger.error(`DB_PORT: ${process.env.DB_PORT}`);
-logger.error(`DB_USER: ${process.env.DB_USER}`);
-logger.error(`DB_NAME: ${process.env.DB_NAME}`);
-logger.error(
-  `DB_PASSWORD_LENGTH: ${
-    process.env.DB_PASSWORD
-      ? process.env.DB_PASSWORD.length
-      : 'MISSING'
-  }`
-);
-logger.error('==============================');
 
-console.log('=== DATABASE ENV DEBUG ===');
-console.log('DB_HOST:', process.env.DB_HOST);
-console.log('DB_PORT:', process.env.DB_PORT);
-console.log('DB_USER:', process.env.DB_USER);
-console.log('DB_NAME:', process.env.DB_NAME);
-console.log('DB_PASSWORD length:', process.env.DB_PASSWORD ? process.env.DB_PASSWORD.length : 'MISSING');
-console.log('==========================');
 
 const pool = mysql.createPool({
   host: process.env.DB_HOST,

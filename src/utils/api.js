@@ -47,12 +47,14 @@ api.interceptors.response.use(
   async (error) => {
     const { config, response } = error;
     
-    // Check if network error (no response) or server 5xx error on idempotent GET requests
+    // Check if network error (no response) or server 5xx error on idempotent GET requests or login attempts
     const isGetRequest = config?.method?.toLowerCase() === 'get';
+    const isLoginRequest = config?.url?.includes('/auth/login') || config?.url?.includes('/login');
     const isNetworkError = !response;
     const isServerError = response && response.status >= 500;
+    const canRetry = (isGetRequest || isLoginRequest) && (isNetworkError || isServerError);
     
-    if (config && isGetRequest && (isNetworkError || isServerError)) {
+    if (config && canRetry) {
       config.__retryCount = config.__retryCount || 0;
       config.__maxRetries = config.__maxRetries || 3;
       config.__backoff = config.__backoff || 1000; // Start with 1 second

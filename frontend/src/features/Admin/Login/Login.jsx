@@ -62,12 +62,18 @@ const Login = () => {
           window.location.href = '/admin/dashboard';
         }
       } else {
-        const errMsg = result?.message || 'Wrong credentials! Invalid email/username or password.';
+        let errMsg = result?.message || 'Wrong credentials! Invalid email/username or password.';
+        if (errMsg.includes('500') || errMsg.includes('status code 500')) {
+          errMsg = 'The server is reconnecting or establishing database connection. Please try again.';
+        }
         setError(errMsg);
       }
     } catch (err) {
       console.error('[Login] Error:', err);
-      const errMsg = err.response?.data?.message || err.message || 'Wrong credentials! Invalid email/username or password.';
+      let errMsg = err.response?.data?.message || err.message || 'Wrong credentials! Invalid email/username or password.';
+      if (errMsg.includes('500') || errMsg.includes('status code 500')) {
+        errMsg = 'The server is reconnecting or establishing database connection. Please try again.';
+      }
       setError(errMsg);
     } finally {
       setLoading(false);
